@@ -126,19 +126,25 @@ const RGBot = class {
     }
 
     /**
-     * Find the nearest entity with the specified name or null if no matching entity can be found.
-     * Only locates entities that can be engaged in combat.
-     * @param {string} targetName - the name of the target entity. If not specified, then returns the closest attackable entity of any type.
-     * @return {Entity | null}
+     * <i><b>Experimental</b></i>
+     *
+     * Find the nearest entity matching the search criteria
+     * @param {string} targetName - the name of the target entity. If not specified, then may return an Entity of any type.
+     * @param {object} [options] - optional parameters
+     * @param {boolean} [options.attackable=false] - only return entities that can be attacked
+     * @return {Entity | null} - the nearest Entity matching the search criteria, or null if no matching Entity can be found.
      */
-    findAttackableEntity(targetName) {
+    findEntity(targetName, options = {}) {
+        const attackable = options.attackable || false;
+        this.#log(`Searching for Entity ${targetName}`);
         return this.bot.nearestEntity(entity => {
-            if (!targetName || this.entityNamesMatch(targetName, entity)) {
-                this.chat(`Evaluating attack target: ${(entity.displayName || entity.name)}, isValid: ${entity.isValid}, isMobOrPlayer: ${(entity.type === 'mob' || entity.type === 'player')}`)
-                return (entity.isValid && (entity.type === 'mob' || entity.type === 'player'))
+            if(entity.isValid && (!targetName || this.entityNamesMatch(targetName, entity))) {
+                if(!attackable || (attackable && (entity.type === 'mob' || entity.type === 'player'))) {
+                    return true;
+                }
             }
-            return false
-        });
+            return false;
+        })
     }
 
     /**
