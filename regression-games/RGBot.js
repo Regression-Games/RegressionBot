@@ -8,7 +8,7 @@ const { Vec3 } = require('vec3');
  * <h2><u>Glossary:</u></h2>
  *
  *  <b><u>Mineflayer and Pathfinder</u></b><br>
- *    Mineflayer is a high-level JavaScript API based on the for creating Minecraft Bots.
+ *    Mineflayer is a high-level JavaScript API for creating Minecraft Bots.
  *    Mineflayer supports third-party plugins like Pathfinder - an advanced Pathfinding library to help your Bot navigate the world.
  *    Regression Games uses Mineflayer and Pathfinder to create a stable and user-friendly library. Create the best Bot you can with ease. <br>
  *    <i>Mineflayer API documentation - https://github.com/PrismarineJS/mineflayer/blob/master/docs/api.md </i><br>
@@ -72,7 +72,7 @@ const RGBot = class {
     }
 
     /**
-     * Bot sends a chat message in-game. If debug is enabled, also outputs to log.
+     * Bot sends a chat message in-game. If debug is enabled, also outputs to console.
      * @param {string} message
      * @return {void}
      */
@@ -84,6 +84,7 @@ const RGBot = class {
     /**
      * Waits for the specified number of in-game ticks before continuing.
      * This is similar to the standard JavaScript setTimeout function but runs on the physics timer of the Bot specifically.
+     * This is useful for waiting on the server to update a Block or spawn drops when you break a Block.
      * @param {number} ticks - the number of in-game ticks to wait
      * @return {Promise<void>}
      */
@@ -453,7 +454,7 @@ const RGBot = class {
     }
 
     /**
-     * Harvest the given Block.
+     * Dig the given Block.
      * This will equip the most appropriate tool in the Bot's inventory for this Block type.
      * @param {Block} block - the Block instance to dig
      * @return {Promise<void>}
@@ -482,12 +483,12 @@ const RGBot = class {
     }
 
     /**
-     * Locate and harvest the closest Block of a given type within a maximum distance from the Bot.
+     * Locate and dig the closest Block of a given type within a maximum distance from the Bot.
      * This method will equip the most appropriate tool in the Bot's inventory for this Block type.
      * @param {string} blockType - the name of the Block to find and dig
      * @param {object} [options] - optional parameters
      * @param {boolean} [options.partialMatch=false] - find blocks whose name / displayName contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.).
-     * @param {boolean} [options.onlyFindTopBlocks=false] - will not attempt to harvest any Blocks that are beneath another Block
+     * @param {boolean} [options.onlyFindTopBlocks=false] - will not attempt to dig any Blocks that are beneath another Block
      * @param {number} [options.maxDistance=50] - Blocks further than this distance from the Bot will not be found
      * @param {number} [options.skipClosest=false] - will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it
      * @return {Promise<boolean>} - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted
