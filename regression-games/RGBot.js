@@ -160,7 +160,7 @@ const RGBot = class {
             // special case for items that are on the ground
             // their name will show up as simply 'Item', so we need to
             // look up the item's info using its id first...
-            const item = this.getItemById(entity.metadata[8].itemId);
+            const item = this.getItemDefinitionById(entity.metadata[8].itemId);
             return item.displayName || item.name;
         }
         else {
@@ -172,9 +172,9 @@ const RGBot = class {
      * Accepts the name of an Item and returns the corresponding Entity definition for the Item.
      * If the Item isn't defined in minecraft's data, returns null instead.
      * @param {string} itemName
-     * @return {Item | null}
+     * @return {Item | null} - the Item's definition (<i>not</i> an Item instance)
      */
-    getItemByName(itemName) {
+    getItemDefinitionByName(itemName) {
         try {
             return this.mcData.itemsByName[itemName];
         } catch (err) {
@@ -187,9 +187,9 @@ const RGBot = class {
      * Accepts the id of an Item and returns the corresponding Entity definition for the Item.
      * If the Item isn't defined in minecraft's data, returns null instead.
      * @param {number} itemId - the item's numerical id
-     * @return {Item | null}
+     * @return {Item | null} - the Item's definition (<i>not</i> an Item instance)
      */
-    getItemById(itemId) {
+    getItemDefinitionById(itemId) {
         try {
             return this.mcData.items[itemId];
         } catch (err) {
@@ -552,7 +552,7 @@ const RGBot = class {
         let result = [];
         for(let itemToCollect of itemsToCollect) {
             // check to see if item still exists in world
-            const itemEntity = this.getItemById(itemToCollect.metadata[8].itemId);
+            const itemEntity = this.getItemDefinitionById(itemToCollect.metadata[8].itemId);
             const itemName = this.getEntityName(itemEntity);
             if(await this.findItemOnGround(itemName, {maxDistance}) != null) {
                 // if it is on the ground, then approach it and collect it.
@@ -579,7 +579,7 @@ const RGBot = class {
         this.#log(`Detecting item ${itemName} within a max distance of ${maxDistance}`);
         return this.bot.nearestEntity((entity) => {
             if (entity.objectType === "Item" && entity.onGround) {
-                const itemEntity = this.getItemById(entity.metadata[8].itemId);
+                const itemEntity = this.getItemDefinitionById(entity.metadata[8].itemId);
                 const matchedName = !itemName || this.entityNamesMatch(itemName, itemEntity);
                 if (matchedName && this.bot.entity.position.distanceTo(entity.position) <= maxDistance) {
                     return entity;
@@ -669,7 +669,7 @@ const RGBot = class {
      * @return {number | null}
      */
     getInventoryItemId(itemName) {
-        const itemId = (this.getItemByName(itemName)).id;
+        const itemId = (this.getItemDefinitionByName(itemName)).id;
         if (itemId) {
             return this.bot.inventory.findInventoryItem((itemId));
         } else {
@@ -730,7 +730,7 @@ const RGBot = class {
         const quantity = options.quantity || 1;
         const craftingTable = options.craftingTable || null;
         let result = null;
-        const itemId = (this.getItemByName(itemName)).id;
+        const itemId = (this.getItemDefinitionByName(itemName)).id;
         const recipes = await this.bot.recipesFor(itemId, null, null, craftingTable);
         if (recipes.length === 0) {
             this.#log(`Failed to create ${itemName}. Either the item is not valid, or the bot does not possess the required materials to craft it.`);
