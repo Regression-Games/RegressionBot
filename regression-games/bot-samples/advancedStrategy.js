@@ -4,7 +4,7 @@
 function advancedStrategy(rg, bot) {
 
     // This function will make the Bot chop + pick up a Spruce Log.
-    const gatherLog = async () => {
+    async function gatherLog() {
 
         // Track whether the Bot encountered any issues while chopping a log.
         // There are so many trees around the spawn area that it can
@@ -48,7 +48,7 @@ function advancedStrategy(rg, bot) {
 
     // This method gathers enough wood to craft two axes
     // (crafting two at once is more efficient than waiting for the first to break before we craft the second)
-    const craftAxes = async () => {
+    async function craftAxes() {
 
         // If the Bot doesn't have all the materials it needs to craft two axes, then gather them now.
 

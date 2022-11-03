@@ -4,7 +4,7 @@ function simpleStrategy(rg, bot) {
 
     // This is our main loop. The Bot will invoke this on spawn.
     // goal: collect 4 Poppies
-    const startGathering = async () => {
+    async function startGathering() {
 
         // Check the Bot's inventory - if it has less than 4 Poppies
         // then it needs to find and gather one

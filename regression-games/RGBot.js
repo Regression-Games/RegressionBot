@@ -83,6 +83,7 @@ const RGBot = class {
 
     /**
      * Waits for the specified number of in-game ticks before continuing.
+     * Minecraft normally runs at 20 ticks per second, with an in-game day lasting 24,0000 ticks (20 minutes)
      * This is similar to the standard JavaScript setTimeout function but runs on the physics timer of the Bot specifically.
      * This is useful for waiting on the server to update a Block or spawn drops when you break a Block.
      * @param {number} ticks - the number of in-game ticks to wait
@@ -531,8 +532,10 @@ const RGBot = class {
     /**
      * Returns a list of all Items that are on the ground within a maximum distance from the Bot (can be empty).
      * @param {object} [options] - optional parameters
-     * @param {number} [options.maxDistance=50]
-     * @return {Item[]}
+     * @param {number} [options.itemName=null] - find only Items with this name
+     * @param {number} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
+     * @param {number} [options.maxDistance=50] - only find Items up to this distance from the Bot
+     * @return {Item[]} - the list of Items found on the ground (can be empty)
      */
     findItemsOnGround(options = {}) {
         const maxDistance = options.maxDistance || 50;
@@ -540,7 +543,9 @@ const RGBot = class {
         // this.bot.entities is a map of entityId : entity
         return Object.values(this.bot.entities).filter((entity) => {
             if (entity.objectType === "Item" && entity.onGround) {
-                return this.bot.entity.position.distanceTo(entity.position) <= maxDistance;
+                if(!!itemName || this.entityNamesMatch(itemName, entity, {partialMatch})) {
+                    return this.bot.entity.position.distanceTo(entity.position) <= maxDistance;
+                }
             }
         });
     }
@@ -548,13 +553,17 @@ const RGBot = class {
     /**
      * Collects all Items on the ground within a maximum distance from the Bot.
      * @param {object} [options] - optional parameters
-     * @param {number} [options.maxDistance=50]
-     * @return {Promise<Item[]>} - the list of Item definitions for all Items collected from the ground (can be empty)
+     * @param {number} [options.itemName=null] - find and collect only Items with this name
+     * @param {number} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
+     * @param {number} [options.maxDistance=50] - only find and collect Items up to this distance from the Bot
+     * @return {Promise<Item[]>} - a list of Item definitions for each Item collected from the ground (can be empty)
      */
     async findAndCollectItemsOnGround(options = {}) {
+        const itemName = options.itemName || null;
+        const partialMatch = options.partialMatch || false;
         const maxDistance = options.maxDistance || 50;
-        this.#log(`Collecting all items on the ground within a max distance of ${maxDistance}`);
-        const itemsToCollect = this.findItemsOnGround({maxDistance});
+        this.#log(`Collecting all items on the ground within a range of ${maxDistance}`);
+        const itemsToCollect = this.findItemsOnGround({itemName, partialMatch, maxDistance});
 
         let result = [];
         for(let itemToCollect of itemsToCollect) {
