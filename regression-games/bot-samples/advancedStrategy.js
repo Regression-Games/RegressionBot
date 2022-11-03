@@ -40,7 +40,7 @@ function advancedStrategy(rg, bot) {
 
     // The bot will announce whenever it collects a log or an apple
     bot.on('playerCollect', async (collector, collected) => {
-        const itemName = rg.getItemName(collected).toLowerCase();
+        const itemName = rg.getEntityName(collected).toLowerCase();
         if (collector.username === bot.username && (itemName.includes('log') || itemName === 'apple')) {
             rg.chat(`I collected a ${itemName}`);
         }

@@ -151,12 +151,21 @@ const RGBot = class {
     }
 
     /**
-     * Accepts an Item Entity and returns the displayName of the Item, or its name if it has no displayName.
-     * @param {Item} item
+     * Accepts an Entity and returns the displayName of the Entity, or its name if it has no displayName.
+     * @param {Entity} entity
      * @return {string | undefined}
      */
-    getItemName(item) {
-        return item.displayName || item.name;
+    getEntityName(entity) {
+        if (entity.objectType === "Item" && entity.onGround) {
+            // special case for items that are on the ground
+            // their name will show up as simply 'Item', so we need to
+            // look up the item's info using its id first...
+            const item = this.getItemById(entity.metadata[8].itemId);
+            return item.displayName || item.name;
+        }
+        else {
+            return entity.displayName || entity.name;
+        }
     }
 
     /**
@@ -544,7 +553,7 @@ const RGBot = class {
         for(let itemToCollect of itemsToCollect) {
             // check to see if item still exists in world
             const itemEntity = this.getItemById(itemToCollect.metadata[8].itemId);
-            const itemName = this.getItemName(itemEntity);
+            const itemName = this.getEntityName(itemEntity);
             if(await this.findItemOnGround(itemName, {maxDistance}) != null) {
                 // if it is on the ground, then approach it and collect it.
                 if(await this.approachItem(itemToCollect)) {
