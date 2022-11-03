@@ -268,7 +268,7 @@ const RGBot = class {
     /**
      * <i><b>Experimental</b></i>
      *
-     * The Bot will attack the given Entity
+     * The Bot will attack the given Entity one time
      * @param entity {Entity}
      * @return {Promise<void>}
      */
