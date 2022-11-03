@@ -522,7 +522,6 @@ const RGBot = class {
         const maxDistance = options.maxDistance || 50;
         this.#log(`Detecting all items on the ground within a max distance of ${maxDistance}`);
         // this.bot.entities is a map of entityId : entity
-        console.log(JSON.stringify(Object.values(this.bot.entities)))
         return Object.values(this.bot.entities).filter((entity) => {
             if (entity.objectType === "Item" && entity.onGround) {
                 return this.bot.entity.position.distanceTo(entity.position) <= maxDistance;
@@ -695,16 +694,18 @@ const RGBot = class {
      * By default, checks for a quantity of at least 1.
      * @param itemName {string}
      * @param options {object} - optional parameters
+     * @param options.partialMatch {boolean} - check for any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe')
      * @param options.quantity {number}
      * @return {boolean}
      */
     inventoryContainsItem(itemName, options = {}) {
+        const partialMatch = options.partialMatch || false;
         const quantity = options.quantity || 1;
         if (quantity < 1) {
             console.error(`inventoryContainsItem: invalid quantity ${quantity}`);
             return false;
         }
-        return this.getInventoryItemQuantity(itemName) >= quantity;
+        return this.getInventoryItemQuantity(itemName, {partialMatch}) >= quantity;
     }
 
     /**

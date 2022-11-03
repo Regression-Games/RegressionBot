@@ -110,7 +110,7 @@ function advancedStrategy(rg, bot) {
         let logsCollected = rg.getInventoryItemQuantity('spruce_log');
         let applesCollected = rg.getInventoryItemQuantity('apple');
         while (logsCollected + applesCollected < 100) {
-            if (!rg.inventoryContainsItem('wooden_axe')) {
+            if (!rg.inventoryContainsItem('_axe', {partialMatch: true})) {
                 // craft axes if inventory doesn't have any
                 await craftAxes();
             }
