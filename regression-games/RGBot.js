@@ -615,24 +615,6 @@ const RGBot = class {
         });
     }
 
-    // /**
-    //  * Approach an Item. If the Bot has space in its inventory, the Item will be picked up.
-    //  * @param {Item} item
-    //  * @return {Promise<boolean>} - true if pathing was successfully completed or false if pathing could not be completed
-    //  */
-    // async approachItem(item) {
-    //   if (!item) {
-    //     console.error(`approachItem: Item was null or undefined`);
-    //     return false;
-    //   } else {
-    //     this.#log(`Approaching ${(item.displayName || item.name)}`);
-    //     const pathFunc = async () => {
-    //       await this.bot.pathfinder.goto(new GoalBlock(item.position.x, item.position.y, item.position.z));
-    //     }
-    //     return await this.handlePath(pathFunc);
-    //   }
-    // }
-
     /**
      * Drop an inventory Item on the ground.
      * @param {string} itemName
