@@ -620,7 +620,7 @@ const RGBot = class {
      * Drop an inventory Item on the ground.
      * @param {string} itemName
      * @param {object} [options] - optional parameters
-     * @param {number} [options.partialMatch=false] - drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.).
+     * @param {boolean} [options.partialMatch=false] - drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.).
      * @param {number} [options.quantity=1] - the quantity of this Item to drop. To drop all, use -1 or call `dropAllInventoryItem` instead.
      * @return {Promise<void>}
      */
@@ -670,20 +670,6 @@ const RGBot = class {
      */
     async dropAllInventoryItem(itemName) {
         await this.dropInventoryItem(itemName, { quantity: -1 });
-    }
-
-    /**
-     * Return an Item from the Bot's inventory. Has information including which slot it is in, its stack size, etc.
-     * @param {string} itemName
-     * @return {Item | null} - returns an Item instance from the Bot's inventory, or null if the Bot does not have any of this Item
-     */
-    getInventoryItem(itemName) {
-        const itemId = (this.getItemDefinitionByName(itemName)).id;
-        if (itemId) {
-            return this.bot.inventory.findInventoryItem((itemId));
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -763,9 +749,10 @@ const RGBot = class {
      * @return {Promise<Item | null>} - the held Item or null if the Bot was unable to equip the Item
      */
     async holdItem(itemName) {
-        const inventoryItem = this.getInventoryItem(itemName);
-        if (inventoryItem) {
-            await this.bot.equip(inventoryItem, 'hand');
+        const item = this.getItemDefinitionByName(itemName);
+        if (item && this.inventoryContainsItem(itemName)) {
+            this.#log(`Holding ${itemName}`);
+            await this.bot.equip(item.id, 'hand');
             return this.bot.heldItem;
         }
         else {

@@ -46,14 +46,8 @@ function advancedStrategy(rg, bot) {
         }
     });
 
-    // This method gathers enough wood to craft two axes
-    // (crafting two at once is more efficient than waiting for the first to break before we craft the second)
-    async function craftAxes() {
-
-        // If the Bot doesn't have all the materials it needs to craft two axes, then gather them now.
-
-        // First, the crafting table:
-        // If the Bot doesn't have one already, then 4 planks are needed to craft it.
+    async function craftTable() {
+        // If the Bot doesn't already have a craftingTable, then 4 planks are needed to craft one.
         // The Bot can get planks from 1 log if needed.
         if (!rg.inventoryContainsItem('crafting_table')) {
             if (!rg.inventoryContainsItem('spruce_planks', { quantity: 4 })) {
@@ -64,9 +58,10 @@ function advancedStrategy(rg, bot) {
             }
             await rg.craftItem('crafting_table');
         }
+    }
 
-        // Next, sticks:
-        // If the Bot doesn't have 4 of them, then 2 planks are needed to craft them.
+    async function craftSticks() {
+        // If the Bot doesn't have 4 sticks, then 2 planks are needed to craft them.
         // The Bot can get planks from 1 log if needed.
         if (!rg.inventoryContainsItem('stick', { quantity: 4 })) {
             if (!rg.inventoryContainsItem('spuce_planks', { quantity: 2 })) {
@@ -77,9 +72,10 @@ function advancedStrategy(rg, bot) {
             }
             await rg.craftItem('stick');
         }
+    }
 
-        // Lastly, planks:
-        // If the Bot doesn't have 6 of them, then 2 logs are needed to craft them.
+    async function craftPlanks() {
+        // If the Bot doesn't have 6 spruce planks, then 2 logs are needed to craft them.
         if (!rg.inventoryContainsItem('spruce_planks', { quantity: 6 })) {
             const logsCarried = rg.getInventoryItemQuantity('spruce_log');
             const logsNeeded = (rg.getInventoryItemQuantity('spruce_planks')) >= 2 ? 1 : 2;
@@ -88,10 +84,21 @@ function advancedStrategy(rg, bot) {
             }
             await rg.craftItem('spruce_planks', { quantity: logsNeeded });
         }
+    }
+
+    // This method gathers enough wood to craft two axes
+    // (crafting two at once is more efficient than waiting for the first to break before we craft the second)
+    async function craftAxes() {
+
+        // If the Bot doesn't have all the materials it needs to craft two axes,
+        // then gather them now.
+        await craftTable();
+        await craftSticks();
+        await craftPlanks();
 
         // Finally, craft the axes
         // Locate a spot to place the craftingTable, place it, then stand next to it
-        const ground = rg.findBlock('grass', {onlyFindTopBlocks: true, maxDistance: 10}) || rg.findBlock('dirt', { onlyFindTopBlocks: true, maxDistance: 10});
+        const ground = rg.findBlock('grass', {onlyFindTopBlocks: true, maxDistance: 20}) || rg.findBlock('dirt', { onlyFindTopBlocks: true, maxDistance: 20});
         await rg.placeBlock('crafting_table', ground);
         const placedTable = await rg.findBlock('crafting_table');
         await rg.approachBlock(placedTable);
