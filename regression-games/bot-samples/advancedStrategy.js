@@ -29,7 +29,7 @@ function advancedStrategy(rg, bot) {
             } else {
                 // If the Bot didn't find any logs nearby,
                 // then allow it to wander a bit and look again.
-                // This loop makes sure it completes the wander movement.
+                // This loop makes sure it completes the 'wander' movement.
                 let didWander = false;
                 while (!didWander) {
                     didWander = await rg.wander();
@@ -91,7 +91,7 @@ function advancedStrategy(rg, bot) {
 
         // Finally, craft the axes
         // Locate a spot to place the craftingTable, place it, then stand next to it
-        const ground = rg.findBlock('grass', { onlyFindTopBlocks: true }) || rg.findBlock('dirt', { onlyFindTopBlocks: true });
+        const ground = rg.findBlock('grass', {onlyFindTopBlocks: true, maxDistance: 10}) || rg.findBlock('dirt', { onlyFindTopBlocks: true, maxDistance: 10});
         await rg.placeBlock('crafting_table', ground);
         const placedTable = await rg.findBlock('crafting_table');
         await rg.approachBlock(placedTable);

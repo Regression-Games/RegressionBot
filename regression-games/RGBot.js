@@ -1,13 +1,13 @@
 const mineflayer = require('mineflayer');
 const { pathfinder, Movements } = require('mineflayer-pathfinder');
-const { GoalNear, GoalBlock, GoalPlaceBlock, GoalLookAtBlock, GoalXZ, GoalInvert, GoalFollow } = require('mineflayer-pathfinder').goals
+const { GoalNear, GoalBlock, GoalPlaceBlock, GoalGetToBlock, GoalLookAtBlock, GoalXZ, GoalInvert, GoalFollow } = require('mineflayer-pathfinder').goals
 const { Vec3 } = require('vec3');
 
 /**
  *
  * <h2><u>Glossary:</u></h2>
  *
- *  <b><u>Mineflayer and Pathfinder</u></b><br>
+ *  <b><u>Mineflayer and Pathfinder</u></b><br>ß
  *    Mineflayer is a high-level JavaScript API for creating Minecraft Bots.
  *    Mineflayer supports third-party plugins like Pathfinder - an advanced Pathfinding library to help your Bot navigate the world.
  *    Regression Games uses Mineflayer and Pathfinder to create a stable and user-friendly library. Create the best Bot you can with ease. <br>
@@ -119,24 +119,16 @@ const RGBot = class {
     }
 
     /**
-     * Returns the player with this username if they exist in the current match. If they do not exist, returns null.
-     * @param {string} username
-     * @return {Entity | null}
-     */
-    getPlayerEntity(username) {
-        return this.bot.players[username] ? this.bot.players[username].entity : null
-    }
-
-    /**
      * <i><b>Experimental</b></i>
      *
      * Find the nearest entity matching the search criteria
-     * @param {string} targetName - the name of the target entity. If not specified, then may return an Entity of any type.
      * @param {object} [options] - optional parameters
+     * @param {string} [options.targetName=null] - target a specific type of Entity. If not specified, then may return an Entity of any type.
      * @param {boolean} [options.attackable=false] - only return entities that can be attacked
      * @return {Entity | null} - the nearest Entity matching the search criteria, or null if no matching Entity can be found.
      */
-    findEntity(targetName, options = {}) {
+    findEntity(options = {}) {
+        const targetName = options.targetName || null;
         const attackable = options.attackable || false;
         this.#log(`Searching for Entity ${targetName}`);
         return this.bot.nearestEntity(entity => {
@@ -150,12 +142,12 @@ const RGBot = class {
     }
 
     /**
-     * Represent a Vec3 position as a string in the format 'x, z, y'
+     * Represent a Vec3 position as a string in the format 'x, y, z'
      * @param {vec3} position
      * @returns {string}
      */
     positionString(position) {
-        return `${position.x}, ${position.z}, ${position.y}`
+        return `${position.x}, ${position.y}, ${position.z}`
     }
 
     /**
@@ -235,7 +227,7 @@ const RGBot = class {
             console.error(`approachEntity: Entity was null or undefined`);
             return false;
         } else {
-            this.#log(`Approaching ${(entity.displayName || entity.name)} at a max distance of ${maxDistance}`);
+            this.#log(`Approaching ${this.getEntityName(entity)} at a max distance of ${maxDistance}`);
             const goal = new GoalNear(entity.position.x, entity.position.y, entity.position.z, maxDistance);
             const pathFunc = async () => {
                 await this.bot.pathfinder.goto(goal);
@@ -258,7 +250,7 @@ const RGBot = class {
         if (!entity) {
             console.error(`followEntity: Entity was null or undefined`);
         } else {
-            this.#log(`Following ${(entity.displayName || entity.name)} at a max distance of ${maxDistance}`);
+            this.#log(`Following ${this.getEntityName(entity)} at a max distance of ${maxDistance}`);
             this.bot.pathfinder.setGoal(new GoalFollow(entity, maxDistance), true);
         }
     }
@@ -277,7 +269,7 @@ const RGBot = class {
         if (!entity) {
             console.error(`avoidEntity: Entity was null or undefined`);
         } else {
-            this.#log(`Avoiding ${(entity.displayName || entity.name)} at a minumum distance of ${minDistance}`);
+            this.#log(`Avoiding ${this.getEntityName(entity)} at a minumum distance of ${minDistance}`);
             this.bot.pathfinder.setGoal(new GoalInvert(new GoalFollow(entity, minDistance)), true);
         }
     }
@@ -294,10 +286,10 @@ const RGBot = class {
             console.error(`attackEntity: Entity was null or undefined`);
         } else {
             try {
-                this.#log(`Attacking ${(entity.displayName || entity.name)}`);
+                this.#log(`Attacking ${this.getEntityName(entity)}`);
                 this.bot.attack(entity, true);
             } catch (err) {
-                console.error(`Error attacking target: ${(entity.displayName || entity.name)}`, err)
+                console.error(`Error attacking target: ${this.getEntityName(entity)}`, err)
             }
         }
     }
@@ -317,6 +309,7 @@ const RGBot = class {
         const onlyFindTopBlocks = options.onlyFindTopBlocks || false;
         const maxDistance = options.maxDistance || 50;
         const skipClosest = options.skipClosest || false;
+
         let nearbyBlocks = this.bot.findBlocks({
             point: this.bot.entity.position, // from the bot's current position
             maxDistance: maxDistance, // find blocks within range
@@ -326,7 +319,7 @@ const RGBot = class {
                 if (blockType) {
                     blockFound = (this.entityNamesMatch(blockType, block, { partialMatch }));
                 }
-                else if (block.type !== 0) {
+                else if (block.type !== this.mcData.blocksByName.air.id) {
                     blockFound = true; // if nothing specified... try anything but air
                 }
                 return blockFound;
@@ -419,7 +412,7 @@ const RGBot = class {
     }
 
     /**
-     * Place a Block from the Bot's inventory against a target Block
+     * Move directly adjacent to a target Block and place another Block from the Bot's inventory against it
      * @param {string} blockName - the name of the Block to place. Must be available in the Bot's inventory.
      * @param {Block} targetBlock- the target Block to place the new Block on/against
      * @param {object} [options] - optional parameters
@@ -430,10 +423,25 @@ const RGBot = class {
     async placeBlock(blockName, targetBlock, options = {}) {
         const faceVector = options.faceVector || new Vec3(0, 1, 0);
         const reach = options.reach || 5;
+
         this.#log(`Moving to position ${this.positionString(targetBlock.position)} to place ${blockName}`);
-        await this.bot.pathfinder.goto(new GoalPlaceBlock(targetBlock.position.plus(new Vec3(3, 1, 3)), this.bot.world, { reach: reach }))
-        await this.bot.equip(this.getInventoryItemId(blockName), 'hand'); // equip block in hand
-        await this.bot.placeBlock(targetBlock, faceVector); // place it
+        const pathFunc = async() => {
+            await this.bot.pathfinder.goto(new GoalPlaceBlock(targetBlock.position, this.bot.world, { range: reach }));
+        };
+
+        if(await this.handlePath(pathFunc)) {
+            await this.holdItem(blockName);
+            if(targetBlock.type === this.mcData.blocksByName.grass.id) {
+                // Mineflayer tells us that a grass_block sits just above (0, 1, 0) the dirt_block that it is a 'part' of.
+                // Mineflayer's bot.placeBlock checks the block above the targetBlock to determine whether our new Block exists after placement.
+                // If we give it the position of grass instead of dirt, then our Block _replaces_ the grass_block
+                // and mineflayer checks the position _above_ where our new Block should be placed.
+                // Obviously, this will be air or some other Block type, and mineflayer will complain.
+                targetBlock = this.bot.blockAt(targetBlock.position.offset(0, -1, 0));
+            }
+            await this.bot.placeBlock(targetBlock, faceVector); // place it
+        }
+
     }
 
     /**
@@ -491,7 +499,7 @@ const RGBot = class {
      * @param {boolean} [options.partialMatch=false] - find blocks whose name / displayName contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.).
      * @param {boolean} [options.onlyFindTopBlocks=false] - will not attempt to dig any Blocks that are beneath another Block
      * @param {number} [options.maxDistance=50] - Blocks further than this distance from the Bot will not be found
-     * @param {number} [options.skipClosest=false] - will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it
+     * @param {boolean} [options.skipClosest=false] - will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it
      * @return {Promise<boolean>} - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted
      */
     async findAndDigBlock(blockType, options = {}) {
@@ -517,7 +525,7 @@ const RGBot = class {
                     }
 
                     if (droppedItem) {
-                        await this.approachItem(droppedItem);
+                        await this.approachEntity(droppedItem);
                     }
                     result = true;
                 }
@@ -532,18 +540,21 @@ const RGBot = class {
     /**
      * Returns a list of all Items that are on the ground within a maximum distance from the Bot (can be empty).
      * @param {object} [options] - optional parameters
-     * @param {number} [options.itemName=null] - find only Items with this name
-     * @param {number} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
+     * @param {string} [options.itemName=null] - find only Items with this name
+     * @param {boolean} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
      * @param {number} [options.maxDistance=50] - only find Items up to this distance from the Bot
      * @return {Item[]} - the list of Items found on the ground (can be empty)
      */
     findItemsOnGround(options = {}) {
+        const itemName = options.itemName || null;
+        const partialMatch = options.partialMatch || false;
         const maxDistance = options.maxDistance || 50;
         this.#log(`Detecting all items on the ground within a max distance of ${maxDistance}`);
         // this.bot.entities is a map of entityId : entity
         return Object.values(this.bot.entities).filter((entity) => {
             if (entity.objectType === "Item" && entity.onGround) {
-                if(!!itemName || this.entityNamesMatch(itemName, entity, {partialMatch})) {
+                const itemEntity = this.getItemDefinitionById(entity.metadata[8].itemId);
+                if(!itemName || this.entityNamesMatch(itemName, itemEntity, {partialMatch})) {
                     return this.bot.entity.position.distanceTo(entity.position) <= maxDistance;
                 }
             }
@@ -553,8 +564,8 @@ const RGBot = class {
     /**
      * Collects all Items on the ground within a maximum distance from the Bot.
      * @param {object} [options] - optional parameters
-     * @param {number} [options.itemName=null] - find and collect only Items with this name
-     * @param {number} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
+     * @param {string} [options.itemName=null] - find and collect only Items with this name
+     * @param {boolean} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
      * @param {number} [options.maxDistance=50] - only find and collect Items up to this distance from the Bot
      * @return {Promise<Item[]>} - a list of Item definitions for each Item collected from the ground (can be empty)
      */
@@ -572,7 +583,7 @@ const RGBot = class {
             const itemName = this.getEntityName(itemEntity);
             if(await this.findItemOnGround(itemName, {maxDistance}) != null) {
                 // if it is on the ground, then approach it and collect it.
-                if(await this.approachItem(itemToCollect)) {
+                if(await this.approachEntity(itemToCollect)) {
                     result.push(itemToCollect)
                 }
             } else {
@@ -604,23 +615,23 @@ const RGBot = class {
         });
     }
 
-    /**
-     * Approach an Item. If the Bot has space in its inventory, the Item will be picked up.
-     * @param {Item} item
-     * @return {Promise<boolean>} - true if pathing was successfully completed or false if pathing could not be completed
-     */
-    async approachItem(item) {
-        if (!item) {
-            console.error(`approachItem: Item was null or undefined`);
-            return false;
-        } else {
-            this.#log(`Approaching ${(item.displayName || item.name)}`);
-            const pathFunc = async () => {
-                await this.bot.pathfinder.goto(new GoalBlock(item.position.x, item.position.y, item.position.z));
-            }
-            return await this.handlePath(pathFunc);
-        }
-    }
+    // /**
+    //  * Approach an Item. If the Bot has space in its inventory, the Item will be picked up.
+    //  * @param {Item} item
+    //  * @return {Promise<boolean>} - true if pathing was successfully completed or false if pathing could not be completed
+    //  */
+    // async approachItem(item) {
+    //   if (!item) {
+    //     console.error(`approachItem: Item was null or undefined`);
+    //     return false;
+    //   } else {
+    //     this.#log(`Approaching ${(item.displayName || item.name)}`);
+    //     const pathFunc = async () => {
+    //       await this.bot.pathfinder.goto(new GoalBlock(item.position.x, item.position.y, item.position.z));
+    //     }
+    //     return await this.handlePath(pathFunc);
+    //   }
+    // }
 
     /**
      * Drop an inventory Item on the ground.
@@ -679,12 +690,11 @@ const RGBot = class {
     }
 
     /**
-     * Return the id of an Item in the Bot's inventory.
-     * If the Item isn't defined in minecraft's data or is not in the Bot's inventory, returns null instead.
+     * Return an Item from the Bot's inventory. Has information including which slot it is in, its stack size, etc.
      * @param {string} itemName
-     * @return {number | null}
+     * @return {Item | null} - returns an Item instance from the Bot's inventory, or null if the Bot does not have any of this Item
      */
-    getInventoryItemId(itemName) {
+    getInventoryItem(itemName) {
         const itemId = (this.getItemDefinitionByName(itemName)).id;
         if (itemId) {
             return this.bot.inventory.findInventoryItem((itemId));
@@ -738,7 +748,7 @@ const RGBot = class {
      * If the recipe requires a crafting station, then a craftingTable entity is required for success.
      * @param {string} itemName - the Item to craft
      * @param {object} [options] - optional parameters
-     * @param {string} [options.quantity=1] - the number of times to craft this Item. Note: this is NOT the total quantity that should be crafted (Ex. `craftItem('stick', 4)` will result in 16 sticks rather than 4)
+     * @param {number} [options.quantity=1] - the number of times to craft this Item. Note: this is NOT the total quantity that should be crafted (Ex. `craftItem('stick', 4)` will result in 16 sticks rather than 4)
      * @param {Block} [options.craftingTable=null] - for recipes that require a crafting table/station. A Block Entity representing the appropriate station within reach of the Bot.
      * @return {Promise<Item | null>} - the crafted Item or null if crafting failed
      */
@@ -747,7 +757,7 @@ const RGBot = class {
         const craftingTable = options.craftingTable || null;
         let result = null;
         const itemId = (this.getItemDefinitionByName(itemName)).id;
-        const recipes = await this.bot.recipesFor(itemId, null, null, craftingTable);
+        const recipes = this.bot.recipesFor(itemId, null, null, craftingTable);
         if (recipes.length === 0) {
             this.#log(`Failed to create ${itemName}. Either the item is not valid, or the bot does not possess the required materials to craft it.`);
         }
@@ -770,9 +780,9 @@ const RGBot = class {
      * @return {Promise<Item | null>} - the held Item or null if the Bot was unable to equip the Item
      */
     async holdItem(itemName) {
-        const itemId = this.getInventoryItemId(itemName);
-        if (itemId) {
-            await this.bot.equip(itemId, 'hand');
+        const inventoryItem = this.getInventoryItem(itemName);
+        if (inventoryItem) {
+            await this.bot.equip(inventoryItem, 'hand');
             return this.bot.heldItem;
         }
         else {
