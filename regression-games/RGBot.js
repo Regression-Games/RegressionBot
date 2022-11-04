@@ -277,7 +277,8 @@ const RGBot = class {
     /**
      * <i><b>Experimental</b></i>
      *
-     * The Bot will attack the given Entity one time
+     * The Bot will attack the given Entity one time.
+     * This <i>will not</i> move the Bot towards its target: calling {@link `followEntity`} is recommended for staying within attack range of the target as it moves.
      * @param {Entity} entity
      * @return {Promise<void>}
      */
