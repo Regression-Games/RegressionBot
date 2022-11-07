@@ -54,7 +54,7 @@ const RGBot = class {
     /**
      * Enable or disable debug logs
      * @param {boolean} debug
-     * @return {void}
+     * @returns {void}
      */
     setDebug(debug) {
         this.debug = debug;
@@ -63,7 +63,7 @@ const RGBot = class {
     /**
      * Log a message if debug is enabled
      * @param {string} message
-     * @return {void}
+     * @returns {void}
      */
     #log(message) {
         if (this.debug) {
@@ -74,7 +74,7 @@ const RGBot = class {
     /**
      * Bot sends a chat message in-game. If debug is enabled, also outputs to console.
      * @param {string} message
-     * @return {void}
+     * @returns {void}
      */
     chat(message) {
         this.bot.chat(message);
@@ -87,7 +87,7 @@ const RGBot = class {
      * This is similar to the standard JavaScript setTimeout function but runs on the physics timer of the Bot specifically.
      * This is useful for waiting on the server to update a Block or spawn drops when you break a Block.
      * @param {number} ticks - the number of in-game ticks to wait
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async wait(ticks) {
         await this.bot.waitForTicks(ticks);
@@ -98,7 +98,7 @@ const RGBot = class {
      * Points are calculated on the X and Z axes
      * @param {number} minDistance=10
      * @param {number} maxDistance=10
-     * @return {Promise<boolean>} - true if the Bot successfully reached its wander goal, else false
+     * @returns {Promise<boolean>} - true if the Bot successfully reached its wander goal, else false
      */
     async wander(minDistance = 10, maxDistance = 10) {
         if (minDistance < 1) {
@@ -125,7 +125,7 @@ const RGBot = class {
      * @param {object} [options] - optional parameters
      * @param {string} [options.targetName=null] - target a specific type of Entity. If not specified, then may return an Entity of any type.
      * @param {boolean} [options.attackable=false] - only return entities that can be attacked
-     * @return {Entity | null} - the nearest Entity matching the search criteria, or null if no matching Entity can be found.
+     * @returns {Entity | null} - the nearest Entity matching the search criteria, or null if no matching Entity can be found.
      */
     findEntity(options = {}) {
         const targetName = options.targetName || null;
@@ -153,7 +153,7 @@ const RGBot = class {
     /**
      * Accepts an Entity and returns the displayName of the Entity, or its name if it has no displayName.
      * @param {Entity} entity
-     * @return {string | undefined}
+     * @returns {string | undefined}
      */
     getEntityName(entity) {
         if (entity.objectType === "Item" && entity.onGround) {
@@ -172,7 +172,7 @@ const RGBot = class {
      * Accepts the name of an Item and returns the corresponding Entity definition for the Item.
      * If the Item isn't defined in minecraft's data, returns null instead.
      * @param {string} itemName
-     * @return {Item | null} - the Item's definition (<i>not</i> an Item instance)
+     * @returns {Item | null} - the Item's definition (<i>not</i> an Item instance)
      */
     getItemDefinitionByName(itemName) {
         try {
@@ -187,7 +187,7 @@ const RGBot = class {
      * Accepts the id of an Item and returns the corresponding Entity definition for the Item.
      * If the Item isn't defined in minecraft's data, returns null instead.
      * @param {number} itemId - the item's numerical id
-     * @return {Item | null} - the Item's definition (<i>not</i> an Item instance)
+     * @returns {Item | null} - the Item's definition (<i>not</i> an Item instance)
      */
     getItemDefinitionById(itemId) {
         try {
@@ -204,7 +204,7 @@ const RGBot = class {
      * @param {Entity} entity
      * @param {object} [options] - optional parameters
      * @param {boolean} [options.partialMatch=false] - Allow partial matches. For example, 'planks' will match any Entity containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.).
-     * @return {boolean}
+     * @returns {boolean}
      */
     entityNamesMatch(targetName, entity, options = {}) {
         const partialMatch = options.partialMatch || false;
@@ -219,7 +219,7 @@ const RGBot = class {
      * @param {Entity} entity - the Entity to approach
      * @param {object} [options] - optional parameters
      * @param {number} [options.maxDistance=1] - the max distance the Bot may stand from its target
-     * @return {Promise<boolean>} - true if the Bot successfully reaches the Entity, else false
+     * @returns {Promise<boolean>} - true if the Bot successfully reaches the Entity, else false
      */
     async approachEntity(entity, options = {}) {
         const maxDistance = options.maxDistance || 1;
@@ -243,7 +243,7 @@ const RGBot = class {
      * @param {Entity} entity - the Entity to follow
      * @param {object} [options} - optional parameters
      * @param {number} [options.maxDistance=2] - the max distance the Bot may be from its target
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async followEntity(entity, options = {}) {
         const maxDistance = options.maxDistance || 2;
@@ -262,7 +262,7 @@ const RGBot = class {
      * @param {Entity} entity - the Entity to avoid
      * @param {object} [options]- optional parameters
      * @param {number} [options.minDistance=5] - the minimum distance the Bot must remain from its target
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async avoidEntity(entity, options = {}) {
         const minDistance = options.minDistance || 5;
@@ -280,7 +280,7 @@ const RGBot = class {
      * The Bot will attack the given Entity one time.
      * This <i>will not</i> move the Bot towards its target: calling {@link `followEntity`} is recommended for staying within attack range of the target as it moves.
      * @param {Entity} entity
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async attackEntity(entity) {
         if (!entity) {
@@ -303,7 +303,7 @@ const RGBot = class {
      * @param {boolean} [options.onlyFindTopBlocks=false]  - will not return any blocks that are beneath another block
      * @param {number} [options.maxDistance=50] - entities beyond this distance from the Bot will not be found
      * @param {boolean} [options.skipClosest=false] - will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it.
-     * @return {Block | null}
+     * @returns {Block | null}
      */
     findBlock(blockType, options = {}) {
         const partialMatch = options.partialMatch || false;
@@ -359,7 +359,7 @@ const RGBot = class {
      * @param {function} pathFunc- a function utilizing pathfinder to move the Bot
      * @param {object} [options] - optional parameters
      * @param {number} [options.interval=5000] - how long in ms a Bot must be inactive to be considered 'stuck'
-     * @return {Promise<boolean>} - true if pathing completes, or false if pathing is cancelled or otherwise interrupted
+     * @returns {Promise<boolean>} - true if pathing completes, or false if pathing is cancelled or otherwise interrupted
      */
     async handlePath(pathFunc, options = {}) {
         const interval = options.interval || 5000;
@@ -397,7 +397,7 @@ const RGBot = class {
      * @param {Block} block - the Block instance to approach
      * @param {object} [options] - optional parameters
      * @param {number} [options.reach=5]
-     * @return {Promise<boolean>} - true if pathing was successfully completed or false if pathing could not be completed
+     * @returns {Promise<boolean>} - true if pathing was successfully completed or false if pathing could not be completed
      */
     async approachBlock(block, options = {}) {
         const reach = options.reach || 5;
@@ -419,7 +419,7 @@ const RGBot = class {
      * @param {object} [options] - optional parameters
      * @param {Vec3} [options.faceVector=Vec3(0, 1, 0)] - the face of the targetBlock to place the new block against. (Ex. Vec3(0, 1, 0) represents the topmost face of the targetBlock)
      * @param {number} [options.reach=5] - the maximum distance the Bot may be from the Block while placing it
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async placeBlock(blockName, targetBlock, options = {}) {
         const faceVector = options.faceVector || new Vec3(0, 1, 0);
@@ -448,7 +448,7 @@ const RGBot = class {
     /**
      * Equip the best tool for harvesting the specified Block.
      * @param {Block} block - a harvestable Block instance
-     * @return {Promise<Item | null>} - the tool that was equipped or null if the Bot did not have the tool in its inventory
+     * @returns {Promise<Item | null>} - the tool that was equipped or null if the Bot did not have the tool in its inventory
      */
     async equipBestHarvestTool(block) {
         const bestHarvestTool = this.bot.pathfinder.bestHarvestTool(block);
@@ -467,7 +467,7 @@ const RGBot = class {
      * Dig the given Block.
      * This will equip the most appropriate tool in the Bot's inventory for this Block type.
      * @param {Block} block - the Block instance to dig
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async digBlock(block) {
         if (!block) {
@@ -501,7 +501,7 @@ const RGBot = class {
      * @param {boolean} [options.onlyFindTopBlocks=false] - will not attempt to dig any Blocks that are beneath another Block
      * @param {number} [options.maxDistance=50] - Blocks further than this distance from the Bot will not be found
      * @param {boolean} [options.skipClosest=false] - will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it
-     * @return {Promise<boolean>} - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted
+     * @returns {Promise<boolean>} - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted
      */
     async findAndDigBlock(blockType, options = {}) {
         const partialMatch = options.partialMatch || false;
@@ -544,7 +544,7 @@ const RGBot = class {
      * @param {string} [options.itemName=null] - find only Items with this name
      * @param {boolean} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
      * @param {number} [options.maxDistance=50] - only find Items up to this distance from the Bot
-     * @return {Item[]} - the list of Items found on the ground (can be empty)
+     * @returns {Item[]} - the list of Items found on the ground (can be empty)
      */
     findItemsOnGround(options = {}) {
         const itemName = options.itemName || null;
@@ -568,7 +568,7 @@ const RGBot = class {
      * @param {string} [options.itemName=null] - find and collect only Items with this name
      * @param {boolean} [options.partialMatch=false] - if itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.).
      * @param {number} [options.maxDistance=50] - only find and collect Items up to this distance from the Bot
-     * @return {Promise<Item[]>} - a list of Item definitions for each Item collected from the ground (can be empty)
+     * @returns {Promise<Item[]>} - a list of Item definitions for each Item collected from the ground (can be empty)
      */
     async findAndCollectItemsOnGround(options = {}) {
         const itemName = options.itemName || null;
@@ -600,7 +600,7 @@ const RGBot = class {
      * @param {string} itemName
      * @param {object} [options] - optional parameters
      * @param {number} [options.maxDistance=30]
-     * @return {Item | null}
+     * @returns {Item | null}
      */
     findItemOnGround(itemName, options = {}) {
         const maxDistance = options.maxDistance || 30;
@@ -622,7 +622,7 @@ const RGBot = class {
      * @param {object} [options] - optional parameters
      * @param {boolean} [options.partialMatch=false] - drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.).
      * @param {number} [options.quantity=1] - the quantity of this Item to drop. To drop all, use -1 or call `dropAllInventoryItem` instead.
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async dropInventoryItem(itemName, options = {}) {
         const partialMatch = options.partialMatch || false;
@@ -666,7 +666,7 @@ const RGBot = class {
      *
      * Alias for `dropInventoryItem(itemName, {quantity: -1})`
      * @param {string} itemName
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async dropAllInventoryItem(itemName) {
         await this.dropInventoryItem(itemName, { quantity: -1 });
@@ -677,7 +677,7 @@ const RGBot = class {
      * @param {string} itemName
      * @param {object} [options] - optional parameters
      * @param {boolean} [options.partialMatch=false] - count any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all be included in the quantity for itemName 'axe').
-     * @return {int}
+     * @returns {int}
      */
     getInventoryItemQuantity(itemName, options = {}) {
         const partialMatch = options.partialMatch || false;
@@ -700,7 +700,7 @@ const RGBot = class {
      * @param {object} [options] - optional parameters
      * @param {boolean} [options.partialMatch=false] - check for any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe')
      * @param {number} [options.quantity=1]
-     * @return {boolean}
+     * @returns {boolean}
      */
     inventoryContainsItem(itemName, options = {}) {
         const partialMatch = options.partialMatch || false;
@@ -719,7 +719,7 @@ const RGBot = class {
      * @param {object} [options] - optional parameters
      * @param {number} [options.quantity=1] - the number of times to craft this Item. Note: this is NOT the total quantity that should be crafted (Ex. `craftItem('stick', 4)` will result in 16 sticks rather than 4)
      * @param {Block} [options.craftingTable=null] - for recipes that require a crafting table/station. A Block Entity representing the appropriate station within reach of the Bot.
-     * @return {Promise<Item | null>} - the crafted Item or null if crafting failed
+     * @returns {Promise<Item | null>} - the crafted Item or null if crafting failed
      */
     async craftItem(itemName, options = {}) {
         const quantity = options.quantity || 1;
@@ -746,7 +746,7 @@ const RGBot = class {
     /**
      * Equips an Item to the Bot's hand. The Bot must have the Item in its inventory to hold it.
      * @param {string} itemName
-     * @return {Promise<Item | null>} - the held Item or null if the Bot was unable to equip the Item
+     * @returns {Promise<Item | null>} - the held Item or null if the Bot was unable to equip the Item
      */
     async holdItem(itemName) {
         const item = this.getItemDefinitionByName(itemName);
@@ -758,6 +758,123 @@ const RGBot = class {
         else {
             console.error(`Equip failed: inventory does not contain ${itemName}`);
             return null;
+        }
+    }
+
+    /**
+     * Returns the contents of an open container.
+     * If multiple stacks of the same Item are present in the container, they will not be collapsed in the result.
+     * @param {Window} containerWindow - the open container Window to withdraw items from
+     * @returns {Item[]} - the list of Items present in the container. Can be empty.
+     */
+    async getContainerContents(containerWindow, options = {}) {
+        let result = [];
+        if (!containerWindow) {
+            console.error(`getContainerContents: containerEntity was null or undefined`);
+        } else if (containerWindow.slots) {
+            for(const slot of containerWindow.slots) {
+                if(slot) {
+                    result.push(slot);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Withdraws one or more items from a container.
+     * @param {Window} containerWindow - the open container Window to withdraw items from
+     * @param {object} [options] - optional parameters
+     * @param {string} [options.itemName=null] - an Item to withdraw from the container. If not specified, will withdraw all Items.
+     * @param {boolean} [options.partialMatch=false] - Allow partial matches to itemName. For example, 'planks' will match any Item containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.).
+     * @param {number} [options.quantity=null] - if itemName is specified, withdraw up to this quantity.
+     * @returns {Promise<void>}
+     */
+    async withdrawItems(containerWindow, options = {}) {
+        const itemName = options.itemName || null;
+        const partialMatch = options.partialMatch || false;
+        const quantity = options.quantity || null;
+
+        if (!containerWindow) {
+            console.error(`withdrawItems: containerEntity was null or undefined`);
+        } else if (!containerWindow.slots) {
+            console.error(`withdrawItems: containerEntity is empty`);
+        }
+        else {
+            let quantityCollected = 0;
+
+            // The first 27 slots in this window should belong to the chest.
+            // The following 27 slots are the bot's inventory, and the last 9 are the bot's hotbar.
+            for (let i = 0; i < 27; i++) {
+                const slot = containerWindow.slots[i];
+                if(slot && (!itemName || this.entityNamesMatch(itemName, slot, {partialMatch}))) {
+                    if(quantity == null) {
+                        // if no quantity specified, grab the entire stack
+                        await containerWindow.withdraw(slot.type, null, slot.count);
+                        quantityCollected += slot.count;
+                    }
+                    else
+                    {
+                        // otherwise, figure out how many we still need to withdraw
+                        // don't withdraw more than quantity
+                        let amountToWithdraw = quantity - quantityCollected;
+                        if(amountToWithdraw > 0) {
+                            amountToWithdraw = slot.count > amountToWithdraw ? amountToWithdraw : slot.count;
+                            await containerWindow.withdraw(slot.type, null, amountToWithdraw);
+                            quantityCollected += amountToWithdraw;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Deposits one or more items into a container.
+     * @param {Window} containerWindow - the open container Window to deposit items into
+     * @param {object} [options] - optional parameters
+     * @param {string} [options.itemName=null] - an Item to deposit into the container. If not specified, will deposit all Items.
+     * @param {boolean} [options.partialMatch=false] - Allow partial matches to itemName. For example, 'planks' will match any Item containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.).
+     * @param {number} [options.quantity=null] - if itemName is specified, deposit up to this quantity.
+     * @returns {Promise<void>}
+     */
+    async depositItems(containerWindow, options = {}) {
+        const itemName = options.itemName || null;
+        const partialMatch = options.partialMatch || false;
+        const quantity = options.quantity || null;
+
+        if(!containerWindow) {
+            console.error(`depositItems: containerEntity was null or undefined`);
+        }
+        else {
+            let quantityDeposited = 0;
+
+            // mineflayer has a known bug (almost 8 years old...) where the game updates inventory correctly
+            // but mineflayer's internal bot.inventory state is not updated when a Window is open... so we need to
+            // iterate over the actual window slots, we CANNOT rely on bot.inventory for this.
+            // The first 27 slots in this window should belong to the chest.
+            // The following 27 slots are the bot's inventory, and the last 9 are the bot's hotbar.
+            for (let i = 26; i < 63; i++) {
+                const slot = containerWindow.slots[i];
+                if(slot && (!itemName || this.entityNamesMatch(itemName, slot, {partialMatch}))) {
+                    if(quantity == null) {
+                        // if no quantity specified, deposit the entire stack
+                        await containerWindow.deposit(slot.type, null, slot.count);
+                        quantityDeposited += slot.count;
+                    }
+                    else
+                    {
+                        // otherwise, figure out how many we still need to deposit
+                        // don't deposit more than quantity
+                        let amountToDeposit = quantity - quantityDeposited;
+                        if(amountToDeposit > 0) {
+                            amountToDeposit = slot.count > amountToDeposit ? amountToDeposit : slot.count;
+                            await containerWindow.deposit(slot.type, null, amountToDeposit);
+                            quantityDeposited += amountToDeposit;
+                        }
+                    }
+                }
+            }
         }
     }
 
