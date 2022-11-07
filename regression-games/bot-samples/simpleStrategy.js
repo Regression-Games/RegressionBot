@@ -1,5 +1,5 @@
 // This strategy is the simplest example of how to get started with the RGBot.
-// The Bot will run around and gathers Poppies until it has 4 in its inventory.
+// The Bot will run around and gather Poppies until it has 4 in its inventory.
 function simpleStrategy(rg, bot) {
 
     // This is our main loop. The Bot will invoke this on spawn.
@@ -19,7 +19,7 @@ function simpleStrategy(rg, bot) {
             }
             else {
                 // If the Bot couldn't find a poppy
-                // or failed to collect one it did find,
+                // or failed to collect one that it did find,
                 // then have it wander around before trying to find another
                 await rg.wander();
             }
