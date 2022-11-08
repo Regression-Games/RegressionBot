@@ -28,7 +28,7 @@ looting from and depositing into chests, and initiating combat.
 ### Usage within Regression Games
 
 The Regression Games platform requires an `index.js` file with an exported `configureBot` method which acts as an entrypoint into your bot script.
-When a match is started through the Regression Games platform, Regression Games creates and configures a `mineflayer.Bot` 
+When a match is started through the Regression Games platform, Regression Games creates and configures a mineflayer `Bot` 
 instance for the player and passes it to the `configureBot` method.
 
 Example:
@@ -37,7 +37,7 @@ Example:
 const mineflayer = require('mineflayer');
 const RGBot = require('rg-bot').RGBot;
 
-// bot is a mineflayer.Bot instance
+// bot is a mineflayer Bot instance
 function configureBot(bot) {
 
     // RGBot interacts directly with your mineflayer Bot instance 
@@ -70,7 +70,7 @@ exports.configureBot = configureBot;
 
 While `rg-bot` is primarily developed to support the Regression Games platform, it can also be integrated into 
 non-Regression-Games projects. Usage in unaffiliated projects is nearly identical to [Usage within Regression Games](#usage-within-regression-games)
-with the distinction that you must instantiate and configure your own mineflayer.Bot before instantiating an RGBot.
+with the distinction that you must instantiate and configure your own mineflayer `Bot` before instantiating an RGBot.
 
 Example:
 
