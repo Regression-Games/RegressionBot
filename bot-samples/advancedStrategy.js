@@ -42,7 +42,7 @@ function advancedStrategy(rg, bot) {
     bot.on('playerCollect', async (collector, collected) => {
         const itemName = rg.getEntityName(collected).toLowerCase();
         if (collector.username === bot.username && (itemName.includes('log') || itemName === 'apple')) {
-            rg.chat(`I collected a ${itemName}`);
+            rg.chat(`I collected a(n) ${itemName}`);
         }
     });
 
@@ -87,11 +87,10 @@ function advancedStrategy(rg, bot) {
     }
 
     // This method gathers enough wood to craft two axes
-    // (crafting two at once is more efficient than waiting for the first to break before we craft the second)
+    // (crafting two at once is more efficient than waiting for the first to break before crafting the second)
     async function craftAxes() {
 
-        // If the Bot doesn't have all the materials it needs to craft two axes,
-        // then gather them now.
+        // If the Bot doesn't have all the materials it needs to craft two axes, then gather them now.
         await craftTable();
         await craftSticks();
         await craftPlanks();
@@ -124,8 +123,8 @@ function advancedStrategy(rg, bot) {
             await gatherLog();
         }
 
-        // Once we have 100 points, announce it in the chat
-        rg.chat(`I reach my goal! I have ${logsCollected} logs and ${applesCollected} apples`);
+        // Once the Bot has 100 points, announce it in the chat
+        rg.chat(`I reached my goal! I have ${logsCollected} logs and ${applesCollected} apples`);
     });
 
 }
