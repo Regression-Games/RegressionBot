@@ -39,7 +39,7 @@ const bot = mineflayer.createBot({username: 'Bot'});
 const rg = new RGBot(bot);
 rg.setDebug(true);
 
-// announce in chat when Bot spawns
+// announce in chat when the Bot spawns
 bot.on('spawn', function() {
     rg.chat('Hello World');
 })
