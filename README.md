@@ -62,11 +62,3 @@ bot.on('chat', async function (username, message) {
 
 Have a question or want to discuss improvements and new ideas? 
 Contact us through the [Regression Games Discord Server](https://discord.com/invite/925SYVse2H).
-
-
-
-
-
-
-
-
