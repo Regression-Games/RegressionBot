@@ -27,7 +27,7 @@ looting from and depositing into chests, and initiating combat.
 
 ### Usage within Regression Games
 
-The Regression Games platform requires a `configureBot` method as an entrypoint into your bot script.
+The Regression Games platform requires an `index.js` file with an exported `configureBot` method which acts as an entrypoint into your bot script.
 When a match is started through the Regression Games platform, Regression Games creates and configures a `mineflayer.Bot` 
 instance for the player and passes it to the `configureBot` method.
 
