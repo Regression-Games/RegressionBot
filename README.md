@@ -1,10 +1,14 @@
 # Regression Bot
 
 A stable and user-friendly JavaScript library for creating Bots in a variety of games. 
-This library is created and maintained by [Regression Games](https://www.regression.gg)
-and is intended for use in conjunction with our [AI platform](https://medium.com/blockchain-biz/announcing-regression-games-4-2m-seed-round-for-ai-gaming-nea-a16z-b12025a83e95).
-The Regression Games alpha currently supports Minecraft.
 
+
+This library was originally created by [Regression Games](https://www.regression.gg) for use in conjunction with our 
+[AI platform](https://medium.com/blockchain-biz/announcing-regression-games-4-2m-seed-round-for-ai-gaming-nea-a16z-b12025a83e95),
+but can easily be integrated into your own projects.
+
+Regression Games is currently in its alpha stage and supports Minecraft. Support for other games will be added
+over time.
 
 ## Install
 
@@ -54,6 +58,10 @@ bot.on('chat', async function (username, message) {
 
 ```
 
+## Join us on Discord!
+
+Have a question or want to discuss improvements and new ideas? 
+Contact us through the [Regression Games Discord Server](https://discord.com/invite/925SYVse2H).
 
 
 
