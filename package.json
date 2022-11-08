@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A library allowing users to easily design and control Regression Games bots in a variety of games",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Regression-Games/RegressionBot.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
