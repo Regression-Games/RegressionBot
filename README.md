@@ -1,4 +1,4 @@
-# Regression Bot
+# Regression Games Bot
 
 A stable and user-friendly JavaScript library for creating Bots in a variety of games. 
 
