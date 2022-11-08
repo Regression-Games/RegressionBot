@@ -12,7 +12,7 @@ over time.
 
 ## Install
 
-```node
+```
 npm install rg-bot
 ```
 
@@ -103,6 +103,13 @@ bot.on('chat', async function (username, message) {
     }
 })
 ```
+
+### Additional Examples
+
+For more examples to help you get started with the `rg-bot` package, see these templates from Regression Games:
+* [Simple Example](https://github.com/Regression-Games/SimpleBotTemplate)
+* [Intermediate Example](https://github.com/Regression-Games/IntermediateBotTemplate)
+* [Advanced Example](https://github.com/Regression-Games/AdvancedBotTemplate)
 
 ## Join us on Discord!
 
