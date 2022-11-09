@@ -1,6 +1,6 @@
 {
   "name": "rg-bot",
-  "version": "2.0.0",
+  "version": "1.0.1",
   "description": "A library allowing users to easily design and control Regression Games bots in a variety of games",
   "main": "index.js",
   "repository": {
