@@ -18,46 +18,43 @@ npm install rg-bot
 
 ## Minecraft
 
-Regression Games uses the [Mineflayer API](https://github.com/PrismarineJS/mineflayer) and 
-[Mineflayer-Pathfinder](https://github.com/PrismarineJS/mineflayer-pathfinder) plugin to interact with Minecraft's API. 
+Regression Games uses the [Mineflayer API](https://github.com/PrismarineJS/mineflayer) to interact with Minecraft's API, 
+and the [Mineflayer-Pathfinder](https://github.com/PrismarineJS/mineflayer-pathfinder) plugin to handle complex movements. 
 
-To get started with `rg-bot`, instantiate a new RGBot from a Mineflayer Bot instance. RGBot automatically loads the pathfinder plugin to handle
-complex movements. From here, RGBot offers a range of methods for interacting with the Minecraft world including placing and breaking Blocks,
+RGBot offers a range of methods for interacting with the Minecraft world including placing and breaking Blocks,
 looting from and depositing into chests, and initiating combat.
 
 ### Usage within Regression Games
 
 The Regression Games platform requires an `index.js` file with an exported `configureBot` method which acts as an entrypoint into your bot script.
-When a match is started through the Regression Games platform, Regression Games creates and configures a mineflayer `Bot` 
-instance for the player and passes it to the `configureBot` method.
+When a match is started through the Regression Games platform, an `RGBot` is created and configured for the player and passed to the `configureBot` method.
 
 Example:
 
 ```javascript
-const mineflayer = require('mineflayer');
-const RGBot = require('rg-bot').RGBot;
-
-// bot is a mineflayer Bot instance
+/**
+ * @param {RGBot} bot
+ */
 function configureBot(bot) {
 
-    // RGBot interacts directly with your mineflayer Bot instance 
-    const rg = new RGBot(bot);
-    rg.setDebug(true);
+    // turn on debug logging 
+    // logs are displayed within the Regression Games app during a match
+    bot.setDebug(true);
 
     // announce in chat when Bot spawns
     bot.on('spawn', function() {
-        rg.chat('Hello World');
+        bot.chat('Hello World');
     })
 
     // use in-game chat to make the Bot collect or drop wood for you
     bot.on('chat', async function (username, message) {
-        if(username === bot.username) return
+        if(username === bot.mineflayer().username) return
 
         if(message === 'collect wood') {
-            await rg.findAndDigBlock('log', {partialMatch: true});
+            await bot.findAndDigBlock('log', {partialMatch: true});
         }
         else if (message === 'drop wood') {
-            await rg.dropInventoryItem('log', {partialMatch: true, quantity: 1});
+            await bot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
         }
     })
 
@@ -70,7 +67,7 @@ exports.configureBot = configureBot;
 
 While `rg-bot` is primarily developed to support the Regression Games platform, it can also be integrated into 
 non-Regression-Games projects. Usage in unaffiliated projects is nearly identical to [Usage within Regression Games](#usage-within-regression-games)
-with the distinction that you must instantiate and configure your own mineflayer `Bot` before instantiating an RGBot.
+with the distinction that you must instantiate and configure your own mineflayer `Bot` and `RGBot`.
 
 Example:
 
@@ -82,18 +79,19 @@ const RGBot = require('rg-bot').RGBot;
 // create mineflayer bot
 const bot = mineflayer.createBot({username: 'Bot'});
 
+// create an RGBot
 // RGBot interacts directly with your mineflayer Bot instance
 const rg = new RGBot(bot);
 rg.setDebug(true);
 
-// announce in chat when the Bot spawns
+// you can invoke methods from both the mineflayer Bot and RGBot
 bot.on('spawn', function() {
     rg.chat('Hello World');
 })
 
-// use in-game chat to make the Bot collect or drop wood for you
-bot.on('chat', async function (username, message) {
-    if(username === bot.username) return
+// or you can can choose to make calls to mineflayer through the RGBot for consistency
+rg.mineflayer().on('chat', async function (username, message) {
+    if(username === rg.mineflayer().username) return
     
     if(message === 'collect wood') {
         await rg.findAndDigBlock('log', {partialMatch: true});
