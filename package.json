@@ -8,7 +8,10 @@
     "url": "https://github.com/Regression-Games/RegressionBot.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "jsdoc2md lib/*.js --plugin dmd-readable > docs/api.md",
+    "docs-list": "jsdoc2md lib/*.js --plugin dmd-readable --param-list-format list > docs/api.md"
   },
   "author": "Regression Games, Inc",
   "license": "ISC",
@@ -23,5 +26,10 @@
     "prismarine-viewer": "^1.23.0",
     "rg-match-info": "^1.0.0",
     "vec3": "^0.1.7"
+  },
+  "devDependencies": {
+    "dmd-readable": "^1.2.4",
+    "husky": "^8.0.2",
+    "jsdoc-to-markdown": "^8.0.0"
   }
 }
