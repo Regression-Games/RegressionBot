@@ -111,6 +111,10 @@ rgBot.mineflayer().username
 | event | <code>string</code> | The event to listen for |
 | func | <code>function</code> | Function that is invoked when event fires |
 
+**Example** *(Reacting to the spawn event)*  
+```js
+rgBot.on('spawn', () => { rgBot.chat('Hello World!') })
+```
 
 <br><a name="RGBot+allowParkour"></a>
 
@@ -174,6 +178,11 @@ rgBot.mineflayer().username
 | --- | --- | --- |
 | position | <code>Vec3</code> | A Vec3 object representing the position of some Entity |
 
+**Example**  
+```js
+// returns "15.0, 63, -22.2"
+rgBot.vecToString(new Vec(15.0, 63, -22.2))
+```
 
 <br><a name="RGBot+vecFromString"></a>
 
@@ -187,6 +196,11 @@ rgBot.mineflayer().username
 | --- | --- |
 | positionString | <code>string</code> | 
 
+**Example**  
+```js
+// returns new Vec(15.0, 63, -22.2)
+rgBot.vecFromString("15.0, 63, -22.2")
+```
 
 <br><a name="RGBot+getEntityName"></a>
 
@@ -198,6 +212,24 @@ rgBot.mineflayer().username
 | --- | --- |
 | entity | <code>Entity</code>, <code>Block</code>, <code>Item</code> | 
 
+**Example**  
+```js
+// entity -> {name: "ender_dragon", displayName: "Ender Dragon"}
+// returns "Ender Dragon"
+rgBot.getEntityName(entity)
+```
+**Example**  
+```js
+// entity -> {name: "cocoa_beans", displayName: undefined}
+// returns "cocoa_beans"
+rgBot.getEntityName(entity)
+```
+**Example**  
+```js
+// entity -> {name: undefined, displayName: undefined}
+// returns undefined
+rgBot.getEntityName(entity)
+```
 
 <br><a name="RGBot+getItemDefinitionByName"></a>
 
@@ -207,10 +239,15 @@ rgBot.mineflayer().username
 
 **Returns**: <code>Item</code> \| <code>null</code> - The Item's definition (<i>not</i> an Item instance)  
 
-| Param | Type |
-| --- | --- |
-| itemName | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| itemName | <code>string</code> | The name of the Item to lookup (<i>not</i> its display name) |
 
+**Example**  
+```js
+// returns {"id":102,"displayName":"Spruce Log","name":"spruce_log","stackSize":64}
+rgBot.getItemDefinitionByName('spruce_log')
+```
 
 <br><a name="RGBot+getItemDefinitionById"></a>
 
@@ -222,8 +259,13 @@ rgBot.mineflayer().username
 
 | Param | Type | Description |
 | --- | --- | --- |
-| itemId | <code>number</code> | The item's numerical id |
+| itemId | <code>number</code> | The item's unique numerical id |
 
+**Example**  
+```js
+// returns {"id":102,"displayName":"Spruce Log","name":"spruce_log","stackSize":64}
+rgBot.getItemDefinitionByName(102)
+```
 
 <br><a name="RGBot+entityNamesMatch"></a>
 
@@ -238,14 +280,25 @@ rgBot.mineflayer().username
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches. For example, 'planks' will match any Entity containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.) |
 
+**Example** *(Full Match)*  
+```js
+const entity = rg.getItemDefinitionByName('iron_axe')
+rgBot.entityNamesMatch('iron_axe', entity) // returns true
+rgBot.entityNamesMatch('Iron Axe', entity) // returns true
+```
+**Example** *(Partial Match)*  
+```js
+const entity = rg.getItemDefinitionByName('iron_axe')
+rgBot.entityNamesMatch('axe', entity, {partialMatch: true}) // returns true
+```
 
 <br><a name="RGBot+handlePath"></a>
 
 ### rgBot.handlePath(pathFunc, options) ⇒ <code>Promise.&lt;boolean&gt;</code>
-> Attempt pathfinding. If the Bot becomes 'stuck' then cancel pathfinding.
+> Attempt pathfinding using a custom goal. If the Bot becomes 'stuck' then cancel pathfinding.
 > The Bot is considered 'stuck' if it fails to move or perform mining/building actions during a specified interval.
 
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if pathing completes, or false if pathing is cancelled or otherwise interrupted  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if pathing completes, or false if pathing is cancelled or is otherwise interrupted  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -253,6 +306,13 @@ rgBot.mineflayer().username
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.interval] | <code>number</code> | <code>5000</code> | How long in ms a Bot must be inactive to be considered 'stuck' |
 
+**Example**  
+```js
+const goal = new GoalNear(entity.position.x, entity.position.y, entity.position.z, reach);
+const success = await rgBot.handlePath(async () => {
+ await rgBot.mineflayer().pathfinder.goto(goal);
+});
+```
 
 <br><a name="RGBot+findEntity"></a>
 
@@ -269,6 +329,10 @@ rgBot.mineflayer().username
 | [options.targetName] | <code>string</code> |  | Target a specific type of Entity. If not specified, then may return an Entity of any type |
 | [options.attackable] | <code>boolean</code> | <code>false</code> | Only return entities that can be attacked |
 
+**Example** *(Locate the nearest chicken)*  
+```js
+rgBot.findEntity({targetName: "chicken"})
+```
 
 <br><a name="RGBot+approachEntity"></a>
 
