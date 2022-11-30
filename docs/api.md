@@ -596,7 +596,7 @@ rgBot.mineflayer().username
 | --- | --- | --- | --- |
 | containerWindow | <code>Window</code> |  | The open container Window to deposit items into |
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemName] | <code>string</code> | <code>null</code> | An Item to deposit into the container. If not specified, will deposit all Items. |
+| [options.itemName] | <code>string</code>, <code>null</code> | <code>null</code> | An Item to deposit into the container. If not specified, will deposit all Items. |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches to itemName. For example, 'planks' will match any Item containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.). |
-| [options.quantity] | <code>number</code> | <code></code> | If itemName is specified, deposit up to this quantity. |
+| [options.quantity] | <code>number</code>, <code>null</code> | <code></code> | If itemName is specified, deposit up to this quantity. |
 
