@@ -36,44 +36,55 @@
 
 
 * [RGBot](#RGBot)
-    * [.mineflayer()](#RGBot+mineflayer) ⇒ <code>Bot</code>
     * [.setDebug(debug)](#RGBot+setDebug) ⇒ <code>void</code>
+    * [.mineflayer()](#RGBot+mineflayer) ⇒ <code>Bot</code>
+    * [.on(event, func)](#RGBot+on) ⇒ <code>void</code>
     * [.allowParkour(allowParkour)](#RGBot+allowParkour) ⇒ <code>void</code>
     * [.allowDigWhilePathing(allowDig)](#RGBot+allowDigWhilePathing) ⇒ <code>void</code>
-    * [.on(event, func)](#RGBot+on) ⇒ <code>void</code>
     * [.chat(message)](#RGBot+chat) ⇒ <code>void</code>
     * [.wait(ticks)](#RGBot+wait) ⇒ <code>Promise.&lt;void&gt;</code>
-    * [.wander(minDistance, maxDistance)](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * [.findEntity(options)](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
     * [.vecToString(position)](#RGBot+vecToString) ⇒ <code>string</code>
     * [.vecFromString(positionString)](#RGBot+vecFromString) ⇒ <code>Vec3</code> \| <code>null</code>
     * [.getEntityName(entity)](#RGBot+getEntityName) ⇒ <code>string</code> \| <code>undefined</code>
     * [.getItemDefinitionByName(itemName)](#RGBot+getItemDefinitionByName) ⇒ <code>Item</code> \| <code>null</code>
     * [.getItemDefinitionById(itemId)](#RGBot+getItemDefinitionById) ⇒ <code>Item</code> \| <code>null</code>
     * [.entityNamesMatch(targetName, entity, options)](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
+    * [.handlePath(pathFunc, options)](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.findEntity(options)](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
     * [.approachEntity(entity, options)](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.followEntity(entity, options)](#RGBot+followEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.avoidEntity(entity, options)](#RGBot+avoidEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.attackEntity(entity)](#RGBot+attackEntity) ⇒ <code>void</code>
+    * [.wander(minDistance, maxDistance)](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findBlock(blockType, options)](#RGBot+findBlock) ⇒ <code>Block</code> \| <code>null</code>
-    * [.handlePath(pathFunc, options)](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.approachBlock(block, options)](#RGBot+approachBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.placeBlock(blockName, targetBlock, options)](#RGBot+placeBlock) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.equipBestHarvestTool(block)](#RGBot+equipBestHarvestTool) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.digBlock(block)](#RGBot+digBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findAndDigBlock(blockType, options)](#RGBot+findAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.findItemOnGround(itemName, options)](#RGBot+findItemOnGround) ⇒ <code>Item</code> \| <code>null</code>
     * [.findItemsOnGround(options)](#RGBot+findItemsOnGround) ⇒ <code>Array.&lt;Item&gt;</code>
     * [.findAndCollectItemsOnGround(options)](#RGBot+findAndCollectItemsOnGround) ⇒ <code>Promise.&lt;Array.&lt;Item&gt;&gt;</code>
-    * [.findItemOnGround(itemName, options)](#RGBot+findItemOnGround) ⇒ <code>Item</code> \| <code>null</code>
+    * [.inventoryContainsItem(itemName, options)](#RGBot+inventoryContainsItem) ⇒ <code>boolean</code>
+    * [.getInventoryItemQuantity(itemName, options)](#RGBot+getInventoryItemQuantity) ⇒ <code>int</code>
     * [.dropInventoryItem(itemName, options)](#RGBot+dropInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.dropAllInventoryItem(itemName, options)](#RGBot+dropAllInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
-    * [.getInventoryItemQuantity(itemName, options)](#RGBot+getInventoryItemQuantity) ⇒ <code>int</code>
-    * [.inventoryContainsItem(itemName, options)](#RGBot+inventoryContainsItem) ⇒ <code>boolean</code>
     * [.craftItem(itemName, options)](#RGBot+craftItem) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.holdItem(itemName)](#RGBot+holdItem) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.getContainerContents(containerWindow)](#RGBot+getContainerContents) ⇒ <code>Array.&lt;Item&gt;</code>
     * [.withdrawItems(containerWindow, options)](#RGBot+withdrawItems) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.depositItems(containerWindow, options)](#RGBot+depositItems) ⇒ <code>Promise.&lt;void&gt;</code>
+
+
+<br><a name="RGBot+setDebug"></a>
+
+### rgBot.setDebug(debug) ⇒ <code>void</code>
+> Enable or disable debug logs.
+
+
+| Param | Type |
+| --- | --- |
+| debug | <code>boolean</code> | 
 
 
 <br><a name="RGBot+mineflayer"></a>
@@ -89,15 +100,16 @@
 rgBot.mineflayer().username
 ```
 
-<br><a name="RGBot+setDebug"></a>
+<br><a name="RGBot+on"></a>
 
-### rgBot.setDebug(debug) ⇒ <code>void</code>
-> Enable or disable debug logs.
+### rgBot.on(event, func) ⇒ <code>void</code>
+> Listen for an event and invoke a function when it fires.
 
 
-| Param | Type |
-| --- | --- |
-| debug | <code>boolean</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>string</code> | The event to listen for |
+| func | <code>function</code> | Function that is invoked when event fires |
 
 
 <br><a name="RGBot+allowParkour"></a>
@@ -126,18 +138,6 @@ rgBot.mineflayer().username
 | allowDig | <code>boolean</code> | Whether the Bot is allowed to dig Blocks in order to remove obstacles that stand in the way of its destination |
 
 
-<br><a name="RGBot+on"></a>
-
-### rgBot.on(event, func) ⇒ <code>void</code>
-> Listen for an event and invoke a function when it fires.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>string</code> | The event to listen for |
-| func | <code>function</code> | Function that is invoked when event fires |
-
-
 <br><a name="RGBot+chat"></a>
 
 ### rgBot.chat(message) ⇒ <code>void</code>
@@ -161,36 +161,6 @@ rgBot.mineflayer().username
 | Param | Type | Description |
 | --- | --- | --- |
 | ticks | <code>number</code> | The number of in-game ticks to wait |
-
-
-<br><a name="RGBot+wander"></a>
-
-### rgBot.wander(minDistance, maxDistance) ⇒ <code>Promise.&lt;boolean&gt;</code>
-> Choose a random point within a minimum and maximum radius around the Bot and approach it.
-> Points are calculated on the X and Z axes.
-
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if the Bot successfully reached its wander goal, else false  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| minDistance | <code>number</code> | <code>10</code> | The minimum distance the point may be from the Bot |
-| maxDistance | <code>number</code> | <code>10</code> | The maximum distance the point may be from the Bot |
-
-
-<br><a name="RGBot+findEntity"></a>
-
-### rgBot.findEntity(options) ⇒ <code>Entity</code> \| <code>null</code>
-> <i><b>Experimental</b></i>
-> 
-> Find the nearest entity matching the search criteria.
-
-**Returns**: <code>Entity</code> \| <code>null</code> - The nearest Entity matching the search criteria, or null if no matching Entity can be found  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.targetName] | <code>string</code> | <code>null</code> | Target a specific type of Entity. If not specified, then may return an Entity of any type |
-| [options.attackable] | <code>boolean</code> | <code>false</code> | Only return entities that can be attacked |
 
 
 <br><a name="RGBot+vecToString"></a>
@@ -269,6 +239,37 @@ rgBot.mineflayer().username
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches. For example, 'planks' will match any Entity containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.) |
 
 
+<br><a name="RGBot+handlePath"></a>
+
+### rgBot.handlePath(pathFunc, options) ⇒ <code>Promise.&lt;boolean&gt;</code>
+> Attempt pathfinding. If the Bot becomes 'stuck' then cancel pathfinding.
+> The Bot is considered 'stuck' if it fails to move or perform mining/building actions during a specified interval.
+
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if pathing completes, or false if pathing is cancelled or otherwise interrupted  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| pathFunc | <code>function</code> |  | A function utilizing pathfinder to move the Bot |
+| options | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.interval] | <code>number</code> | <code>5000</code> | How long in ms a Bot must be inactive to be considered 'stuck' |
+
+
+<br><a name="RGBot+findEntity"></a>
+
+### rgBot.findEntity(options) ⇒ <code>Entity</code> \| <code>null</code>
+> <i><b>Experimental</b></i>
+> 
+> Find the nearest entity matching the search criteria.
+
+**Returns**: <code>Entity</code> \| <code>null</code> - The nearest Entity matching the search criteria, or null if no matching Entity can be found  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| options | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.targetName] | <code>string</code> |  | Target a specific type of Entity. If not specified, then may return an Entity of any type |
+| [options.attackable] | <code>boolean</code> | <code>false</code> | Only return entities that can be attacked |
+
+
 <br><a name="RGBot+approachEntity"></a>
 
 ### rgBot.approachEntity(entity, options) ⇒ <code>Promise.&lt;boolean&gt;</code>
@@ -327,6 +328,20 @@ rgBot.mineflayer().username
 | entity | <code>Entity</code> | 
 
 
+<br><a name="RGBot+wander"></a>
+
+### rgBot.wander(minDistance, maxDistance) ⇒ <code>Promise.&lt;boolean&gt;</code>
+> Choose a random point within a minimum and maximum radius around the Bot and approach it.
+> Points are calculated on the X and Z axes.
+
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if the Bot successfully reached its wander goal, else false  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| minDistance | <code>number</code> | <code>10</code> | The minimum distance the point may be from the Bot |
+| maxDistance | <code>number</code> | <code>10</code> | The maximum distance the point may be from the Bot |
+
+
 <br><a name="RGBot+findBlock"></a>
 
 ### rgBot.findBlock(blockType, options) ⇒ <code>Block</code> \| <code>null</code>
@@ -341,21 +356,6 @@ rgBot.mineflayer().username
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Will not return any blocks that are beneath another block |
 | [options.maxDistance] | <code>number</code> | <code>50</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
 | [options.skipClosest] | <code>boolean</code> | <code>false</code> | Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
-
-
-<br><a name="RGBot+handlePath"></a>
-
-### rgBot.handlePath(pathFunc, options) ⇒ <code>Promise.&lt;boolean&gt;</code>
-> Attempt pathfinding. If the Bot becomes 'stuck' then cancel pathfinding.
-> The Bot is considered 'stuck' if it fails to move or perform mining/building actions during a specified interval.
-
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if pathing completes, or false if pathing is cancelled or otherwise interrupted  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| pathFunc | <code>function</code> |  | A function utilizing pathfinder to move the Bot |
-| options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.interval] | <code>number</code> | <code>5000</code> | How long in ms a Bot must be inactive to be considered 'stuck' |
 
 
 <br><a name="RGBot+approachBlock"></a>
@@ -431,6 +431,20 @@ rgBot.mineflayer().username
 | [options.skipClosest] | <code>boolean</code> | <code>false</code> | Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
 
 
+<br><a name="RGBot+findItemOnGround"></a>
+
+### rgBot.findItemOnGround(itemName, options) ⇒ <code>Item</code> \| <code>null</code>
+> Locate the closest Item with the given name within a maximum distance from the Bot, or null if no matching Items are found.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| itemName | <code>string</code> |  |  |
+| options | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Locate any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
+| [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Items matching the search criteria up to and including this distance from the Bot |
+
+
 <br><a name="RGBot+findItemsOnGround"></a>
 
 ### rgBot.findItemsOnGround(options) ⇒ <code>Array.&lt;Item&gt;</code>
@@ -441,7 +455,7 @@ rgBot.mineflayer().username
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemName] | <code>string</code> | <code>null</code> | Find only Items with this name |
+| [options.itemName] | <code>string</code> |  | Find only Items with this name |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.) |
 | [options.maxDistance] | <code>number</code> | <code>50</code> | Find any Items matching the search criteria up to and including this distance from the Bot |
 
@@ -456,23 +470,36 @@ rgBot.mineflayer().username
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemName] | <code>string</code> | <code>null</code> | Find and collect only Items with this name |
+| [options.itemName] | <code>string</code> |  | Find and collect only Items with this name |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.). |
 | [options.maxDistance] | <code>number</code> | <code>50</code> | Find and collect any Items matching the search criteria up to and including this distance from the Bot |
 
 
-<br><a name="RGBot+findItemOnGround"></a>
+<br><a name="RGBot+inventoryContainsItem"></a>
 
-### rgBot.findItemOnGround(itemName, options) ⇒ <code>Item</code> \| <code>null</code>
-> Locate the closest Item with the given name within a maximum distance from the Bot, or null if no matching Items are found.
+### rgBot.inventoryContainsItem(itemName, options) ⇒ <code>boolean</code>
+> Returns true if the Bot has one or more of a specified Item in its inventory, or false if it does not.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | itemName | <code>string</code> |  |  |
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Locate any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
-| [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Items matching the search criteria up to and including this distance from the Bot |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Check for any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
+| [options.quantity] | <code>number</code> | <code>1</code> | The minimum amount of this Item the Bot must have |
+
+
+<br><a name="RGBot+getInventoryItemQuantity"></a>
+
+### rgBot.getInventoryItemQuantity(itemName, options) ⇒ <code>int</code>
+> Return how many of a specific item the Bot currently holds in its inventory.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| itemName | <code>string</code> |  |  |
+| options | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Count any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all be included in the quantity for itemName 'axe'). |
 
 
 <br><a name="RGBot+dropInventoryItem"></a>
@@ -503,33 +530,6 @@ rgBot.mineflayer().username
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
 
 
-<br><a name="RGBot+getInventoryItemQuantity"></a>
-
-### rgBot.getInventoryItemQuantity(itemName, options) ⇒ <code>int</code>
-> Return how many of a specific item the Bot currently holds in its inventory.
-
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| itemName | <code>string</code> |  |  |
-| options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Count any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all be included in the quantity for itemName 'axe'). |
-
-
-<br><a name="RGBot+inventoryContainsItem"></a>
-
-### rgBot.inventoryContainsItem(itemName, options) ⇒ <code>boolean</code>
-> Returns true if the Bot has one or more of a specified Item in its inventory, or false if it does not.
-
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| itemName | <code>string</code> |  |  |
-| options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Check for any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
-| [options.quantity] | <code>number</code> | <code>1</code> | The minimum amount of this Item the Bot must have |
-
-
 <br><a name="RGBot+craftItem"></a>
 
 ### rgBot.craftItem(itemName, options) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
@@ -543,7 +543,7 @@ rgBot.mineflayer().username
 | itemName | <code>string</code> |  | The Item to craft |
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.quantity] | <code>number</code> | <code>1</code> | The number of times to craft this Item. Note that this is NOT the total quantity that should be crafted (Ex. `craftItem('stick', 4)` will result in 16 sticks rather than 4) |
-| [options.craftingTable] | <code>Block</code> | <code></code> | For recipes that require a crafting table/station. A Block Entity representing the appropriate station within reach of the Bot |
+| [options.craftingTable] | <code>Block</code> |  | For recipes that require a crafting table/station. A Block Entity representing the appropriate station within reach of the Bot |
 
 
 <br><a name="RGBot+holdItem"></a>
@@ -581,9 +581,9 @@ rgBot.mineflayer().username
 | --- | --- | --- | --- |
 | containerWindow | <code>Window</code> |  | The open container Window to withdraw items from |
 | options | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemName] | <code>string</code> | <code>null</code> | An Item to withdraw from the container. If not specified, will withdraw all Items |
+| [options.itemName] | <code>string</code> |  | An Item to withdraw from the container. If not specified, will withdraw all Items |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches to itemName. For example, 'planks' will match any Item containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.) |
-| [options.quantity] | <code>number</code> | <code></code> | If itemName is specified, withdraw up to this quantity |
+| [options.quantity] | <code>number</code> |  | If itemName is specified, withdraw up to this quantity |
 
 
 <br><a name="RGBot+depositItems"></a>
