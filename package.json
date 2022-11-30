@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": "jsdoc2md lib/*.js --plugin dmd-readable --param-list-format list > docs/api.md"
+    "docs": "jsdoc2md lib/*.js --plugin dmd-readable > docs/api.md"
   },
   "author": "Regression Games, Inc",
   "license": "ISC",
