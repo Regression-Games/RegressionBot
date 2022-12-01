@@ -4,7 +4,7 @@
 ## RGBot
 > <h2><u>Glossary:</u></h2>
 > 
->  <b><u>Mineflayer and Pathfinder</u></b><br>ß
+>  <b><u>Mineflayer and Pathfinder</u></b><br>
 >    Mineflayer is a high-level JavaScript API for creating Minecraft Bots.
 >    Mineflayer supports third-party plugins like Pathfinder - an advanced Pathfinding library to help your Bot navigate the world.
 >    Regression Games uses Mineflayer and Pathfinder to create a stable and user-friendly library. Create the best Bot you can with ease. <br>
