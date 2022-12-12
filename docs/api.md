@@ -1,6 +1,4 @@
-
-<br><a name="RGBot"></a>
-
+<a name="RGBot"></a>
 ## RGBot
 > <h2><u>Glossary:</u></h2>
 > 
