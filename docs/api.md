@@ -16,7 +16,7 @@
    <i>Vec3 Documentation - <a href="https://github.com/PrismarineJS/node-vec3">https://github.com/PrismarineJS/node-vec3</a> </i><br></p>
 <p> <b><u>Entity</u></b><br>
    An Entity is anything that can be dynamically spawned into the Minecraft world.
-   Common Entities include other players, enemy mobs, items in your inventory or floating on the ground, and objects you can interact with such as minecarts or beds.</p>
+   Common Entities include other players, enemy mobs, items in your inventory or floating on the ground, and objects you can interact with such as mine-carts or beds.</p>
 <p> <b><u>Block</u></b><br>
    A Block is a specific type of Entity that exist in the environment.
    Some yield materials when collected, like blocks of Coal or Diamond, while others can be interacted with like ladders and vines. <br></p>
@@ -27,7 +27,7 @@
 <p> <b><u>Name versus Display Name</u></b><br>
    An Entity&#39;s name is a unique identifier, and its display name is typically the same or similar identifier but in a human-readable format.
    As an example, the Ender Dragon is the readable name, or display name, of the Entity named ender_dragon. Likewise, Grass Block is the display name of the block named grass_block.
-   This library provides functions to accept the name exclusively, or the name and display name interchangeably, so the identifier you use is up to your own personal tastes.</p>
+   This library provides functions to accept the name but not the display name for conciseness and efficiency</p>
 </dd>
 <dt><a href="#BestHarvestTool">BestHarvestTool</a></dt>
 <dd><p>A result model for finding the best harvesting tool including the tool if found and the digTime for that tool/block combo.
@@ -36,6 +36,23 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
 <dt><a href="#FindResult">FindResult</a></dt>
 <dd><p>The result of a findEntities, findBlocks, findItemsOnGround on ground operation.</p>
 </dd>
+</dl>
+
+## Functions
+
+<dl>
+<dt><a href="#DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION">DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION(distance, pointValue, digTime)</a> ⇒ <code>number</code></dt>
+<dd><p>MC character running speed is 5 blocks per second, up to 9 with soul speed 3.
+Distance to travel doesn&#39;t always mean flat ground running.
+Sometimes distance implies non-linear paths or block digging, but this default gives a reasonable estimate</p>
+<p>After some experimentation/white-boarding, we found that pointValue-distance-digTime gives a reasonable balance
+of point return vs time to reach further blocks, which often involves digging other blocks first.</p>
+</dd>
+<dt><a href="#DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION">DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION(distance, pointValue, health, defense, toughness)</a> ⇒ <code>number</code></dt>
+<dd><p>For Reference In Minecraft: (damageTaken = damage * (1 - min(20, max(defense / 5, defense - damage / (toughness / 4 + 2)))) / 25)</p>
+</dd>
+<dt><a href="#DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION">DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION(distance, pointValue)</a> ⇒ <code>number</code></dt>
+<dd></dd>
 </dl>
 
 
@@ -58,7 +75,7 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
 > 
 >  <b><u>Entity</u></b><br>
 >    An Entity is anything that can be dynamically spawned into the Minecraft world.
->    Common Entities include other players, enemy mobs, items in your inventory or floating on the ground, and objects you can interact with such as minecarts or beds.
+>    Common Entities include other players, enemy mobs, items in your inventory or floating on the ground, and objects you can interact with such as mine-carts or beds.
 > 
 >  <b><u>Block</u></b><br>
 >    A Block is a specific type of Entity that exist in the environment.
@@ -72,7 +89,7 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
 >  <b><u>Name versus Display Name</u></b><br>
 >    An Entity's name is a unique identifier, and its display name is typically the same or similar identifier but in a human-readable format.
 >    As an example, the Ender Dragon is the readable name, or display name, of the Entity named ender_dragon. Likewise, Grass Block is the display name of the block named grass_block.
->    This library provides functions to accept the name exclusively, or the name and display name interchangeably, so the identifier you use is up to your own personal tastes.
+>    This library provides functions to accept the name but not the display name for conciseness and efficiency
 
 
 * [RGBot](#RGBot)
@@ -90,20 +107,19 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
     * [.whisper(username, message)](#RGBot+whisper) ⇒ <code>void</code>
     * [.matchInfo()](#RGBot+matchInfo) ⇒ <code>RGMatchInfo</code> \| <code>null</code>
     * [.username()](#RGBot+username) ⇒ <code>string</code>
-    * [.position()](#RGBot+position) ⇒ <code>Vec3</code>
     * [.teamForPlayer(username)](#RGBot+teamForPlayer) ⇒ <code>string</code> \| <code>null</code>
+    * [.position()](#RGBot+position) ⇒ <code>Vec3</code>
     * [.wait(ticks)](#RGBot+wait) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.vecToString(position)](#RGBot+vecToString) ⇒ <code>string</code>
     * [.vecFromString(positionString)](#RGBot+vecFromString) ⇒ <code>Vec3</code> \| <code>null</code>
-    * [.getEntityName(entity)](#RGBot+getEntityName) ⇒ <code>string</code> \| <code>undefined</code>
-    * [.getEntityDisplayName(entity)](#RGBot+getEntityDisplayName) ⇒ <code>string</code> \| <code>undefined</code>
+    * [.getEntityName(entity)](#RGBot+getEntityName) ⇒ <code>string</code> \| <code>null</code>
     * [.getItemDefinitionByName(itemName)](#RGBot+getItemDefinitionByName) ⇒ <code>Item</code> \| <code>null</code>
     * [.getItemDefinitionById(itemId)](#RGBot+getItemDefinitionById) ⇒ <code>Item</code> \| <code>null</code>
     * [.entityNamesMatch(targetName, entity, [options])](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
     * [.entityDisplayNamesMatch(targetName, entity, [options])](#RGBot+entityDisplayNamesMatch) ⇒ <code>boolean</code>
     * [.handlePath(pathFunc-, [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * ~~[.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>~~
-    * [.findEntities([options], [sortValueFunction])](#RGBot+findEntities) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
+    * [.findEntities([options])](#RGBot+findEntities) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
     * [.approachEntity(entity, [options])](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.followEntity(entity, [options])](#RGBot+followEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.avoidEntity(entity, [options])](#RGBot+avoidEntity) ⇒ <code>Promise.&lt;void&gt;</code>
@@ -111,19 +127,18 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
     * [.waitForWeaponCoolDown()](#RGBot+waitForWeaponCoolDown) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.moveAwayFrom(position, distance)](#RGBot+moveAwayFrom) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.wander(minDistance, maxDistance)](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * ~~[.findBlock(blockType, [options])](#RGBot+findBlock) ⇒ <code>Block</code> \| <code>null</code>~~
-    * [.findBlocks([options], [blockValueFunction], [sortValueFunction])](#RGBot+findBlocks) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findBlock(blockType, [options])](#RGBot+findBlock) ⇒ <code>Block</code> \| <code>null</code>
+    * [.findBlocks([options])](#RGBot+findBlocks) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
     * [.approachBlock(block, [options])](#RGBot+approachBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.placeBlock(blockName, targetBlock, [options])](#RGBot+placeBlock) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.equipBestHarvestTool(block)](#RGBot+equipBestHarvestTool) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.bestHarvestTool(block)](#RGBot+bestHarvestTool) ⇒ [<code>BestHarvestTool</code>](#BestHarvestTool)
-    * [.bestAttackItemMelee()](#RGBot+bestAttackItemMelee) ⇒ <code>Item</code> \| <code>undefined</code>
+    * [.bestAttackItemMelee()](#RGBot+bestAttackItemMelee) ⇒ <code>Item</code> \| <code>null</code>
     * [.digBlock(block)](#RGBot+digBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * ~~[.findAndDigBlock(blockType, [options])](#RGBot+findAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>~~
-    * [.approachAndDigBlock(block)](#RGBot+approachAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * ~~[.findItemOnGround(itemName, [options])](#RGBot+findItemOnGround) ⇒ <code>Item</code> \| <code>null</code>~~
-    * ~~[.findItemsOnGround([options])](#RGBot+findItemsOnGround) ⇒ <code>Array.&lt;Item&gt;</code>~~
-    * [.findItemsOnGroundv2([options], [itemValueFunction], [sortValueFunction])](#RGBot+findItemsOnGroundv2) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findAndDigBlock(blockType, [options])](#RGBot+findAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.approachAndDigBlock(block, [options])](#RGBot+approachAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.findItemOnGround(itemName, [options])](#RGBot+findItemOnGround) ⇒ <code>Item</code> \| <code>null</code>
+    * [.findItemsOnGround([options])](#RGBot+findItemsOnGround) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
     * [.collectItemOnGround(item)](#RGBot+collectItemOnGround) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findAndCollectItemsOnGround([options])](#RGBot+findAndCollectItemsOnGround) ⇒ <code>Promise.&lt;Array.&lt;Item&gt;&gt;</code>
     * [.inventoryContainsItem(itemName, [options])](#RGBot+inventoryContainsItem) ⇒ <code>boolean</code>
@@ -131,16 +146,17 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
     * [.dropInventoryItem(itemName, [options])](#RGBot+dropInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.isInventoryFull()](#RGBot+isInventoryFull) ⇒ <code>boolean</code>
     * [.getAllInventoryItems()](#RGBot+getAllInventoryItems) ⇒ <code>Array.&lt;Item&gt;</code>
-    * ~~[.dropAllInventoryItem(itemName, options, [options])](#RGBot+dropAllInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>~~
+    * [.dropAllInventoryItem(itemName, [options])](#RGBot+dropAllInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.dropAllInventoryItems([options])](#RGBot+dropAllInventoryItems) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.craftItem(itemName, [options])](#RGBot+craftItem) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.holdItem(itemName)](#RGBot+holdItem) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.getContainerContents(containerWindow)](#RGBot+getContainerContents) ⇒ <code>Array.&lt;Item&gt;</code>
-    * [.openAndUseContainer(containerBlock, [options], useContainerFunction)](#RGBot+openAndUseContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * ~~[.withdrawItems(containerWindow, [options])](#RGBot+withdrawItems) ⇒ <code>Promise.&lt;void&gt;</code>~~
-    * [.withdrawItemsFromContainer(openContainer, [options])](#RGBot+withdrawItemsFromContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.withdrawItemsFromContainer(containerWindow, [options])](#RGBot+withdrawItemsFromContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * ~~[.depositItems(containerWindow, [options])](#RGBot+depositItems) ⇒ <code>Promise.&lt;void&gt;</code>~~
-    * [.depositItemsToContainer(openContainer, [options])](#RGBot+depositItemsToContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.depositItemsToContainer(containerWindow, [options])](#RGBot+depositItemsToContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.openContainer(containerBlock)](#RGBot+openContainer) ⇒ <code>Promise.&lt;(Window\|null)&gt;</code>
+    * [.closeContainer(containerWindow)](#RGBot+closeContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
 
 
 <br><a name="new_RGBot_new"></a>
@@ -156,20 +172,22 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
 <br><a name="RGBot+isLookingInContainer"></a>
 
 ### rgBot.isLookingInContainer : <code>boolean</code>
-> This is managed automatically by the openAndUseContainer(containerBlock, options, useContainerFunction) function.
-> This value is read by the handlePath function to know if the bot is stuck or not.
+> This value is read by the handlePath function to know if the bot is busy using a container while evaluating if it is stuck or not.
 > 
-> If you open a container outside the openAndUseContainer function you should follow the example.
+> If you open a container type that isn't supported yet and use something other than the provided bot.openContainer(chestBlock) and  bot.closeContainer(containerWindow) methods, you should follow the example.
 
 **Example**  
 ```js
-let openChest = await bot.mineflayer().openChest(chestBlock)
+let openChest = await bot.openContainer(chestBlock) // this sets bot.isLookingInContainer = true
 if (openChest) {
     try {
-        isLookingInChest = true;
-        //  take action on the chest
+        //  take action on the container
     } finally {
-        isLookingInChest = false;
+        try {
+            await openChest.close()
+        } finally {
+            bot.isLookingInContainer = false;
+            }
     }
 }
 ```
@@ -178,7 +196,7 @@ if (openChest) {
 
 ### rgBot.isCrafting : <code>boolean</code>
 > This is managed automatically by the craftItem(itemName, options) function.
-> This value is read by the handlePath function to know if the bot is stuck or not.
+> This value is read by the handlePath function to know if the bot is busy crafting while evaluating if it is stuck or not.
 > 
 > If you craft outside the handleCrafting function you should follow the example.
 
@@ -297,9 +315,9 @@ rgBot.on('spawn', () => { rgBot.chat('Hello World!') })
 > Bot sends a chat message in-game. Also outputs to console if debug is enabled.
 
 
-| Param | Type |
-| --- | --- |
-| message | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| message | <code>string</code> | The message to send |
 
 
 <br><a name="RGBot+whisper"></a>
@@ -308,17 +326,17 @@ rgBot.on('spawn', () => { rgBot.chat('Hello World!') })
 > Bot sends a whisper message in-game to a specific username.  Also outputs to console if debug is enabled.
 
 
-| Param | Type |
-| --- | --- |
-| username | <code>string</code> | 
-| message | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| username | <code>string</code> | The username to whisper to |
+| message | <code>string</code> | The message to send |
 
 
 <br><a name="RGBot+matchInfo"></a>
 
 ### rgBot.matchInfo() ⇒ <code>RGMatchInfo</code> \| <code>null</code>
 > Gets the current Regression Games match info.
-> This is updated every time a player_joined,player_left,match_started,match_ended,score_update event occurs on the matchInfoEmitter.
+> This is updated every time a player_joined, player_left, match_started, match_ended, score_update event occurs on the matchInfoEmitter.
 > 
 > You can also listen to these events in your own bot scripts.
 
@@ -340,20 +358,22 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 > Gets the username of this bot
 
 
-<br><a name="RGBot+position"></a>
-
-### rgBot.position() ⇒ <code>Vec3</code>
-> Gets the current position of the bot
-
-
 <br><a name="RGBot+teamForPlayer"></a>
 
 ### rgBot.teamForPlayer(username) ⇒ <code>string</code> \| <code>null</code>
+> Gets the team name for the specific player
+
 **Returns**: <code>string</code> \| <code>null</code> - Name of the team the player is on  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | username | <code>string</code> | Username of the player/bot |
+
+
+<br><a name="RGBot+position"></a>
+
+### rgBot.position() ⇒ <code>Vec3</code>
+> Gets the current position of the bot
 
 
 <br><a name="RGBot+wait"></a>
@@ -407,7 +427,7 @@ rgBot.vecFromString("15.0, 63, -22.2")
 
 <br><a name="RGBot+getEntityName"></a>
 
-### rgBot.getEntityName(entity) ⇒ <code>string</code> \| <code>undefined</code>
+### rgBot.getEntityName(entity) ⇒ <code>string</code> \| <code>null</code>
 > Accepts an Entity and returns the name of the Entity.  This does not consider displayName, only name.
 > If the entity has a 'username', returns username.
 
@@ -437,43 +457,7 @@ rgBot.getEntityName(entity)
 **Example**  
 ```js
 // entity -> {username: undefined, name: undefined, displayName: undefined}
-// returns undefined
-rgBot.getEntityName(entity)
-```
-
-<br><a name="RGBot+getEntityDisplayName"></a>
-
-### rgBot.getEntityDisplayName(entity) ⇒ <code>string</code> \| <code>undefined</code>
-> Accepts an Entity and returns the displayName of the Entity, or its name if it has no displayName.
-> If the entity has a 'username', returns username.
-
-
-| Param | Type |
-| --- | --- |
-| entity | <code>Entity</code>, <code>Block</code>, <code>Item</code> | 
-
-**Example**  
-```js
-// entity -> {username: "NinaTheDragon", name: "ender_dragon", displayName: "Ender Dragon"}
-// returns "NinaTheDragon"
-rgBot.getEntityName(entity)
-```
-**Example**  
-```js
-// entity -> {username: undefined, name: "ender_dragon", displayName: "Ender Dragon"}
-// returns "Ender Dragon"
-rgBot.getEntityName(entity)
-```
-**Example**  
-```js
-// entity -> {username: undefined, name: "cocoa_beans", displayName: undefined}
-// returns "cocoa_beans"
-rgBot.getEntityName(entity)
-```
-**Example**  
-```js
-// entity -> {username: undefined, name: undefined, displayName: undefined}
-// returns undefined
+// returns null
 rgBot.getEntityName(entity)
 ```
 
@@ -542,7 +526,7 @@ rgBot.entityNamesMatch('_axe', entity, {partialMatch: true}) // returns true
 <br><a name="RGBot+entityDisplayNamesMatch"></a>
 
 ### rgBot.entityDisplayNamesMatch(targetName, entity, [options]) ⇒ <code>boolean</code>
-> <i><b>Experimental</b></i>
+> <i><b>Experimental - The behaviour of this API can and almost certainly will change in a future API version.</b></i>
 > 
 > Determines whether an Entity's username or displayName or name are equal to a targetName string.
 > Matching for username and name is case-sensitive.  Matching for displayName is NOT case-sensitive.
@@ -593,10 +577,7 @@ const success = await rgBot.handlePath(async () => {
 
 <br><a name="RGBot+findEntity"></a>
 
-### ~~rgBot.findEntity([options]) ⇒ <code>Entity</code> \| <code>null</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
-
-> <i><b>Experimental</b></i>
-> 
+### rgBot.findEntity([options]) ⇒ <code>Entity</code> \| <code>null</code>
 > Find the nearest entity matching the search criteria.
 
 **Returns**: <code>Entity</code> \| <code>null</code> - The nearest Entity matching the search criteria, or null if no matching Entity can be found  
@@ -614,12 +595,10 @@ rgBot.findEntity({targetName: "chicken"})
 
 <br><a name="RGBot+findEntities"></a>
 
-### rgBot.findEntities([options], [sortValueFunction]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findEntities([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
 > Find the nearest entity matching the search criteria.
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - By default, this sorts by distance, but a good example function for considering health would be { return -1 * ((20-health)-(distance*1.1)) }
-
-To get the 'best' entity result, call findEntities(...).shift().  Note that the result may be null|undefined if no entities were found  
+**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - To get only the 'best' entity result, call findEntities(...).shift().  Note that the result may be null if no entities were found  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -627,9 +606,10 @@ To get the 'best' entity result, call findEntities(...).shift().  Note that the 
 | [options.entityNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | List of targetNames to consider |
 | [options.attackable] | <code>boolean</code> | <code>false</code> | Whether the entity must be attackable. If true finds only mob and player entities. |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Consider entities whose username or name partially match one of the targetNames |
-| [options.maxDistance] | <code>number</code> | <code></code> | Max range to consider |
+| [options.maxDistance] | <code>number</code> |  | Max range to consider |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching entities to consider |
-| [sortValueFunction] | <code>function</code> |  | Function of that should return the best target with the lowest value, so it sorts to front. |
+| [options.entityValueFunction] | <code>function</code> |  | Function to call to get the value of an entity based on its name (entityName). A good example function is { return scoreValueOf[entityUsername || entityName] }, where scoreValueOf is the point value or intrinsic value of the entity in the game mode being played.  If you don't want an entity considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
+| [options.sortValueFunction] | <code>function</code> |  | function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+approachEntity"></a>
@@ -649,7 +629,7 @@ To get the 'best' entity result, call findEntities(...).shift().  Note that the 
 <br><a name="RGBot+followEntity"></a>
 
 ### rgBot.followEntity(entity, [options]) ⇒ <code>Promise.&lt;void&gt;</code>
-> <i><b>Experimental</b></i>
+> <i><b>Experimental - The behaviour of this API can and almost certainly will change in a future API version.</b></i>
 > 
 > The Bot will follow the given Entity.
 
@@ -664,7 +644,7 @@ To get the 'best' entity result, call findEntities(...).shift().  Note that the 
 <br><a name="RGBot+avoidEntity"></a>
 
 ### rgBot.avoidEntity(entity, [options]) ⇒ <code>Promise.&lt;void&gt;</code>
-> <i><b>Experimental</b></i>
+> <i><b>Experimental - The behaviour of this API can and almost certainly will change in a future API version.</b></i>
 > 
 > The Bot will avoid the given Entity.
 
@@ -679,8 +659,6 @@ To get the 'best' entity result, call findEntities(...).shift().  Note that the 
 <br><a name="RGBot+attackEntity"></a>
 
 ### rgBot.attackEntity(entity, [options]) ⇒ <code>boolean</code>
-> <i><b>Experimental</b></i>
-> 
 > This will move the bot to within range of the target, equip the most powerful weapon in the bot inventory,
 > and attack the target 1 time.  To finish off a target, this method must be called until the target is dead.
 
@@ -697,7 +675,7 @@ To get the 'best' entity result, call findEntities(...).shift().  Note that the 
 ```js
 let target = //<someEntity>
 while (target.isValid) {
-    attackEntity(target)
+    await attackEntity(target)
 }
 
 Note: This method currently only uses melee weapons
@@ -706,7 +684,7 @@ Note: This method currently only uses melee weapons
 <br><a name="RGBot+waitForWeaponCoolDown"></a>
 
 ### rgBot.waitForWeaponCoolDown() ⇒ <code>Promise.&lt;void&gt;</code>
-> <i><b>Experimental</b></i>
+> <i><b>Experimental - The behaviour of this API can and almost certainly will change in a future API version.</b></i>
 > 
 > This uses lastAttackTime,lastAttackItem variables to manage weapon attack cool-downs.
 > This assumes that the weapon you just attacked with needs to cool-down before you can attack again,
@@ -723,11 +701,12 @@ Note: This method currently only uses melee weapons
 > the point at the specified distance.  The bot will move to that point unless it is
 > already further away than the distance.
 
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - True if the bot moved away or was already far enough away  
 
-| Param | Type |
-| --- | --- |
-| position | <code>Vec3</code> | 
-| distance | <code>number</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| position | <code>Vec3</code> | The position to move away from |
+| distance | <code>number</code> | How far away to move (minimum) |
 
 
 <br><a name="RGBot+wander"></a>
@@ -746,8 +725,7 @@ Note: This method currently only uses melee weapons
 
 <br><a name="RGBot+findBlock"></a>
 
-### ~~rgBot.findBlock(blockType, [options]) ⇒ <code>Block</code> \| <code>null</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
-
+### rgBot.findBlock(blockType, [options]) ⇒ <code>Block</code> \| <code>null</code>
 > Attempt to locate the nearest block of the given type within a specified range from the Bot.
 
 
@@ -757,20 +735,18 @@ Note: This method currently only uses melee weapons
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Find blocks whose name / displayName contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.) |
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Will not return any blocks that are beneath another block |
-| [options.maxDistance] | <code>number</code> | <code>50</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
-| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
+| [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
+| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 : No Longer used - Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
 
 
 <br><a name="RGBot+findBlocks"></a>
 
-### rgBot.findBlocks([options], [blockValueFunction], [sortValueFunction]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findBlocks([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
 > Returns the best block that is diggable within a maximum distance from the Bot.
 
 **Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - - the best blocks found
 
-By default, this only sorts results by distance, and assigns all blocks a value of 0.  A good example function is {return -1 * (pointValue - distance - digTime)}
-
-To get the 'best' block result, call findBlocks(...).shift().  Note that the result may be null|undefined if no blocks were found  
+To get only the 'best' block result, call findBlocks(...).shift().  Note that the result may be null if no blocks were found  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -778,10 +754,10 @@ To get the 'best' block result, call findBlocks(...).shift().  Note that the res
 | [options.blockNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | List of blockNames to consider |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Consider blocks whose name partially matches one of the blockNames |
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Only find blocks that don't have a block above them. |
-| [options.maxDistance] | <code>number</code> | <code>50</code> | Max range to consider |
+| [options.maxDistance] | <code>number</code> | <code>30</code> | Max range to consider.  Be careful as large values have performance implications.  30 means up to 60x60x60 (216000) blocks could be evaluated.  50 means up to 100x100x100 (1000000) blocks could be evaluated |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching blocks |
-| [blockValueFunction] | <code>function</code> |  | function to call to get the value of a block based on its name (blockName); should return the best block with the lowest sorting value. A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. |
-| [sortValueFunction] | <code>function</code> |  | function to call to sort the evaluation of results based on arguments (pointValue, distance, digTime[seconds]); should return the best item with the lowest sorting value. |
+| [options.blockValueFunction] | <code>function</code> |  | Function to call to get the value of a block based on its name (blockName). A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
+| [options.sortValueFunction] | <code>function</code> |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+approachBlock"></a>
@@ -795,7 +771,7 @@ To get the 'best' block result, call findBlocks(...).shift().  Note that the res
 | --- | --- | --- | --- |
 | block | <code>Block</code> |  | The Block instance to approach |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.reach] | <code>number</code> | <code>5</code> |  |
+| [options.reach] | <code>number</code> | <code>5</code> | How close to get to the block |
 
 
 <br><a name="RGBot+placeBlock"></a>
@@ -832,15 +808,15 @@ To get the 'best' block result, call findBlocks(...).shift().  Note that the res
 > If we don't have the best tool, also checks if dig time is infinite because it can't be harvested without a tool
 
 
-| Param | Type |
-| --- | --- |
-| block | <code>Block</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| block | <code>Block</code> | The block to evaluate the best tool for |
 
 
 <br><a name="RGBot+bestAttackItemMelee"></a>
 
-### rgBot.bestAttackItemMelee() ⇒ <code>Item</code> \| <code>undefined</code>
-> <i><b>Experimental</b></i>
+### rgBot.bestAttackItemMelee() ⇒ <code>Item</code> \| <code>null</code>
+> <i><b>Experimental - The behaviour of this API can and almost certainly will change in a future API version.</b></i>
 > 
 > This finds the most powerful melee attack item in the bot inventory
 > 
@@ -852,6 +828,7 @@ To get the 'best' block result, call findBlocks(...).shift().  Note that the res
 ### rgBot.digBlock(block) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Dig the given Block.
 > This will equip the most appropriate tool in the bot inventory for this Block type.
+> This function does NOT approach the block.  It must already be in reach of the bot
 
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - Whether the Block was successfully dug  
 
@@ -862,12 +839,13 @@ To get the 'best' block result, call findBlocks(...).shift().  Note that the res
 
 <br><a name="RGBot+findAndDigBlock"></a>
 
-### ~~rgBot.findAndDigBlock(blockType, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
-
+### rgBot.findAndDigBlock(blockType, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Locate and dig the closest Block of a given type within a maximum distance from the Bot.
 > This method will equip the most appropriate tool in the bot inventory for this Block type.
 
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted
+
+Note: In more advanced bot code implementations, you will most likely want to pass skipCollection as true and handle the choice to collect or not as a decision in your main loop's next iteration.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -875,41 +853,28 @@ To get the 'best' block result, call findBlocks(...).shift().  Note that the res
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Find blocks whose name / displayName contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.) |
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Will not attempt to dig any Blocks that are beneath another Block |
-| [options.maxDistance] | <code>number</code> | <code>50</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
+| [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
 | [options.skipCollection] | <code>boolean</code> | <code>false</code> | If true, the Bot will not explicitly attempt to collect drops from the broken Block. This allows the player to control which drops are collected and which ones are ignored |
-| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
+| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 - No Longer Used : Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
 
-**Example**  
-```js
-Deprecation
-        let candidateBlock = bot.findBlocks({blockNames: ['name1',...], maxDistance: maxDistance}, blockPointValueFunction, digCostFunction).shift()?.result
-        if (candidateBlock) {
-            if (await bot.approachAndDigBlock(candidateBlock)) {
-                // you can collect the item here, but ideally you would let the collection decision be part of your main loop next pass
-                // optionally wait a few ticks for the item to spawn, but that is wasting time that could be used making another action/decision
-                const theItem = this.findItemsOnGroundv2({itemNames: ['name1',...], maxDistance: 5}).shift()?.result
-                if (theItem) {
-                    return await this.collectItemOnGround(theItem)
-                }
-            }
-        }
-```
 
 <br><a name="RGBot+approachAndDigBlock"></a>
 
-### rgBot.approachAndDigBlock(block) ⇒ <code>Promise.&lt;boolean&gt;</code>
+### rgBot.approachAndDigBlock(block, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Approach (path-find to) and dig the specified block.
 
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted  
 
-| Param | Type |
-| --- | --- |
-| block | <code>Block</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| block | <code>Block</code> |  | The block instance to approach and dig |
+| [options] | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.skipCollection] | <code>boolean</code> | <code>false</code> | If true, the Bot will not explicitly attempt to collect drops from the broken Block. This allows the player to control which drops are collected and which ones are ignored |
 
 
 <br><a name="RGBot+findItemOnGround"></a>
 
-### ~~rgBot.findItemOnGround(itemName, [options]) ⇒ <code>Item</code> \| <code>null</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
-
+### rgBot.findItemOnGround(itemName, [options]) ⇒ <code>Item</code> \| <code>null</code>
 > Locate the closest Item with the given name within a maximum distance from the Bot, or null if no matching Items are found.
 
 
@@ -923,40 +888,22 @@ Deprecation
 
 <br><a name="RGBot+findItemsOnGround"></a>
 
-### ~~rgBot.findItemsOnGround([options]) ⇒ <code>Array.&lt;Item&gt;</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
-
-> Returns a list of all Items that are on the ground within a maximum distance from the Bot (can be empty).
-
-**Returns**: <code>Array.&lt;Item&gt;</code> - The list of Items found on the ground (can be empty)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemName] | <code>string</code> |  | Find only Items with this name |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemName is defined, find Items whose names / displayNames contain itemName. (Ex. 'boots' may find any of 'iron_boots', 'golden_boots', etc.) |
-| [options.maxDistance] | <code>number</code> | <code>50</code> | Find any Items matching the search criteria up to and including this distance from the Bot |
-
-
-<br><a name="RGBot+findItemsOnGroundv2"></a>
-
-### rgBot.findItemsOnGroundv2([options], [itemValueFunction], [sortValueFunction]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findItemsOnGround([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
 > Returns a list of all Items that are on the ground within a maximum distance from the Bot (can be empty).
 
 **Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - - the best items found
 
-By default, this only sorts results by distance, and assigns all items a pointValue of 0, but a good example function for considering pointValue would be {return -1 * (pointValue*2 - distance*1.1)) }
-
-To get the 'best' item to collect, call findItems(...).shift().  Note that the result may be null|undefined if no items were found  
+To get only the 'best' item to collect, call findItems(...).shift().  Note that the result may be null if no items were found  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [options] | <code>object</code> |  | optional parameters |
 | [options.itemNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | Find only Items matching one of these names |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemName is defined, find Items whose names / displayNames contain itemName. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.) |
-| [options.maxDistance] | <code>number</code> | <code>50</code> | find any Items matching the search criteria up to and including this distance from the Bot |
+| [options.maxDistance] | <code>number</code> |  | find any Items matching the search criteria up to and including this distance from the Bot |
 | [options.maxCount] | <code>number</code> | <code>1</code> | limit the number of items to find |
-| [itemValueFunction] | <code>function</code> |  | function to call to get the value of an item based on its name (itemName); should return the best item with the lowest sorting value. A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value. |
-| [sortValueFunction] | <code>function</code> |  | function to call to sort the evaluation of results based on arguments (pointValue, distance); should return the best item with the lowest sorting value.  A good example function is {return -1 * (pointValue*2 - distance*1.1)} |
+| [options.itemValueFunction] | <code>function</code> |  | function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
+| [options.sortValueFunction] | <code>function</code> |  | function to call to help sort the evaluation of results. Should return the best item with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+collectItemOnGround"></a>
@@ -1042,18 +989,15 @@ To get the 'best' item to collect, call findItems(...).shift().  Note that the r
 
 <br><a name="RGBot+dropAllInventoryItem"></a>
 
-### ~~rgBot.dropAllInventoryItem(itemName, options, [options]) ⇒ <code>Promise.&lt;void&gt;</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
-
+### rgBot.dropAllInventoryItem(itemName, [options]) ⇒ <code>Promise.&lt;void&gt;</code>
 > Drops all stacks of an Item in the bot inventory matching itemName.
-> Alias for `dropInventoryItem(itemName, {quantity: -1})`
+> Alias for `dropAllInventoryItems({itemNames: [itemName]})`
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | itemName | <code>string</code> |  | The name or display name of the Item(s) to drop |
-| options | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemNames] | <code>Array.&lt;string&gt;</code> |  | The name or display name of the Item(s) to drop, if undefined, all items will be dropped. |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
 
 
@@ -1067,7 +1011,7 @@ To get the 'best' item to collect, call findItems(...).shift().  Note that the r
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemNames] | <code>Array.&lt;string&gt;</code> |  | The name or display name of the Item(s) to drop, if undefined, all items will be dropped. |
+| [options.itemNames] | <code>Array.&lt;string&gt;</code> |  | The name or display name of the Item(s) to drop, if not passed, all items will be dropped. |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
 
 
@@ -1112,20 +1056,6 @@ To get the 'best' item to collect, call findItems(...).shift().  Note that the r
 | containerWindow | <code>Window</code> | The open container Window to withdraw items from |
 
 
-<br><a name="RGBot+openAndUseContainer"></a>
-
-### rgBot.openAndUseContainer(containerBlock, [options], useContainerFunction) ⇒ <code>Promise.&lt;boolean&gt;</code>
-> Opens a container, then perform the supplied useFunction before closing the container.
-> This function does NOT approach the container.  It must already be in reach of the bot
-
-
-| Param | Type | Default |
-| --- | --- | --- |
-| containerBlock | <code>Block</code> |  | 
-| [options] | <code>object</code> | <code>{}</code> | 
-| useContainerFunction | <code>function</code> |  | 
-
-
 <br><a name="RGBot+withdrawItems"></a>
 
 ### ~~rgBot.withdrawItems(containerWindow, [options]) ⇒ <code>Promise.&lt;void&gt;</code>~~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_`🚫 Deprecated`_
@@ -1144,13 +1074,13 @@ To get the 'best' item to collect, call findItems(...).shift().  Note that the r
 
 <br><a name="RGBot+withdrawItemsFromContainer"></a>
 
-### rgBot.withdrawItemsFromContainer(openContainer, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+### rgBot.withdrawItemsFromContainer(containerWindow, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Should be passed as the `useContainerFunction` to openAndUseContainer.  Withdraws the specified items from the container.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| openContainer | <code>Window</code> |  | The open container Window |
+| containerWindow | <code>Window</code> |  | The open container Window |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.itemNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | An Items to act on in the container. |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches to itemNames. For example, '_planks' will match any Item containing '_planks' in its name ('spruce_planks', 'oak_planks', etc.) |
@@ -1175,17 +1105,42 @@ To get the 'best' item to collect, call findItems(...).shift().  Note that the r
 
 <br><a name="RGBot+depositItemsToContainer"></a>
 
-### rgBot.depositItemsToContainer(openContainer, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+### rgBot.depositItemsToContainer(containerWindow, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Should be passed as the `useContainerFunction` to openAndUseContainer.   Deposits one or more items into the container.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| openContainer | <code>Window</code> |  | The open container Window |
+| containerWindow | <code>Window</code> |  | The open container Window |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.itemNames] | <code>string</code> | <code>&quot;[]&quot;</code> | The items to deposit into the container. If not specified, will deposit all Items. |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches to itemNames. For example, '_planks' will match any Item containing '_planks' in its name ('spruce_planks', 'oak_planks', etc.). |
 | [options.quantity] | <code>number</code> |  | If itemNames is specified, deposit up to this quantity of each itemName. |
+
+
+<br><a name="RGBot+openContainer"></a>
+
+### rgBot.openContainer(containerBlock) ⇒ <code>Promise.&lt;(Window\|null)&gt;</code>
+> Open the specified container.  Works for chests and dispensers.
+> This function does NOT approach the block.  It must already be in reach of the bot
+
+**Returns**: <code>Promise.&lt;(Window\|null)&gt;</code> - The open containerWindow or null if unable to open.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| containerBlock | <code>Block</code> | The chest or dispenser block to open |
+
+
+<br><a name="RGBot+closeContainer"></a>
+
+### rgBot.closeContainer(containerWindow) ⇒ <code>Promise.&lt;boolean&gt;</code>
+> Close the specified container.  Works for any container window type.
+
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - True if the container was closed  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| containerWindow | <code>Window</code> | The window for the open container |
 
 
 <br><a name="BestHarvestTool"></a>
@@ -1248,3 +1203,49 @@ To get the 'best' item to collect, call findItems(...).shift().  Note that the r
 <br><a name="FindResult+value"></a>
 
 ### findResult.value : <code>number</code>
+
+<br><a name="DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION"></a>
+
+## DEFAULT\_FIND\_BLOCKS\_SORT\_VALUE\_FUNCTION(distance, pointValue, digTime) ⇒ <code>number</code>
+> MC character running speed is 5 blocks per second, up to 9 with soul speed 3.
+> Distance to travel doesn't always mean flat ground running.
+> Sometimes distance implies non-linear paths or block digging, but this default gives a reasonable estimate
+> 
+> After some experimentation/white-boarding, we found that pointValue-distance-digTime gives a reasonable balance
+> of point return vs time to reach further blocks, which often involves digging other blocks first.
+
+**Returns**: <code>number</code> - The sorting value computed.  The 'best' blocks should have lower sorting values  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| distance | <code>number</code> |  | Blocks away |
+| pointValue | <code>number</code> | <code>0</code> | Score or Intrinsic value of the block being considered |
+| digTime | <code>number</code> | <code>0</code> | Seconds |
+
+
+<br><a name="DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION"></a>
+
+## DEFAULT\_FIND\_ENTITIES\_SORT\_VALUE\_FUNCTION(distance, pointValue, health, defense, toughness) ⇒ <code>number</code>
+> For Reference In Minecraft: (damageTaken = damage * (1 - min(20, max(defense / 5, defense - damage / (toughness / 4 + 2)))) / 25)
+
+**Returns**: <code>number</code> - The sorting value computed.  The 'best' target to attack should have lower sorting values  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| distance |  |  | Blocks away |
+| pointValue | <code>number</code> |  | Score or Intrinsic value of the entity being considered |
+| health |  | <code>10</code> | Health of the target (normally 0->20, passive NPCs have 10 health) |
+| defense |  | <code>0</code> | Defense value of the target |
+| toughness |  | <code>0</code> | Toughness value of the target |
+
+
+<br><a name="DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION"></a>
+
+## DEFAULT\_FIND\_ITEMS\_ON\_GROUND\_SORT\_VALUE\_FUNCTION(distance, pointValue) ⇒ <code>number</code>
+**Returns**: <code>number</code> - The sorting value computed.  The 'best' item to collect should have lower sorting values  
+
+| Param | Default | Description |
+| --- | --- | --- |
+| distance |  | Blocks away |
+| pointValue | <code>0</code> | Score or Intrinsic value of the block being considered |
+
