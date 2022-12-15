@@ -116,7 +116,6 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.getItemDefinitionByName(itemName)](#RGBot+getItemDefinitionByName) ⇒ <code>Item</code> \| <code>null</code>
     * [.getItemDefinitionById(itemId)](#RGBot+getItemDefinitionById) ⇒ <code>Item</code> \| <code>null</code>
     * [.entityNamesMatch(targetName, entity, [options])](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
-    * [.entityDisplayNamesMatch(targetName, entity, [options])](#RGBot+entityDisplayNamesMatch) ⇒ <code>boolean</code>
     * [.handlePath(pathFunc-, [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
     * [.findEntities([options])](#RGBot+findEntities) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
@@ -144,7 +143,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.inventoryContainsItem(itemName, [options])](#RGBot+inventoryContainsItem) ⇒ <code>boolean</code>
     * [.getInventoryItemQuantity(itemName, [options])](#RGBot+getInventoryItemQuantity) ⇒ <code>int</code>
     * [.dropInventoryItem(itemName, [options])](#RGBot+dropInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
-    * [.isInventoryFull()](#RGBot+isInventoryFull) ⇒ <code>boolean</code>
+    * [.isInventorySlotsFull()](#RGBot+isInventorySlotsFull) ⇒ <code>boolean</code>
     * [.getAllInventoryItems()](#RGBot+getAllInventoryItems) ⇒ <code>Array.&lt;Item&gt;</code>
     * [.dropAllInventoryItem(itemName, [options])](#RGBot+dropAllInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.dropAllInventoryItems([options])](#RGBot+dropAllInventoryItems) ⇒ <code>Promise.&lt;void&gt;</code>
@@ -523,36 +522,6 @@ const entity = rg.getItemDefinitionByName('iron_axe')
 rgBot.entityNamesMatch('_axe', entity, {partialMatch: true}) // returns true
 ```
 
-<br><a name="RGBot+entityDisplayNamesMatch"></a>
-
-### rgBot.entityDisplayNamesMatch(targetName, entity, [options]) ⇒ <code>boolean</code>
-> <i><b>Experimental - The behaviour of this API can and almost certainly will change in a future API version.</b></i>
-> 
-> Determines whether an Entity's username or displayName or name are equal to a targetName string.
-> Matching for username and name is case-sensitive.  Matching for displayName is NOT case-sensitive.
-> Generally you should use entityNamesMatch(targetName, entity, options) instead of this function.
-
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| targetName | <code>string</code> |  |  |
-| entity | <code>Entity</code>, <code>Item</code> |  |  |
-| [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches. For example, '_planks' will match any Entity containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.) |
-
-**Example** *(Full Match)*  
-```js
-const entity = rg.getItemDefinitionByName('iron_axe')
-rgBot.entityDisplayNamesMatch('iron_axe', entity) // returns true - matched name
-rgBot.entityDisplayNamesMatch('Iron Axe', entity) // returns true - matched displayName
-rgBot.entityDisplayNamesMatch('iron axe', entity) // returns true - matched displayName
-```
-**Example** *(Partial Match)*  
-```js
-const entity = rg.getItemDefinitionByName('iron_axe')
-rgBot.entityDisplayNamesMatch('_axe', entity, {partialMatch: true}) // returns true
-```
-
 <br><a name="RGBot+handlePath"></a>
 
 ### rgBot.handlePath(pathFunc-, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
@@ -731,12 +700,12 @@ Note: This method currently only uses melee weapons
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| blockType | <code>string</code> |  | The displayName or name of the block to find |
+| blockType | <code>string</code> |  | The name or name of the block to find |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Find blocks whose name / displayName contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Find blocks whose name contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.) |
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Will not return any blocks that are beneath another block |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
-| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 : No Longer used - Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
+| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 - If you want to skip a block from the result set, please use the findBlocks(options) function and process the results.  This method makes the best effort to still interpret this parameter, but is no longer skipping the closest block, but rather the best matching block. |
 
 
 <br><a name="RGBot+findBlocks"></a>
@@ -851,11 +820,11 @@ Note: In more advanced bot code implementations, you will most likely want to pa
 | --- | --- | --- | --- |
 | blockType | <code>string</code> |  | The name of the Block to find and dig |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Find blocks whose name / displayName contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Find blocks whose name contains blockType. (Ex. 'log' may find any of 'spruce_log', 'oak_log', etc.) |
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Will not attempt to dig any Blocks that are beneath another Block |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
 | [options.skipCollection] | <code>boolean</code> | <code>false</code> | If true, the Bot will not explicitly attempt to collect drops from the broken Block. This allows the player to control which drops are collected and which ones are ignored |
-| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 - No Longer Used : Will attempt to locate the next-closest Block. This can be used to skip the closest Block when the Bot encounters an issue collecting it |
+| [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 - If you want to skip a block from the result set, please use the findBlocks(options) function and process the results before calling approachAndDigBlock(block, options).  This method makes the best effort to still interpret this parameter, but is no longer skipping the closest block, but rather the best matching block. |
 
 
 <br><a name="RGBot+approachAndDigBlock"></a>
@@ -880,9 +849,9 @@ Note: In more advanced bot code implementations, you will most likely want to pa
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| itemName | <code>string</code> |  |  |
+| itemName | <code>string</code> |  | The name of the item to find |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Locate any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Locate any items whose name contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Items matching the search criteria up to and including this distance from the Bot |
 
 
@@ -899,7 +868,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | [options] | <code>object</code> |  | optional parameters |
 | [options.itemNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | Find only Items matching one of these names |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemName is defined, find Items whose names / displayNames contain itemName. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contains any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.) |
 | [options.maxDistance] | <code>number</code> |  | find any Items matching the search criteria up to and including this distance from the Bot |
 | [options.maxCount] | <code>number</code> | <code>1</code> | limit the number of items to find |
 | [options.itemValueFunction] | <code>function</code> |  | function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
@@ -929,7 +898,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.itemNames] | <code>string</code> | <code>&quot;[]&quot;</code> | Find and collect only Items with this name |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose names / displayNames contain itemName. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.). |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contain any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.). |
 | [options.maxDistance] | <code>number</code> | <code>50</code> | Find and collect any Items matching the search criteria up to and including this distance from the Bot |
 
 
@@ -943,7 +912,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | itemName | <code>string</code> |  |  |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Check for any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Check for any items whose name contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
 | [options.quantity] | <code>number</code> | <code>1</code> | The minimum amount of this Item the Bot must have |
 
 
@@ -957,7 +926,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | itemName | <code>string</code> |  |  |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Count any items whose name / displayName contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all be included in the quantity for itemName 'axe'). |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Count any items whose name contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all be included in the quantity for itemName 'axe'). |
 
 
 <br><a name="RGBot+dropInventoryItem"></a>
@@ -970,13 +939,13 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | itemName | <code>string</code> |  |  |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
 | [options.quantity] | <code>number</code> | <code>1</code> | The quantity of this Item to drop. To drop all, pass some number <0, or call `dropAllInventoryItem` instead |
 
 
-<br><a name="RGBot+isInventoryFull"></a>
+<br><a name="RGBot+isInventorySlotsFull"></a>
 
-### rgBot.isInventoryFull() ⇒ <code>boolean</code>
+### rgBot.isInventorySlotsFull() ⇒ <code>boolean</code>
 > Returns true if all inventory slots are occupied.  This does not necessarily mean it is completely/totally full,
 > but it means you would need to stack items of the same type to fit anything else in the inventory.
 
@@ -998,7 +967,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | itemName | <code>string</code> |  | The name or display name of the Item(s) to drop |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
 
 
 <br><a name="RGBot+dropAllInventoryItems"></a>
@@ -1012,7 +981,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.itemNames] | <code>Array.&lt;string&gt;</code> |  | The name or display name of the Item(s) to drop, if not passed, all items will be dropped. |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name / displayName contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Drop items whose name contains itemName. (Ex. itemName 'stone' will drop 'stone', 'stone_axe', 'stone_sword', etc.) |
 
 
 <br><a name="RGBot+craftItem"></a>
