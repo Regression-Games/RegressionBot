@@ -34,7 +34,7 @@
 The digTime will be Infinity if the block is not diggable with any tool the bot has.</p>
 </dd>
 <dt><a href="#FindResult">FindResult</a></dt>
-<dd><p>The result of a findEntities, findBlocks, findItemsOnGround on ground operation.</p>
+<dd><p>The result of a findEntities, findBlocks, findItemsOnGround operation.</p>
 </dd>
 </dl>
 
@@ -116,7 +116,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.getItemDefinitionByName(itemName)](#RGBot+getItemDefinitionByName) ⇒ <code>Item</code> \| <code>null</code>
     * [.getItemDefinitionById(itemId)](#RGBot+getItemDefinitionById) ⇒ <code>Item</code> \| <code>null</code>
     * [.entityNamesMatch(targetName, entity, [options])](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
-    * [.handlePath(pathFunc-, [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.handlePath([pathFunc], [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
     * [.findEntities([options])](#RGBot+findEntities) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
     * [.approachEntity(entity, [options])](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
@@ -508,7 +508,7 @@ rgBot.getItemDefinitionByName(102)
 | targetName | <code>string</code> |  |  |
 | entity | <code>Entity</code>, <code>Item</code> |  |  |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches. For example, '_planks' will match any Entity containing 'planks' in its name ('spruce_planks', 'oak_planks', etc.) |
+| [options.partialMatch] | <code>boolean</code> | <code>false</code> | Allow partial matches. For example, '_planks' will match any Entity containing '_planks' in its name ('spruce_planks', 'oak_planks', etc.) |
 
 **Example** *(Full Match)*  
 ```js
@@ -524,16 +524,16 @@ rgBot.entityNamesMatch('_axe', entity, {partialMatch: true}) // returns true
 
 <br><a name="RGBot+handlePath"></a>
 
-### rgBot.handlePath(pathFunc-, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+### rgBot.handlePath([pathFunc], [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Attempt pathfinding. If the Bot becomes 'stuck' then cancel pathfinding.
 > The Bot is considered 'stuck' if it fails to move or perform mining/crafting/chest-interaction actions during a specified interval.
 
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - - true if pathing completes, or false if pathing is cancelled or otherwise interrupted  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if pathing completes, or false if pathing is cancelled or otherwise interrupted  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| pathFunc- | <code>function</code> |  | a function utilizing pathfinder to move the Bot |
-| [options] | <code>object</code> | <code>{}</code> | optional parameters |
+| [pathFunc] | <code>function</code> |  | a function utilizing pathfinder to move the Bot |
+| [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.interval] | <code>number</code> | <code>5000</code> | how long in ms a Bot must be inactive to be considered 'stuck' |
 
 **Example**  
@@ -1146,7 +1146,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 <br><a name="FindResult"></a>
 
 ## FindResult
-> The result of a findEntities, findBlocks, findItemsOnGround on ground operation.
+> The result of a findEntities, findBlocks, findItemsOnGround operation.
 
 
 * [FindResult](#FindResult)
