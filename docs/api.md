@@ -94,7 +94,6 @@ of point return vs time to reach further blocks, which often involves digging ot
 
 * [RGBot](#RGBot)
     * [new RGBot(bot, matchInfoEmitter)](#new_RGBot_new)
-    * [.isLookingInContainer](#RGBot+isLookingInContainer) : <code>boolean</code>
     * [.isCrafting](#RGBot+isCrafting) : <code>boolean</code>
     * [.lastAttackTime](#RGBot+lastAttackTime) : <code>number</code>
     * [.lastAttackItem](#RGBot+lastAttackItem) : <code>Item</code>
@@ -167,29 +166,6 @@ of point return vs time to reach further blocks, which often involves digging ot
 | bot | <code>Bot</code> | 
 | matchInfoEmitter | <code>EventEmitter</code> | 
 
-
-<br><a name="RGBot+isLookingInContainer"></a>
-
-### rgBot.isLookingInContainer : <code>boolean</code>
-> This value is read by the handlePath function to know if the bot is busy using a container while evaluating if it is stuck or not.
-> 
-> If you open a container type that isn't supported yet and use something other than the provided bot.openContainer(chestBlock) and  bot.closeContainer(containerWindow) methods, you should follow the example.
-
-**Example**  
-```js
-let openChest = await bot.openContainer(chestBlock) // this sets bot.isLookingInContainer = true
-if (openChest) {
-    try {
-        //  take action on the container
-    } finally {
-        try {
-            await openChest.close()
-        } finally {
-            bot.isLookingInContainer = false;
-            }
-    }
-}
-```
 
 <br><a name="RGBot+isCrafting"></a>
 
