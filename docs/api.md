@@ -630,6 +630,8 @@ rgBot.findEntity({targetName: "chicken"})
 ### rgBot.attackEntity(entity, [options]) ⇒ <code>boolean</code>
 > This will move the bot to within range of the target, equip the most powerful weapon in the bot inventory,
 > and attack the target 1 time.  To finish off a target, this method must be called until the target is dead.
+> 
+> Note: This currently only handles melee weapons
 
 **Returns**: <code>boolean</code> - - did we successfully attack  
 
@@ -646,8 +648,6 @@ let target = //<someEntity>
 while (target.isValid) {
     await attackEntity(target)
 }
-
-Note: This method currently only uses melee weapons
 ```
 
 <br><a name="RGBot+waitForWeaponCoolDown"></a>
@@ -811,10 +811,10 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 ### rgBot.findAndDigBlock(blockType, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Locate and dig the closest Block of a given type within a maximum distance from the Bot.
 > This method will equip the most appropriate tool in the bot inventory for this Block type.
+> 
+> Note: In more advanced bot code implementations, you will most likely want to pass skipCollection as true and handle the choice to collect or not as a decision in your main loop's next iteration.
 
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted
-
-Note: In more advanced bot code implementations, you will most likely want to pass skipCollection as true and handle the choice to collect or not as a decision in your main loop's next iteration.  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - true if a Block was found and dug successfully or false if a Block was not found or if digging was interrupted  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
