@@ -121,7 +121,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.approachEntity(entity, [options])](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.followEntity(entity, [options])](#RGBot+followEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.avoidEntity(entity, [options])](#RGBot+avoidEntity) ⇒ <code>Promise.&lt;void&gt;</code>
-    * [.attackEntity(entity, [options])](#RGBot+attackEntity) ⇒ <code>boolean</code>
+    * [.attackEntity(entity, [options])](#RGBot+attackEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.waitForWeaponCoolDown()](#RGBot+waitForWeaponCoolDown) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.moveAwayFrom(position, distance)](#RGBot+moveAwayFrom) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.wander(minDistance, maxDistance)](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
@@ -603,13 +603,13 @@ rgBot.findEntity({targetName: "chicken"})
 
 <br><a name="RGBot+attackEntity"></a>
 
-### rgBot.attackEntity(entity, [options]) ⇒ <code>boolean</code>
+### rgBot.attackEntity(entity, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > This will move the bot to within range of the target, equip the most powerful weapon in the bot inventory,
 > and attack the target 1 time.  To finish off a target, this method must be called until the target is dead.
 > 
 > Note: This currently only handles melee weapons
 
-**Returns**: <code>boolean</code> - - did we successfully attack  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - - did we successfully attack  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -815,6 +815,7 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 | block | <code>Block</code> |  | The block instance to approach and dig |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.skipCollection] | <code>boolean</code> | <code>false</code> | If true, the Bot will not explicitly attempt to collect drops from the broken Block. This allows the player to control which drops are collected and which ones are ignored |
+| [options.reach] | <code>number</code> | <code>5</code> | How close to get to the block |
 
 
 <br><a name="RGBot+findItemOnGround"></a>
@@ -1108,7 +1109,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | Param | Type | Description |
 | --- | --- | --- |
 | tool | <code>Item</code>, <code>null</code> | The Item best suited to dig the block.  Can be null if no tool is needed or if item is not diggable. |
-| digTime | <code>number</code> | Time in seconds to dig the block, Infinity if not diggable |
+| digTime | <code>number</code> | Time in milliseconds to dig the block, Infinity if not diggable |
 
 
 <br><a name="BestHarvestTool+tool"></a>
@@ -1165,7 +1166,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | --- | --- | --- | --- |
 | distance | <code>number</code> |  | Blocks away |
 | pointValue | <code>number</code> | <code>0</code> | Score or Intrinsic value of the block being considered |
-| digTime | <code>number</code> | <code>0</code> | Seconds |
+| digTime | <code>number</code> | <code>0</code> | milliseconds |
 
 
 <br><a name="DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION"></a>
