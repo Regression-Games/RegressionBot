@@ -58,24 +58,18 @@ of point return vs time to reach further blocks, which often involves digging ot
 ## Typedefs
 
 <dl>
-<dt><a href="#FindEntitiesEntityValueFunction">FindEntitiesEntityValueFunction</a> : <code>function</code></dt>
-<dd><p>Signature: <code>(entityName: string) =&gt; number</code></p>
-</dd>
-<dt><a href="#FindEntitiesSortValueFunction">FindEntitiesSortValueFunction</a> : <code>function</code></dt>
-<dd><p>Signature: <code>(distance: number, pointValue: number, health: number, defense: number, toughness: number) =&gt; number</code></p>
-</dd>
-<dt><a href="#FindBlocksBlockValueFunction">FindBlocksBlockValueFunction</a> : <code>function</code></dt>
-<dd><p>Signature: <code>(blockName: string) =&gt; number</code></p>
-</dd>
-<dt><a href="#FindBlocksSortValueFunction">FindBlocksSortValueFunction</a> : <code>function</code></dt>
-<dd><p>Signature: <code>(distance: number, pointValue: number, digTime: number) =&gt; number</code></p>
-</dd>
-<dt><a href="#FindItemsOnGroundItemValueFunction">FindItemsOnGroundItemValueFunction</a> : <code>function</code></dt>
-<dd><p>Signature: <code>(blockName: string) =&gt; number</code></p>
-</dd>
-<dt><a href="#FindItemsOnGroundSortValueFunction">FindItemsOnGroundSortValueFunction</a> : <code>function</code></dt>
-<dd><p>Signature: <code>(distance: number, pointValue: number) =&gt; number</code></p>
-</dd>
+<dt><a href="#FindEntitiesEntityValueFunction">FindEntitiesEntityValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindEntitiesSortValueFunction">FindEntitiesSortValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindBlocksBlockValueFunction">FindBlocksBlockValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindBlocksSortValueFunction">FindBlocksSortValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindItemsOnGroundItemValueFunction">FindItemsOnGroundItemValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindItemsOnGroundSortValueFunction">FindItemsOnGroundSortValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
 </dl>
 
 
@@ -576,8 +570,8 @@ rgBot.findEntity({targetName: "chicken"})
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Consider entities whose username or name partially match one of the targetNames |
 | [options.maxDistance] | <code>number</code> |  | Max range to consider |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching entities to consider |
-| [options.entityValueFunction] | [<code>FindEntitiesEntityValueFunction</code>](#FindEntitiesEntityValueFunction) |  | Signature: `(entityName: string) => number`. Function to call to get the value of an entity based on its name (entityName). A good example function is { return scoreValueOf[entityUsername || entityName] }, where scoreValueOf is the point value or intrinsic value of the entity in the game mode being played.  If you don't want an entity considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
-| [options.sortValueFunction] | [<code>FindEntitiesSortValueFunction</code>](#FindEntitiesSortValueFunction) |  | Signature: `(distance: number, pointValue: number, health: number, defense: number, toughness: number) => number`. Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION |
+| [options.entityValueFunction] | [<code>FindEntitiesEntityValueFunction</code>](#FindEntitiesEntityValueFunction) |  | Function to call to get the value of an entity based on its name (entityName). A good example function is { return scoreValueOf[entityUsername || entityName] }, where scoreValueOf is the point value or intrinsic value of the entity in the game mode being played.  If you don't want an entity considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
+| [options.sortValueFunction] | [<code>FindEntitiesSortValueFunction</code>](#FindEntitiesSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+approachEntity"></a>
@@ -724,8 +718,8 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Only find blocks that don't have a block above them. |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Max range to consider.  Be careful as large values have performance implications.  30 means up to 60x60x60 (216000) blocks could be evaluated.  50 means up to 100x100x100 (1000000) blocks could be evaluated |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching blocks |
-| [options.blockValueFunction] | [<code>FindBlocksBlockValueFunction</code>](#FindBlocksBlockValueFunction) |  | Signature: `(blockName: string) => number`. Function to call to get the value of a block based on its name (blockName). A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
-| [options.sortValueFunction] | [<code>FindBlocksSortValueFunction</code>](#FindBlocksSortValueFunction) |  | Signature: `(distance: number, pointValue: number, digTime: number) => number`. Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION |
+| [options.blockValueFunction] | [<code>FindBlocksBlockValueFunction</code>](#FindBlocksBlockValueFunction) |  | Function to call to get the value of a block based on its name (blockName). A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
+| [options.sortValueFunction] | [<code>FindBlocksSortValueFunction</code>](#FindBlocksSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+approachBlock"></a>
@@ -871,8 +865,8 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contains any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.) |
 | [options.maxDistance] | <code>number</code> |  | find any Items matching the search criteria up to and including this distance from the Bot |
 | [options.maxCount] | <code>number</code> | <code>1</code> | limit the number of items to find |
-| [options.itemValueFunction] | [<code>FindItemsOnGroundItemValueFunction</code>](#FindItemsOnGroundItemValueFunction) |  | Signature: `(blockName: string) => number`. Function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
-| [options.sortValueFunction] | [<code>FindItemsOnGroundSortValueFunction</code>](#FindItemsOnGroundSortValueFunction) |  | Signature: `(distance: number, pointValue: number) => number`. Function to call to help sort the evaluation of results. Should return the best item with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION |
+| [options.itemValueFunction] | [<code>FindItemsOnGroundItemValueFunction</code>](#FindItemsOnGroundItemValueFunction) |  | Function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
+| [options.sortValueFunction] | [<code>FindItemsOnGroundSortValueFunction</code>](#FindItemsOnGroundSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best item with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+collectItemOnGround"></a>
@@ -1221,36 +1215,61 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 <br><a name="FindEntitiesEntityValueFunction"></a>
 
-## FindEntitiesEntityValueFunction : <code>function</code>
-> Signature: `(entityName: string) => number`
+## FindEntitiesEntityValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| entityName | <code>string</code> | 
 
 
 <br><a name="FindEntitiesSortValueFunction"></a>
 
-## FindEntitiesSortValueFunction : <code>function</code>
-> Signature: `(distance: number, pointValue: number, health: number, defense: number, toughness: number) => number`
+## FindEntitiesSortValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| distance | <code>number</code> | 
+| pointValue | <code>number</code> | 
+| health | <code>number</code> | 
+| defense | <code>number</code> | 
+| toughness | <code>number</code> | 
 
 
 <br><a name="FindBlocksBlockValueFunction"></a>
 
-## FindBlocksBlockValueFunction : <code>function</code>
-> Signature: `(blockName: string) => number`
+## FindBlocksBlockValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| blockName | <code>string</code> | 
 
 
 <br><a name="FindBlocksSortValueFunction"></a>
 
-## FindBlocksSortValueFunction : <code>function</code>
-> Signature: `(distance: number, pointValue: number, digTime: number) => number`
+## FindBlocksSortValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| distance | <code>number</code> | 
+| pointValue | <code>number</code> | 
+| digTime | <code>number</code> | 
 
 
 <br><a name="FindItemsOnGroundItemValueFunction"></a>
 
-## FindItemsOnGroundItemValueFunction : <code>function</code>
-> Signature: `(blockName: string) => number`
+## FindItemsOnGroundItemValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| blockName | <code>string</code> | 
 
 
 <br><a name="FindItemsOnGroundSortValueFunction"></a>
 
-## FindItemsOnGroundSortValueFunction : <code>function</code>
-> Signature: `(distance: number, pointValue: number) => number`
+## FindItemsOnGroundSortValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| distance | <code>number</code> | 
+| pointValue | <code>number</code> | 
 
