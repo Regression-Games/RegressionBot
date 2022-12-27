@@ -134,7 +134,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.entityNamesMatch(targetName, entity, [options])](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
     * [.handlePath([pathFunc], [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
-    * [.findEntities([options])](#RGBot+findEntities) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findEntities([options])](#RGBot+findEntities) ⇒ <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code>
     * [.approachEntity(entity, [options])](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.followEntity(entity, [options])](#RGBot+followEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.avoidEntity(entity, [options])](#RGBot+avoidEntity) ⇒ <code>Promise.&lt;void&gt;</code>
@@ -143,7 +143,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.moveAwayFrom(position, distance)](#RGBot+moveAwayFrom) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.wander([minDistance], [maxDistance])](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findBlock(blockType, [options])](#RGBot+findBlock) ⇒ <code>Block</code> \| <code>null</code>
-    * [.findBlocks([options])](#RGBot+findBlocks) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findBlocks([options])](#RGBot+findBlocks) ⇒ <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code>
     * [.approachBlock(block, [options])](#RGBot+approachBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.placeBlock(blockName, targetBlock, [options])](#RGBot+placeBlock) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.equipBestHarvestTool(block)](#RGBot+equipBestHarvestTool) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
@@ -153,7 +153,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.findAndDigBlock(blockType, [options])](#RGBot+findAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.approachAndDigBlock(block, [options])](#RGBot+approachAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findItemOnGround(itemName, [options])](#RGBot+findItemOnGround) ⇒ <code>Item</code> \| <code>null</code>
-    * [.findItemsOnGround([options])](#RGBot+findItemsOnGround) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findItemsOnGround([options])](#RGBot+findItemsOnGround) ⇒ <code>Array.&lt;FindResult.&lt;Item&gt;&gt;</code>
     * [.collectItemOnGround(item)](#RGBot+collectItemOnGround) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findAndCollectItemsOnGround([options])](#RGBot+findAndCollectItemsOnGround) ⇒ <code>Promise.&lt;Array.&lt;Item&gt;&gt;</code>
     * [.inventoryContainsItem(itemName, [options])](#RGBot+inventoryContainsItem) ⇒ <code>boolean</code>
@@ -557,10 +557,10 @@ rgBot.findEntity({targetName: "chicken"})
 
 <br><a name="RGBot+findEntities"></a>
 
-### rgBot.findEntities([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findEntities([options]) ⇒ <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code>
 > Find the nearest entity matching the search criteria.
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - To get only the 'best' entity result, call findEntities(...).shift().  Note that the result may be null if no entities were found  
+**Returns**: <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code> - To get only the 'best' entity result, call findEntities(...).shift().  Note that the result may be null if no entities were found  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -703,10 +703,10 @@ while (target.isValid) {
 
 <br><a name="RGBot+findBlocks"></a>
 
-### rgBot.findBlocks([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findBlocks([options]) ⇒ <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code>
 > Returns the best block that is diggable within a maximum distance from the Bot.
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - - the best blocks found
+**Returns**: <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code> - - the best blocks found
 
 To get only the 'best' block result, call findBlocks(...).shift().  Note that the result may be null if no blocks were found  
 
@@ -851,10 +851,10 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 
 <br><a name="RGBot+findItemsOnGround"></a>
 
-### rgBot.findItemsOnGround([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findItemsOnGround([options]) ⇒ <code>Array.&lt;FindResult.&lt;Item&gt;&gt;</code>
 > Returns a list of all Items that are on the ground within a maximum distance from the Bot (can be empty).
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - - the best items found
+**Returns**: <code>Array.&lt;FindResult.&lt;Item&gt;&gt;</code> - - the best items found
 
 To get only the 'best' item to collect, call findItems(...).shift().  Note that the result may be null if no items were found  
 
@@ -1145,7 +1145,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 * [FindResult](#FindResult)
     * [new FindResult(result, value)](#new_FindResult_new)
-    * [.result](#FindResult+result) : <code>Entity</code> \| <code>Item</code> \| <code>Block</code>
+    * [.result](#FindResult+result) : <code>T</code>
     * [.value](#FindResult+value) : <code>number</code>
 
 
@@ -1155,13 +1155,13 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| result | <code>Entity</code>, <code>Item</code>, <code>Block</code> | The result object |
+| result | <code>T</code> | The result object |
 | value | <code>number</code> | The value computed for this result during evaluation |
 
 
 <br><a name="FindResult+result"></a>
 
-### findResult.result : <code>Entity</code> \| <code>Item</code> \| <code>Block</code>
+### findResult.result : <code>T</code>
 
 <br><a name="FindResult+value"></a>
 
