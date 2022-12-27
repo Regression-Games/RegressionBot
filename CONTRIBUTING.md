@@ -85,10 +85,27 @@ This test is the same as **Fact 1**, but has a higher percentage of players sinc
 Focusing on this goal ensures that we increase the chance that a player never gets stuck on a library-related issue. Players should spend their time focusing on their strategies, rather than the intricacies of code. When a fatal error occurs that requires the user to fix their code, we should make every attempt to point them in the right direction. Examples of this include:
 * Logging errors that make direct suggestions to fix (e.g. "Invalid item name. Make sure that the item name is a valid id (e.g 'spruce_log') instead of the displayed name (e.g. 'Spruce Log'). The list of valid items can be found at https://...")
 * Logging errors that include links to documentaton for next steps (e.g. "... To see approaches to fix this, visit https://...")
+* Explaining it more simple terms **why** it failed
+
+Good Examples of handling this:
+* [Explicitly stating that the error is fine and expected](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1088)
+* [Saying why it failed in simple turns](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1102)
 
 **Measurement Approach:** Internal Audit
 
-**Most recent test results:** Not yet obtained
+**Most recent test results:** 
+
+(Dec 27, 2022) Out of **17** explicit errors, **9** had a next steps or more info provided = **53%** success rate.
+
+Failed cases:
+* [When attacking an enemy fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L735)
+* [When approaching a block fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L956)
+* [When equipping a tool fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1005)
+* [When equipping a tool fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1099)
+* [When approaching and digging a block fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1172)
+* [When collecting an item fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1332)
+* [When dropping an item fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1417)
+* [Error when crafting an item](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1498)
 
 ## Link to Survey for Fact Checking
 
@@ -139,7 +156,7 @@ bot.closeChest(openChest); // or openChest.close()
 
 Our preference is to be over-specifying and over-describing functions. In other words, we don't mind having longer function names if the code then becomes more readable and less ambiguous. We should strive to make sure that our code **does what it says, and says what it does.**
 
-For example
+For example:
 
 ```
 // Find and dig a block
