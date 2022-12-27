@@ -59,7 +59,9 @@ It finds animals and picks up items off the ground
 ```
 
 **Measurement Approach:** Survey / Interview
+
 **Desired sample size per test**: 10-15 users
+
 **Most recent test results:** We should include the **average** of all the examples, and a table of the specific templates and examples (i.e. each example bot).
 
 Example Prompt for the Interviewee
@@ -73,7 +75,9 @@ Making this goal a reality ensures that players who know JavaScript well can jum
 This test is the same as **Fact 1**, but has a higher percentage of players since the players have more experience with JavaScript.
 
 **Measurement Approach:** Survey / Interview
+
 **Desired sample size per test**: 10-15 users
+
 **Most recent test results:** We should include the **average** of all the examples, and a table of the specific templates and examples (i.e. each example bot).
 
 
@@ -83,6 +87,7 @@ Focusing on this goal ensures that we increase the chance that a player never ge
 * Logging errors that include links to documentaton for next steps (e.g. "... To see approaches to fix this, visit https://...")
 
 **Measurement Approach:** Internal Audit
+
 **Most recent test results:** Not yet obtained
 
 ## Link to Survey for Fact Checking
