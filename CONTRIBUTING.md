@@ -96,4 +96,61 @@ https://d7y6yysps34.typeform.com/to/feG9z7kp
 
 ## Design Patterns
 
-WIP
+### Awaits, Promises, and Callbacks
+
+Most of our functions and design patterns should use Promises + `await` when possible. For example:
+
+**DON'T IMPLEMENT**
+```javascript
+bot.findAndDigBlock('dirt', (block) => {
+    ...
+})
+```
+**DON'T PROVIDE AS AN EXAMPLE**
+```javascript
+bot.findAndDigBlock('dirt')
+  .then((block) => {...})
+```
+
+**DO**
+```javascript
+let block = await bot.findAndDigBlock('dirt')
+```
+
+In the case where a user-provided block of code **needs** to be passed to a library function, this is fine. This should really only happen when the operation requires some sort of context that needs managing (such as opening a chest, e.g. there is a before and after operation). For example:
+
+**DO**
+```javascript
+bot.openAndInteractWithChest(chest, (chest) => {
+    chest.place(...)
+});
+```
+
+In the cases of these context-aware operations (opening and closing a chest, mounting and unmounting a horse, etc..) we should still provide the context-unaware functions, that the user can use themselves). These are useful for sending new players quick code examples that they can understand.
+
+**ALSO DO**
+```javascript
+let openChest = bot.openChest(chest);
+openChest.place(...)
+bot.closeChest(openChest); // or openChest.close()
+```
+
+## Variable and Function Naming
+
+Our preference is to be over-specifying and over-describing functions. In other words, we don't mind having longer function names if the code then becomes more readable and less ambiguous. We should strive to make sure that our code **does what it says, and says what it does.**
+
+For example
+
+```
+// Find and dig a block
+bot.findAndDigBlock() // Good
+bot.digBlock() // Bad
+
+// Approach a player
+bot.approachEntity() // Good
+bot.approach() // Bad
+
+// Clear the inventory of all items
+bot.dropAllInventoryItems() // Good
+bot.dropInventory() // Bad
+```
