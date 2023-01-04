@@ -42,7 +42,7 @@ async function huntAnimals() {
 **Acceptable Answers**
 
 ```
-This code finds animals like chickens and then hunts them. If it can't find an animal, it wanders around. Then it picks up the items.
+This code finds animals such as chickens, hunts them, then picks up dropped items. If it can't find an animal, it instead wanders around until it can.
 ```
 ```
 The code finds animals, kills them, and then picks up items they drop
