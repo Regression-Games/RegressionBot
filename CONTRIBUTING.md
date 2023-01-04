@@ -45,7 +45,7 @@ async function huntAnimals() {
 This code finds animals such as chickens, hunts them, then picks up dropped items. If it can't find an animal, it instead wanders around until it can.
 ```
 ```
-The code finds animals, kills them, and then picks up items they drop
+The bot finds animals, kills them, and then picks up items the animals drop.
 ```
 ```
 The bot finds animals and kills them if it can find them (otherwise it doesn't do anything)
