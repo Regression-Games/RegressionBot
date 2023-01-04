@@ -53,7 +53,7 @@ The bot finds animals and kills them if it can find them (otherwise it doesn't d
 
 **Unacceptable Answers**
 ```
-The bot hunts animals # This means they just read the function name
+The bot hunts animals.  # This indicates they read the function name rather than understanding the code
 ```
 ```
 I'm not sure, something about hunting
