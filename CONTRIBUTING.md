@@ -4,7 +4,7 @@ This document outlines the goals, ideas, and roadmap for the rg-bot library (as 
 
 ## Core Facts
 
-The success of this library is dictated by various core facts that should be true. Our goal is to make sure that these facts are always true, and any change that causes one of these facts to not be true should be re-evaluated.
+The success of this library is dictated by its adherence to several core facts. Our goal is to make sure that these facts inform changes to the library. Any change that violates one or more of these facts must be re-evaluated.
 
 Note that some of these facts require testing the library against real users. We don't need to evaluate these specific items every time a change occurs in the library, but we should make that evaluation often.
 
@@ -18,13 +18,17 @@ async function huntAnimals() {
     let nearbyAnimals = bot.findEntities({entityNames: animalsToHunt, maxDistance: 100});
     console.log(nearbyAnimals)
     if (nearbyAnimals.length == 0) {
-        bot.chat("Could not find animals nearby... going to wander and try again")
-        await bot.wander();
-        return await huntAnimals()
+        bot.chat("Could not find animals nearby... try wandering around first with `bot.wander()`")
+        return
     }
     let animalToAttack = nearbyAnimals[0].result
     bot.chat("Hunting a " + animalToAttack.name)
-    while (animalToAttack.isValid) {
+    let attackCount = 0
+    while (animalToAttack.isValid) 
+        if (attackCount > 100) {
+            bot.chat("Could not kill animal, stopping. Try hunting a new animal.")
+            return;
+        }
         await bot.attackEntity(animalToAttack)
     }
     bot.chat("Finished attacking the " + animalToAttack.type, ", moving on the next victim")
@@ -44,7 +48,7 @@ This code finds animals like chickens and then hunts them. If it can't find an a
 The code finds animals, kills them, and then picks up items they drop
 ```
 ```
-The bot finds animals and kills them if it can find them
+The bot finds animals and kills them if it can find them (otherwise it doesn't do anything)
 ```
 
 **Unacceptable Answers**
@@ -147,9 +151,15 @@ In the cases of these context-aware operations (opening and closing a chest, mou
 
 **ALSO DO**
 ```javascript
-let openChest = bot.openChest(chest);
-openChest.place(...)
-bot.closeChest(openChest); // or openChest.close()
+let openChest;
+try {
+    openChest = bot.openChest(chest);
+    openChest.place(...)
+} catch(err) {
+    ...
+} finally {
+    bot.closeChest(openChest); // or openChest.close()
+}
 ```
 
 ## Variable and Function Naming
