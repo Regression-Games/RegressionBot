@@ -9,7 +9,7 @@ The success of this library is dictated by its adherence to several core facts. 
 Note that some of these facts require testing the library against real users. We don't need to evaluate these specific items every time a change occurs in the library, but we should make that evaluation often.
 
 #### Fact 1: 80% of users with more than 6 months and less than 1 year of JavaScript experience should be able to articulate what a provided example / template does.
-Making this goal a reality ensures that most new players who may not be coding experts can jump right in and begin understanding the bots on the Regression Games platform. This is measured by conducting user-interviews and surveys with potential players. The user should be able to _roughly describe_ the algorithm in the example (we define this as getting most of the algorithm). Here is an example of a template:
+This fact ensures that the average new player with limited coding experience can engage with and understand bots on the Regression Games platform. This goal is measured by conducting interviews and surveys with players and potential players. The player should be able to _roughly describe_ the algorithm in a given example - we define this as understanding most of the algorithm. See the following example:
 
 ```javascript
 const animalsToHunt = ["chicken", "pig", "cow", "sheep", "player"];
