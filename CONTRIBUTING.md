@@ -74,9 +74,9 @@ Please describe what this bot does. Try to use a full sentence, and cover (at a 
 ```
 
 ### Fact 2: 95% of users with great than 1 year of JavaScript experience should be able to articulate what the provided examples / templates do
-Making this goal a reality ensures that players who know JavaScript well can jump right in and begin understanding the bots on the Regression Games platform. This is measured by conducting user-interviews and surveys with potential players. The user should be able to _roughly describe_ the algorithm in the example (we define this as getting most of the algorithm).
+This fact ensures that players with an intermediate level of coding experience can engage with and understand bots on the Regression Games platform. This goal is measured by conducting interviews and surveys with players and potential players. The player should be able to _roughly describe_ the algorithm in a given example -we define this as understanding most of the algorithm.
 
-This test is the same as **Fact 1**, but has a higher percentage of players since the players have more experience with JavaScript.
+This test is the same as **Fact 1** but requires a higher success rate because the targeted players are expected to be more experienced with JavaScript.
 
 **Measurement Approach:** Survey / Interview
 
@@ -86,20 +86,20 @@ This test is the same as **Fact 1**, but has a higher percentage of players sinc
 
 
 ### Fact 3: A user that encounters an error within our library that they must recover from should immediately have one next step available to them
-Focusing on this goal ensures that we increase the chance that a player never gets stuck on a library-related issue. Players should spend their time focusing on their strategies, rather than the intricacies of code. When a fatal error occurs that requires the user to fix their code, we should make every attempt to point them in the right direction. Examples of this include:
-* Logging errors that make direct suggestions to fix (e.g. "Invalid item name. Make sure that the item name is a valid id (e.g 'spruce_log') instead of the displayed name (e.g. 'Spruce Log'). The list of valid items can be found at https://...")
-* Logging errors that include links to documentaton for next steps (e.g. "... To see approaches to fix this, visit https://...")
+This fact ensures that a player never gets stuck due to a library-related issue. Players should be able to focus on their strategies rather than the intricacies of the library. When a fatal error occurs which requires handling in the user's code, we must attempt to point them in the right direction towards resolution. Examples of this include:
+* Logging errors with a direct suggestion on how to fix the root cause of the error (e.g. "Invalid item name. Make sure that the item name is a valid id (e.g 'spruce_log') instead of a displayed name (e.g. 'Spruce Log'). The list of valid items can be found at https://...")
+* Logging errors that include links to documentation for next steps (e.g. "... To see approaches to fix this, visit https://...")
 * Explaining it more simple terms **why** it failed
 
-Good Examples of handling this:
-* [Explicitly stating that the error is fine and expected](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1088)
-* [Saying why it failed in simple turns](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1102)
+Acceptable examples of providing recovery options to the user:
+* [Explicitly stating that an error is expected](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1088)
+* [Stating why an action failed in simple terms](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L1102)
 
 **Measurement Approach:** Internal Audit
 
 **Most recent test results:** 
 
-(Dec 27, 2022) Out of **17** explicit errors, **9** had a next steps or more info provided = **53%** success rate.
+(Dec 27, 2022) Out of **17** explicit errors, **9** provided next steps or more info = **53%** success rate.
 
 Failed cases:
 * [When attacking an enemy fails](https://github.com/Regression-Games/RegressionBot/blob/e2bddcc37950a9f2ee5718ff5aa4dda549c5f008/lib/RGBot.js#L735)
@@ -117,9 +117,9 @@ https://d7y6yysps34.typeform.com/to/feG9z7kp
 
 ## Design Patterns
 
-### Awaits, Promises, and Callbacks
+### Promises and Callbacks
 
-Most of our functions and design patterns should use Promises + `await` when possible. For example:
+Most of our functions and design patterns should use an `async/await` pattern for Promises when possible. For example:
 
 **DON'T IMPLEMENT**
 ```javascript
@@ -147,7 +147,7 @@ bot.openAndInteractWithChest(chest, (chest) => {
 });
 ```
 
-In the cases of these context-aware operations (opening and closing a chest, mounting and unmounting a horse, etc..) we should still provide the context-unaware functions, that the user can use themselves). These are useful for sending new players quick code examples that they can understand.
+In the cases of these context-aware operations (opening and closing a chest, mounting and unmounting a horse, etc..) we should still provide the context-unaware functions, which the user can use themselves). These are useful for sending new players quick code examples that they can understand.
 
 **ALSO DO**
 ```javascript
