@@ -71,34 +71,40 @@ with the distinction that you must instantiate and configure your own mineflayer
 Example:
 
 ```javascript
-// import mineflayer and rg-bot
+// import events, mineflayer, rg-bot
+const EventEmitter = require('events').EventEmitter;
 const mineflayer = require('mineflayer');
 const RGBot = require('rg-bot').RGBot;
 
 // create mineflayer bot
 const bot = mineflayer.createBot({username: 'Bot'});
 
-// create an RGBot
-// RGBot interacts directly with your mineflayer Bot instance
-const rg = new RGBot(bot);
-rg.setDebug(true);
+bot.on('inject_allowed', function () {
+    // create match info emitter
+    const matchInfoEmitter = new EventEmitter();
 
-// you can invoke methods from both the mineflayer Bot and RGBot
-bot.on('spawn', function() {
-    rg.chat('Hello World');
-})
+    // create an RGBot
+    // RGBot interacts directly with your mineflayer Bot instance
+    const rg = new RGBot(bot, matchInfoEmitter);
+    rg.setDebug(true);
 
-// or you can can choose to make calls to mineflayer through the RGBot for consistency
-rg.mineflayer().on('chat', async function (username, message) {
-    if(username === rg.mineflayer().username) return
-    
-    if(message === 'collect wood') {
-        await rg.findAndDigBlock('log', {partialMatch: true});
-    }
-    else if (message === 'drop wood') {
-        await rg.dropInventoryItem('log', {partialMatch: true, quantity: 1});
-    }
-})
+    // you can invoke methods from both the mineflayer Bot and RGBot
+    bot.on('spawn', function () {
+        rg.chat('Hello World');
+    });
+
+    // or you can can choose to make calls to mineflayer through the RGBot for consistency
+    rg.mineflayer().on('chat', async function (username, message) {
+        if (username === rg.mineflayer().username) return
+
+        if (message === 'collect wood') {
+            await rg.findAndDigBlock('log', {partialMatch: true});
+        }
+        else if (message === 'drop wood') {
+            await rg.dropInventoryItem('log', {partialMatch: true, quantity: 1});
+        }
+    });
+});
 ```
 
 ### Additional Examples
