@@ -41,17 +41,34 @@ The digTime will be Infinity if the block is not diggable with any tool the bot 
 ## Functions
 
 <dl>
-<dt><a href="#DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION">DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION(distance, pointValue, digTime)</a> ⇒ <code>number</code></dt>
+<dt><a href="#DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION">DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION(distance, [pointValue], [digTime])</a> ⇒ <code>number</code></dt>
 <dd><p>MC character running speed is 5 blocks per second, up to 9 with soul speed 3.
 Distance to travel doesn&#39;t always mean flat ground running.
 Sometimes distance implies non-linear paths or block digging, but this default gives a reasonable estimate</p>
 <p>After some experimentation/white-boarding, we found that pointValue-distance-digTime gives a reasonable balance
 of point return vs time to reach further blocks, which often involves digging other blocks first.</p>
 </dd>
-<dt><a href="#DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION">DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION(distance, pointValue, health, defense, toughness)</a> ⇒ <code>number</code></dt>
+<dt><a href="#DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION">DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION(distance, pointValue, [health], [defense], [toughness])</a> ⇒ <code>number</code></dt>
 <dd><p>For Reference In Minecraft: (damageTaken = damage * (1 - min(20, max(defense / 5, defense - damage / (toughness / 4 + 2)))) / 25)</p>
 </dd>
-<dt><a href="#DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION">DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION(distance, pointValue)</a> ⇒ <code>number</code></dt>
+<dt><a href="#DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION">DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION(distance, [pointValue])</a> ⇒ <code>number</code></dt>
+<dd></dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#FindEntitiesEntityValueFunction">FindEntitiesEntityValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindEntitiesSortValueFunction">FindEntitiesSortValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindBlocksBlockValueFunction">FindBlocksBlockValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindBlocksSortValueFunction">FindBlocksSortValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindItemsOnGroundItemValueFunction">FindItemsOnGroundItemValueFunction</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#FindItemsOnGroundSortValueFunction">FindItemsOnGroundSortValueFunction</a> ⇒ <code>number</code></dt>
 <dd></dd>
 </dl>
 
@@ -117,16 +134,16 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.entityNamesMatch(targetName, entity, [options])](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
     * [.handlePath([pathFunc], [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
-    * [.findEntities([options])](#RGBot+findEntities) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findEntities([options])](#RGBot+findEntities) ⇒ <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code>
     * [.approachEntity(entity, [options])](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.followEntity(entity, [options])](#RGBot+followEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.avoidEntity(entity, [options])](#RGBot+avoidEntity) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.attackEntity(entity, [options])](#RGBot+attackEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.waitForWeaponCoolDown()](#RGBot+waitForWeaponCoolDown) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.moveAwayFrom(position, distance)](#RGBot+moveAwayFrom) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * [.wander(minDistance, maxDistance)](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.wander([minDistance], [maxDistance])](#RGBot+wander) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findBlock(blockType, [options])](#RGBot+findBlock) ⇒ <code>Block</code> \| <code>null</code>
-    * [.findBlocks([options])](#RGBot+findBlocks) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findBlocks([options])](#RGBot+findBlocks) ⇒ <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code>
     * [.approachBlock(block, [options])](#RGBot+approachBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.placeBlock(blockName, targetBlock, [options])](#RGBot+placeBlock) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.equipBestHarvestTool(block)](#RGBot+equipBestHarvestTool) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
@@ -136,11 +153,11 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.findAndDigBlock(blockType, [options])](#RGBot+findAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.approachAndDigBlock(block, [options])](#RGBot+approachAndDigBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findItemOnGround(itemName, [options])](#RGBot+findItemOnGround) ⇒ <code>Item</code> \| <code>null</code>
-    * [.findItemsOnGround([options])](#RGBot+findItemsOnGround) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+    * [.findItemsOnGround([options])](#RGBot+findItemsOnGround) ⇒ <code>Array.&lt;FindResult.&lt;Item&gt;&gt;</code>
     * [.collectItemOnGround(item)](#RGBot+collectItemOnGround) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findAndCollectItemsOnGround([options])](#RGBot+findAndCollectItemsOnGround) ⇒ <code>Promise.&lt;Array.&lt;Item&gt;&gt;</code>
     * [.inventoryContainsItem(itemName, [options])](#RGBot+inventoryContainsItem) ⇒ <code>boolean</code>
-    * [.getInventoryItemQuantity(itemName, [options])](#RGBot+getInventoryItemQuantity) ⇒ <code>int</code>
+    * [.getInventoryItemQuantity(itemName, [options])](#RGBot+getInventoryItemQuantity) ⇒ <code>number</code>
     * [.dropInventoryItem(itemName, [options])](#RGBot+dropInventoryItem) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.isInventorySlotsFull()](#RGBot+isInventorySlotsFull) ⇒ <code>boolean</code>
     * [.getAllInventoryItems()](#RGBot+getAllInventoryItems) ⇒ <code>Array.&lt;Item&gt;</code>
@@ -540,10 +557,10 @@ rgBot.findEntity({targetName: "chicken"})
 
 <br><a name="RGBot+findEntities"></a>
 
-### rgBot.findEntities([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findEntities([options]) ⇒ <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code>
 > Find the nearest entity matching the search criteria.
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - To get only the 'best' entity result, call findEntities(...).shift().  Note that the result may be null if no entities were found  
+**Returns**: <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code> - To get only the 'best' entity result, call findEntities(...).shift().  Note that the result may be null if no entities were found  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -553,8 +570,8 @@ rgBot.findEntity({targetName: "chicken"})
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Consider entities whose username or name partially match one of the targetNames |
 | [options.maxDistance] | <code>number</code> |  | Max range to consider |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching entities to consider |
-| [options.entityValueFunction] | <code>function</code> |  | Function to call to get the value of an entity based on its name (entityName). A good example function is { return scoreValueOf[entityUsername || entityName] }, where scoreValueOf is the point value or intrinsic value of the entity in the game mode being played.  If you don't want an entity considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
-| [options.sortValueFunction] | <code>function</code> |  | function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION |
+| [options.entityValueFunction] | [<code>FindEntitiesEntityValueFunction</code>](#FindEntitiesEntityValueFunction) |  | Function to call to get the value of an entity based on its name (entityName). A good example function is { return scoreValueOf[entityUsername || entityName] }, where scoreValueOf is the point value or intrinsic value of the entity in the game mode being played.  If you don't want an entity considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
+| [options.sortValueFunction] | [<code>FindEntitiesSortValueFunction</code>](#FindEntitiesSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+approachEntity"></a>
@@ -656,7 +673,7 @@ while (target.isValid) {
 
 <br><a name="RGBot+wander"></a>
 
-### rgBot.wander(minDistance, maxDistance) ⇒ <code>Promise.&lt;boolean&gt;</code>
+### rgBot.wander([minDistance], [maxDistance]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Choose a random point within a minimum and maximum radius around the Bot and approach it.
 > Points are calculated on the X and Z axes.
 
@@ -664,8 +681,8 @@ while (target.isValid) {
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| minDistance | <code>number</code> | <code>10</code> | The minimum distance the point may be from the Bot |
-| maxDistance | <code>number</code> | <code>10</code> | The maximum distance the point may be from the Bot |
+| [minDistance] | <code>number</code> | <code>10</code> | The minimum distance the point may be from the Bot |
+| [maxDistance] | <code>number</code> | <code>10</code> | The maximum distance the point may be from the Bot |
 
 
 <br><a name="RGBot+findBlock"></a>
@@ -686,10 +703,10 @@ while (target.isValid) {
 
 <br><a name="RGBot+findBlocks"></a>
 
-### rgBot.findBlocks([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findBlocks([options]) ⇒ <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code>
 > Returns the best block that is diggable within a maximum distance from the Bot.
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - - the best blocks found
+**Returns**: <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code> - - the best blocks found
 
 To get only the 'best' block result, call findBlocks(...).shift().  Note that the result may be null if no blocks were found  
 
@@ -701,8 +718,8 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Only find blocks that don't have a block above them. |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Max range to consider.  Be careful as large values have performance implications.  30 means up to 60x60x60 (216000) blocks could be evaluated.  50 means up to 100x100x100 (1000000) blocks could be evaluated |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching blocks |
-| [options.blockValueFunction] | <code>function</code> |  | Function to call to get the value of a block based on its name (blockName). A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
-| [options.sortValueFunction] | <code>function</code> |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION |
+| [options.blockValueFunction] | [<code>FindBlocksBlockValueFunction</code>](#FindBlocksBlockValueFunction) |  | Function to call to get the value of a block based on its name (blockName). A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
+| [options.sortValueFunction] | [<code>FindBlocksSortValueFunction</code>](#FindBlocksSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+approachBlock"></a>
@@ -834,10 +851,10 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 
 <br><a name="RGBot+findItemsOnGround"></a>
 
-### rgBot.findItemsOnGround([options]) ⇒ [<code>Array.&lt;FindResult&gt;</code>](#FindResult)
+### rgBot.findItemsOnGround([options]) ⇒ <code>Array.&lt;FindResult.&lt;Item&gt;&gt;</code>
 > Returns a list of all Items that are on the ground within a maximum distance from the Bot (can be empty).
 
-**Returns**: [<code>Array.&lt;FindResult&gt;</code>](#FindResult) - - the best items found
+**Returns**: <code>Array.&lt;FindResult.&lt;Item&gt;&gt;</code> - - the best items found
 
 To get only the 'best' item to collect, call findItems(...).shift().  Note that the result may be null if no items were found  
 
@@ -848,8 +865,8 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contains any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.) |
 | [options.maxDistance] | <code>number</code> |  | find any Items matching the search criteria up to and including this distance from the Bot |
 | [options.maxCount] | <code>number</code> | <code>1</code> | limit the number of items to find |
-| [options.itemValueFunction] | <code>function</code> |  | function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
-| [options.sortValueFunction] | <code>function</code> |  | function to call to help sort the evaluation of results. Should return the best item with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION |
+| [options.itemValueFunction] | [<code>FindItemsOnGroundItemValueFunction</code>](#FindItemsOnGroundItemValueFunction) |  | Function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
+| [options.sortValueFunction] | [<code>FindItemsOnGroundSortValueFunction</code>](#FindItemsOnGroundSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best item with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION |
 
 
 <br><a name="RGBot+collectItemOnGround"></a>
@@ -895,7 +912,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 <br><a name="RGBot+getInventoryItemQuantity"></a>
 
-### rgBot.getInventoryItemQuantity(itemName, [options]) ⇒ <code>int</code>
+### rgBot.getInventoryItemQuantity(itemName, [options]) ⇒ <code>number</code>
 > Return how many of a specific item the Bot currently holds in its inventory.
 
 
@@ -1097,24 +1114,24 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 
 * [BestHarvestTool](#BestHarvestTool)
-    * [new BestHarvestTool(tool, digTime)](#new_BestHarvestTool_new)
-    * [.tool](#BestHarvestTool+tool) : <code>Item</code>
+    * [new BestHarvestTool(tool, [digTime])](#new_BestHarvestTool_new)
+    * [.tool](#BestHarvestTool+tool) : <code>Item</code> \| <code>null</code>
     * [.digTime](#BestHarvestTool+digTime) : <code>number</code>
 
 
 <br><a name="new_BestHarvestTool_new"></a>
 
-### new BestHarvestTool(tool, digTime)
+### new BestHarvestTool(tool, [digTime])
 
-| Param | Type | Description |
-| --- | --- | --- |
-| tool | <code>Item</code>, <code>null</code> | The Item best suited to dig the block.  Can be null if no tool is needed or if item is not diggable. |
-| digTime | <code>number</code> | Time in milliseconds to dig the block, Infinity if not diggable |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| tool | <code>Item</code>, <code>null</code> |  | The Item best suited to dig the block.  Can be null if no tool is needed or if item is not diggable. |
+| [digTime] | <code>number</code> | <code>Infinity</code> | Time in milliseconds to dig the block, Infinity if not diggable |
 
 
 <br><a name="BestHarvestTool+tool"></a>
 
-### bestHarvestTool.tool : <code>Item</code>
+### bestHarvestTool.tool : <code>Item</code> \| <code>null</code>
 
 <br><a name="BestHarvestTool+digTime"></a>
 
@@ -1128,7 +1145,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 * [FindResult](#FindResult)
     * [new FindResult(result, value)](#new_FindResult_new)
-    * [.result](#FindResult+result) : <code>Entity</code> \| <code>Item</code> \| <code>Block</code>
+    * [.result](#FindResult+result) : <code>T</code>
     * [.value](#FindResult+value) : <code>number</code>
 
 
@@ -1138,13 +1155,13 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| result | <code>Entity</code>, <code>Item</code>, <code>Block</code> | The result object |
+| result | <code>T</code> | The result object |
 | value | <code>number</code> | The value computed for this result during evaluation |
 
 
 <br><a name="FindResult+result"></a>
 
-### findResult.result : <code>Entity</code> \| <code>Item</code> \| <code>Block</code>
+### findResult.result : <code>T</code>
 
 <br><a name="FindResult+value"></a>
 
@@ -1152,7 +1169,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 
 <br><a name="DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION"></a>
 
-## DEFAULT\_FIND\_BLOCKS\_SORT\_VALUE\_FUNCTION(distance, pointValue, digTime) ⇒ <code>number</code>
+## DEFAULT\_FIND\_BLOCKS\_SORT\_VALUE\_FUNCTION(distance, [pointValue], [digTime]) ⇒ <code>number</code>
 > MC character running speed is 5 blocks per second, up to 9 with soul speed 3.
 > Distance to travel doesn't always mean flat ground running.
 > Sometimes distance implies non-linear paths or block digging, but this default gives a reasonable estimate
@@ -1165,33 +1182,94 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | distance | <code>number</code> |  | Blocks away |
-| pointValue | <code>number</code> | <code>0</code> | Score or Intrinsic value of the block being considered |
-| digTime | <code>number</code> | <code>0</code> | milliseconds |
+| [pointValue] | <code>number</code> | <code>0</code> | Score or Intrinsic value of the block being considered |
+| [digTime] | <code>number</code> | <code>0</code> | milliseconds |
 
 
 <br><a name="DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION"></a>
 
-## DEFAULT\_FIND\_ENTITIES\_SORT\_VALUE\_FUNCTION(distance, pointValue, health, defense, toughness) ⇒ <code>number</code>
+## DEFAULT\_FIND\_ENTITIES\_SORT\_VALUE\_FUNCTION(distance, pointValue, [health], [defense], [toughness]) ⇒ <code>number</code>
 > For Reference In Minecraft: (damageTaken = damage * (1 - min(20, max(defense / 5, defense - damage / (toughness / 4 + 2)))) / 25)
 
 **Returns**: <code>number</code> - The sorting value computed.  The 'best' target to attack should have lower sorting values  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| distance |  |  | Blocks away |
+| distance | <code>number</code> |  | Blocks away |
 | pointValue | <code>number</code> |  | Score or Intrinsic value of the entity being considered |
-| health |  | <code>10</code> | Health of the target (normally 0->20, passive NPCs have 10 health) |
-| defense |  | <code>0</code> | Defense value of the target |
-| toughness |  | <code>0</code> | Toughness value of the target |
+| [health] | <code>number</code> | <code>10</code> | Health of the target (normally 0->20, passive NPCs have 10 health) |
+| [defense] | <code>number</code> | <code>0</code> | Defense value of the target |
+| [toughness] | <code>number</code> | <code>0</code> | Toughness value of the target |
 
 
 <br><a name="DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION"></a>
 
-## DEFAULT\_FIND\_ITEMS\_ON\_GROUND\_SORT\_VALUE\_FUNCTION(distance, pointValue) ⇒ <code>number</code>
+## DEFAULT\_FIND\_ITEMS\_ON\_GROUND\_SORT\_VALUE\_FUNCTION(distance, [pointValue]) ⇒ <code>number</code>
 **Returns**: <code>number</code> - The sorting value computed.  The 'best' item to collect should have lower sorting values  
 
-| Param | Default | Description |
-| --- | --- | --- |
-| distance |  | Blocks away |
-| pointValue | <code>0</code> | Score or Intrinsic value of the block being considered |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| distance | <code>number</code> |  | Blocks away |
+| [pointValue] | <code>number</code> | <code>0</code> | Score or Intrinsic value of the block being considered |
+
+
+<br><a name="FindEntitiesEntityValueFunction"></a>
+
+## FindEntitiesEntityValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| entityName | <code>string</code> | 
+
+
+<br><a name="FindEntitiesSortValueFunction"></a>
+
+## FindEntitiesSortValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| distance | <code>number</code> | 
+| pointValue | <code>number</code> | 
+| health | <code>number</code> | 
+| defense | <code>number</code> | 
+| toughness | <code>number</code> | 
+
+
+<br><a name="FindBlocksBlockValueFunction"></a>
+
+## FindBlocksBlockValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| blockName | <code>string</code> | 
+
+
+<br><a name="FindBlocksSortValueFunction"></a>
+
+## FindBlocksSortValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| distance | <code>number</code> | 
+| pointValue | <code>number</code> | 
+| digTime | <code>number</code> | 
+
+
+<br><a name="FindItemsOnGroundItemValueFunction"></a>
+
+## FindItemsOnGroundItemValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| blockName | <code>string</code> | 
+
+
+<br><a name="FindItemsOnGroundSortValueFunction"></a>
+
+## FindItemsOnGroundSortValueFunction ⇒ <code>number</code>
+
+| Param | Type |
+| --- | --- |
+| distance | <code>number</code> | 
+| pointValue | <code>number</code> | 
 

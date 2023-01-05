@@ -3,6 +3,7 @@
   "version": "1.2.1",
   "description": "A library allowing users to easily design and control Regression Games bots in a variety of games",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/Regression-Games/RegressionBot.git"
@@ -10,7 +11,8 @@
   "scripts": {
     "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": "jsdoc2md lib/*.js --plugin dmd-readable > docs/api.md"
+    "docs": "jsdoc2md lib/*.js --configure docs/jsdoc.json --plugin dmd-readable > docs/api.md",
+    "prepublishOnly": "tsc"
   },
   "author": "Regression Games, Inc",
   "license": "ISC",
@@ -30,6 +32,12 @@
   "devDependencies": {
     "dmd-readable": "^1.2.4",
     "husky": "^8.0.2",
-    "jsdoc-to-markdown": "^8.0.0"
-  }
+    "jsdoc-to-markdown": "^8.0.0",
+    "typescript": "^4.9.4"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "types/"
+  ]
 }

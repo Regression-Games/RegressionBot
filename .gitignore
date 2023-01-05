@@ -109,3 +109,5 @@ dist
 .DS_Store
 package-lock.json
 
+# Generated TypeScript definitions
+types/
