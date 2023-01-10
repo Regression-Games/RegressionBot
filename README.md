@@ -23,6 +23,15 @@ and the [Mineflayer-Pathfinder](https://github.com/PrismarineJS/mineflayer-pathf
 RGBot offers a range of methods for interacting with the Minecraft world including placing and breaking Blocks,
 looting from and depositing into chests, and initiating combat.
 
+RGBot also supports using Python3 for Mineflayer bots via the https://github.com/extremeheat/JSPyBridge project that
+bridges from Python into NodeJS Javascript.  Note that this works for diehard Python fans, but is slower than using
+Javascript as all calls into RGBot or Mineflayer APIs use inter process communication to go between the Python and NodeJS
+runtimes.
+
+**!!!**
+**Note: Python3 bots will currently only work with NodeJS 14.x.y versions.  They will NOT work with 16.x.y versions.**
+**!!!**
+
 ### Usage within Regression Games
 
 The Regression Games platform requires an `index.js` file with an exported `configureBot` method which acts as an entrypoint into your bot script.
@@ -41,12 +50,12 @@ function configureBot(bot) {
     bot.setDebug(true);
 
     // announce in chat when Bot spawns
-    bot.on('spawn', function() {
+    bot.mineflayer().on('spawn', function() {
         bot.chat('Hello World');
     })
 
     // use in-game chat to make the Bot collect or drop wood for you
-    bot.on('chat', async function (username, message) {
+    bot.mineflayer().on('chat', async function (username, message) {
         if(username === bot.mineflayer().username) return
 
         if(message === 'collect wood') {
@@ -60,6 +69,45 @@ function configureBot(bot) {
 }
 
 exports.configureBot = configureBot;
+```
+
+```python
+import json
+import logging
+import threading
+import javascript
+
+from javascript import require, On
+
+mineflayer = require('mineflayer')
+mineflayer_pathfinder = require('mineflayer-pathfinder')
+rg_bot = require('rg-bot')
+rg_match_info = require('rg-match-info')
+Vec3 = require('vec3').Vec3
+
+logging.basicConfig(level=logging.NOTSET)
+
+
+def configure_bot(bot):
+
+    # turn on debug logging
+    # logs are displayed within the Regression Games app during a match
+    bot.setDebug(True)
+
+    # announce in chat when Bot spawns
+    @On(bot.mineflayer(), 'spawn')
+    def bot_on_spawn(this):
+        bot.chat('Hello World')
+
+    # use in-game chat to make the Bot collect or drop wood for you
+    @On(bot.mineflayer(), 'chat')
+    def bot_on_chat(username, message):
+        if username == bot.username():
+            return
+        if message == 'collect_wood':
+            bot.findAndDigBlock('log', {'partialMatch': True})
+        elif message == 'drop wood':
+            bot.dropInventoryItem('log', {'partialMatch': True, 'quantity': 1});
 ```
 
 ### External use
