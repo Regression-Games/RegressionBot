@@ -116,7 +116,6 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.lastAttackItem](#RGBot+lastAttackItem) : <code>Item</code>
     * [.setDebug(debug)](#RGBot+setDebug) ⇒ <code>void</code>
     * [.mineflayer()](#RGBot+mineflayer) ⇒ <code>Bot</code>
-    * [.on(event, func)](#RGBot+on) ⇒ <code>void</code>
     * [.allowParkour(allowParkour)](#RGBot+allowParkour) ⇒ <code>void</code>
     * [.allowDigWhilePathing(allowDig)](#RGBot+allowDigWhilePathing) ⇒ <code>void</code>
     * [.chat(message)](#RGBot+chat) ⇒ <code>void</code>
@@ -257,22 +256,6 @@ bot.lastAttackItem = attackItem
 ```js
 // returns the bot username from mineflayer
 rgBot.mineflayer().username
-```
-
-<br><a name="RGBot+on"></a>
-
-### rgBot.on(event, func) ⇒ <code>void</code>
-> Listen for an event and invoke a function when it fires.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| event | <code>string</code> | The event to listen for |
-| func | <code>function</code> | Function that is invoked when event fires |
-
-**Example** *(Reacting to the spawn event)*  
-```js
-rgBot.on('spawn', () => { rgBot.chat('Hello World!') })
 ```
 
 <br><a name="RGBot+allowParkour"></a>
