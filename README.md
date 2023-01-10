@@ -9,6 +9,15 @@ but can easily be integrated into your own projects.
 
 Regression Games is currently in its alpha stage and supports Minecraft. Support for other games will be added over time.
 
+## Compiling Typescript
+
+For local testing it is necessary to compile the typescript types.  This is done automatically when publishing.
+
+```
+sudo npm install -g typescript
+tsc
+```
+
 ## Install
 
 ```
