@@ -116,6 +116,9 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.lastAttackItem](#RGBot+lastAttackItem) : <code>Item</code>
     * [.setDebug(debug)](#RGBot+setDebug) ⇒ <code>void</code>
     * [.mineflayer()](#RGBot+mineflayer) ⇒ <code>Bot</code>
+    * [.on(event, func)](#RGBot+on) ⇒ <code>this</code>
+    * [.off(event, func)](#RGBot+off) ⇒ <code>this</code>
+    * [.once(event, func)](#RGBot+once) ⇒ <code>this</code>
     * [.allowParkour(allowParkour)](#RGBot+allowParkour) ⇒ <code>void</code>
     * [.allowDigWhilePathing(allowDig)](#RGBot+allowDigWhilePathing) ⇒ <code>void</code>
     * [.chat(message)](#RGBot+chat) ⇒ <code>void</code>
@@ -256,6 +259,60 @@ bot.lastAttackItem = attackItem
 ```js
 // returns the bot username from mineflayer
 rgBot.mineflayer().username
+```
+
+<br><a name="RGBot+on"></a>
+
+### rgBot.on(event, func) ⇒ <code>this</code>
+> Listen for an event and invoke a function when it fires.
+> This automatically handles passing through listeners to mineflayer for events that are not RGBot/RGMatchInfo specific.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>string</code> | The event to listen for |
+| func | <code>function</code> | Function that is invoked when event fires |
+
+**Example** *(Reacting to the spawn event)*  
+```js
+listenerFunc() { rgBot.chat('Hello World!') }
+rgBot.on('spawn', listenerFunc )
+```
+
+<br><a name="RGBot+off"></a>
+
+### rgBot.off(event, func) ⇒ <code>this</code>
+> Unregister a listener for an event.
+> This automatically handles passing through listeners to mineflayer for events that are not RGBot/RGMatchInfo specific.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>string</code> | The event to listen for |
+| func | <code>function</code> | Function that is invoked when event fires |
+
+**Example** *(Reacting to the spawn event)*  
+```js
+listenerFunc() { rgBot.chat('Hello World!') }
+rgBot.off('spawn', listenerFunc)
+```
+
+<br><a name="RGBot+once"></a>
+
+### rgBot.once(event, func) ⇒ <code>this</code>
+> Adds a one-time listener function for the event named event. The next time event is triggered, this listener is removed and then invoked.
+> This automatically handles passing through listeners to mineflayer for events that are not RGBot/RGMatchInfo specific.
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| event | <code>string</code> | The event to listen for |
+| func | <code>function</code> | Function that is invoked when event fires |
+
+**Example** *(Reacting to the spawn event)*  
+```js
+listenerFunc() { rgBot.chat('Hello World!') }
+rgBot.once('spawn', listenerFunc)
 ```
 
 <br><a name="RGBot+allowParkour"></a>

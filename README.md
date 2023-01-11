@@ -9,6 +9,15 @@ but can easily be integrated into your own projects.
 
 Regression Games is currently in its alpha stage and supports Minecraft. Support for other games will be added over time.
 
+## Compiling Typescript
+
+For local testing it is necessary to compile the typescript types.  This is done automatically when publishing.
+
+```
+sudo npm install -g typescript
+tsc
+```
+
 ## Install
 
 ```
@@ -95,12 +104,12 @@ def configure_bot(bot):
     bot.setDebug(True)
 
     # announce in chat when Bot spawns
-    @On(bot.mineflayer(), 'spawn')
+    @On(bot, 'spawn')
     def bot_on_spawn(this):
         bot.chat('Hello World')
 
     # use in-game chat to make the Bot collect or drop wood for you
-    @On(bot.mineflayer(), 'chat')
+    @On(bot, 'chat')
     def bot_on_chat(username, message):
         if username == bot.username():
             return
@@ -137,7 +146,8 @@ bot.on('spawn', function() {
 })
 
 // or you can can choose to make calls to mineflayer through the RGBot for consistency
-rg.mineflayer().on('chat', async function (username, message) {
+// This will handle passing through listeners that are not RGBot specific to rg.mineflayer().on(...)
+rg.on('chat', async function (username, message) {
     if(username === rg.mineflayer().username) return
     
     if(message === 'collect wood') {
