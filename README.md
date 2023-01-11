@@ -84,15 +84,15 @@ exports.configureBot = configureBot;
 import json
 import logging
 import threading
-import javascript
+import rg_javascript
 
-from javascript import require, On
+from rg_javascript import require, On
 
-mineflayer = require('mineflayer')
-mineflayer_pathfinder = require('mineflayer-pathfinder')
-rg_bot = require('rg-bot')
-rg_match_info = require('rg-match-info')
-Vec3 = require('vec3').Vec3
+mineflayer = require('mineflayer','4.5.1')
+mineflayer_pathfinder = require('mineflayer-pathfinder','2.4.0')
+rg_bot = require('rg-bot','1.4.0')
+rg_match_info = require('rg-match-info','1.0.0')
+Vec3 = require('vec3','0.1.7').Vec3
 
 logging.basicConfig(level=logging.NOTSET)
 
