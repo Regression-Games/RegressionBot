@@ -32,6 +32,15 @@ and the [Mineflayer-Pathfinder](https://github.com/PrismarineJS/mineflayer-pathf
 RGBot offers a range of methods for interacting with the Minecraft world including placing and breaking Blocks,
 looting from and depositing into chests, and initiating combat.
 
+RGBot also supports using Python3 for Mineflayer bots via the https://github.com/extremeheat/JSPyBridge project that
+bridges from Python into NodeJS Javascript.  Note that this works for diehard Python fans, but is slower than using
+Javascript as all calls into RGBot or Mineflayer APIs use inter process communication to go between the Python and NodeJS
+runtimes.
+
+**!!!**
+**Note: Python3 bots will currently only work with NodeJS 14.x.y versions.  They will NOT work with 16.x.y versions.**
+**!!!**
+
 ### Usage within Regression Games
 
 The Regression Games platform requires an `index.js` file with an exported `configureBot` method which acts as an entrypoint into your bot script.
@@ -41,34 +50,73 @@ Example:
 
 ```javascript
 /**
- * @param {RGBot} bot
+ * @param {RGBot} rgbot
  */
-function configureBot(bot) {
+function configureBot(rgbot) {
 
     // turn on debug logging 
     // logs are displayed within the Regression Games app during a match
-    bot.setDebug(true);
+    rgbot.setDebug(true);
 
     // announce in chat when Bot spawns
-    bot.on('spawn', function() {
-        bot.chat('Hello World');
+    rgbot.on('spawn', function() {
+        rgbot.chat('Hello World');
     })
 
     // use in-game chat to make the Bot collect or drop wood for you
-    bot.on('chat', async function (username, message) {
-        if(username === bot.mineflayer().username) return
+    rgbot.on('chat', async function (username, message) {
+        if(username === rgbot.username()) return
 
         if(message === 'collect wood') {
-            await bot.findAndDigBlock('log', {partialMatch: true});
+            await rgbot.findAndDigBlock('log', {partialMatch: true});
         }
         else if (message === 'drop wood') {
-            await bot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
+            await rgbot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
         }
     })
 
 }
 
 exports.configureBot = configureBot;
+```
+
+```python
+import json
+import logging
+import threading
+import rg_javascript
+
+from rg_javascript import require, On
+
+mineflayer = require('mineflayer','4.5.1')
+mineflayer_pathfinder = require('mineflayer-pathfinder','2.4.0')
+rg_bot = require('rg-bot','1.4.0')
+rg_match_info = require('rg-match-info','1.0.0')
+Vec3 = require('vec3','0.1.7').Vec3
+
+logging.basicConfig(level=logging.NOTSET)
+
+
+def configure_bot(bot):
+
+    # turn on debug logging
+    # logs are displayed within the Regression Games app during a match
+    bot.setDebug(True)
+
+    # announce in chat when Bot spawns
+    @On(bot, 'spawn')
+    def bot_on_spawn(this):
+        bot.chat('Hello World')
+
+    # use in-game chat to make the Bot collect or drop wood for you
+    @On(bot, 'chat')
+    def bot_on_chat(username, message):
+        if username == bot.username():
+            return
+        if message == 'collect_wood':
+            bot.findAndDigBlock('log', {'partialMatch': True})
+        elif message == 'drop wood':
+            bot.dropInventoryItem('log', {'partialMatch': True, 'quantity': 1});
 ```
 
 ### External use
@@ -89,23 +137,24 @@ const bot = mineflayer.createBot({username: 'Bot'});
 
 // create an RGBot
 // RGBot interacts directly with your mineflayer Bot instance
-const rg = new RGBot(bot);
-rg.setDebug(true);
+const rgbot = new RGBot(bot);
+rgbot.setDebug(true);
 
 // you can invoke methods from both the mineflayer Bot and RGBot
 bot.on('spawn', function() {
-    rg.chat('Hello World');
+    rgbot.chat('Hello World');
 })
 
 // or you can can choose to make calls to mineflayer through the RGBot for consistency
-rg.mineflayer().on('chat', async function (username, message) {
-    if(username === rg.mineflayer().username) return
+// This will handle passing through listeners that are not RGBot specific to rg.mineflayer().on(...)
+rgbot.on('chat', async function (username, message) {
+    if(username === rgbot.username()) return
     
     if(message === 'collect wood') {
-        await rg.findAndDigBlock('log', {partialMatch: true});
+        await rgbot.findAndDigBlock('log', {partialMatch: true});
     }
     else if (message === 'drop wood') {
-        await rg.dropInventoryItem('log', {partialMatch: true, quantity: 1});
+        await rgbot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
     }
 })
 ```
