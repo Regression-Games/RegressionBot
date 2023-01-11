@@ -147,7 +147,7 @@ bot.on('spawn', function() {
 
 // or you can can choose to make calls to mineflayer through the RGBot for consistency
 // This will handle passing through listeners that are not RGBot specific to rg.mineflayer().on(...)
-rg.on('chat', async function (username, message) {
+rgbot.on('chat', async function (username, message) {
     if(username === rgbot.username()) return
     
     if(message === 'collect wood') {
