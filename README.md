@@ -128,65 +128,46 @@ with the distinction that you must instantiate and configure your own mineflayer
 Example:
 
 ```javascript
-// import events, mineflayer, rg-bot
-const EventEmitter = require('events').EventEmitter;
+// import mineflayer and rg-bot
 const mineflayer = require('mineflayer');
 const RGBot = require('rg-bot').RGBot;
+
+function setupRGBot(bot) {
+    // create an RGBot
+    // RGBot interacts directly with your mineflayer Bot instance
+    const rgbot = new RGBot(bot);
+    rgbot.setDebug(true);
+
+    // you can invoke methods from both the mineflayer Bot and RGBot
+    bot.on('spawn', function () {
+        rgbot.chat('Hello World');
+    });
+
+    // or you can can choose to make calls to mineflayer through the RGBot for consistency
+    rgbot.mineflayer().on('chat', async function (username, message) {
+        if (username === rgbot.mineflayer().username) return
+
+        if (message === 'collect wood') {
+            await rgbot.findAndDigBlock('log', {partialMatch: true});
+        }
+        else if (message === 'drop wood') {
+            await rgbot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
+        }
+    });
+}
 
 // create mineflayer bot
 const bot = mineflayer.createBot({username: 'Bot'});
 
-<<<<<<< HEAD
-bot.on('inject_allowed', function () {
-    // create match info emitter
-    const matchInfoEmitter = new EventEmitter();
-
-    // create an RGBot
-    // RGBot interacts directly with your mineflayer Bot instance
-    const rg = new RGBot(bot, matchInfoEmitter);
-    rg.setDebug(true);
-
-    // you can invoke methods from both the mineflayer Bot and RGBot
-    bot.on('spawn', function () {
-        rg.chat('Hello World');
+// if the bot.version field is set, then mineflayer has already connected and is ready
+if (bot.version) {
+    setupRGBot(bot);
+} else {
+    // wait for inject_allowed if not connected yet before initializing Movements and other things in RGBot
+    bot.on('inject_allowed', function () {
+        setupRGBot(bot)
     });
-
-    // or you can can choose to make calls to mineflayer through the RGBot for consistency
-    rg.mineflayer().on('chat', async function (username, message) {
-        if (username === rg.mineflayer().username) return
-
-        if (message === 'collect wood') {
-            await rg.findAndDigBlock('log', {partialMatch: true});
-        }
-        else if (message === 'drop wood') {
-            await rg.dropInventoryItem('log', {partialMatch: true, quantity: 1});
-        }
-    });
-});
-=======
-// create an RGBot
-// RGBot interacts directly with your mineflayer Bot instance
-const rgbot = new RGBot(bot);
-rgbot.setDebug(true);
-
-// you can invoke methods from both the mineflayer Bot and RGBot
-bot.on('spawn', function() {
-    rgbot.chat('Hello World');
-})
-
-// or you can can choose to make calls to mineflayer through the RGBot for consistency
-// This will handle passing through listeners that are not RGBot specific to rg.mineflayer().on(...)
-rgbot.on('chat', async function (username, message) {
-    if(username === rgbot.username()) return
-    
-    if(message === 'collect wood') {
-        await rgbot.findAndDigBlock('log', {partialMatch: true});
-    }
-    else if (message === 'drop wood') {
-        await rgbot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
-    }
-})
->>>>>>> upstream/main
+}
 ```
 
 ### Additional Examples
