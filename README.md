@@ -132,31 +132,42 @@ Example:
 const mineflayer = require('mineflayer');
 const RGBot = require('rg-bot').RGBot;
 
+function setupRGBot(bot) {
+    // create an RGBot
+    // RGBot interacts directly with your mineflayer Bot instance
+    const rgbot = new RGBot(bot);
+    rgbot.setDebug(true);
+
+    // you can invoke methods from both the mineflayer Bot and RGBot
+    bot.on('spawn', function () {
+        rgbot.chat('Hello World');
+    });
+
+    // or you can can choose to make calls to mineflayer through the RGBot for consistency
+    rgbot.mineflayer().on('chat', async function (username, message) {
+        if (username === rgbot.mineflayer().username) return
+
+        if (message === 'collect wood') {
+            await rgbot.findAndDigBlock('log', {partialMatch: true});
+        }
+        else if (message === 'drop wood') {
+            await rgbot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
+        }
+    });
+}
+
 // create mineflayer bot
 const bot = mineflayer.createBot({username: 'Bot'});
 
-// create an RGBot
-// RGBot interacts directly with your mineflayer Bot instance
-const rgbot = new RGBot(bot);
-rgbot.setDebug(true);
-
-// you can invoke methods from both the mineflayer Bot and RGBot
-bot.on('spawn', function() {
-    rgbot.chat('Hello World');
-})
-
-// or you can can choose to make calls to mineflayer through the RGBot for consistency
-// This will handle passing through listeners that are not RGBot specific to rg.mineflayer().on(...)
-rgbot.on('chat', async function (username, message) {
-    if(username === rgbot.username()) return
-    
-    if(message === 'collect wood') {
-        await rgbot.findAndDigBlock('log', {partialMatch: true});
-    }
-    else if (message === 'drop wood') {
-        await rgbot.dropInventoryItem('log', {partialMatch: true, quantity: 1});
-    }
-})
+// if the bot.version field is set, then mineflayer has already connected and is ready
+if (bot.version) {
+    setupRGBot(bot);
+} else {
+    // wait for inject_allowed if not connected yet before initializing Movements and other things in RGBot
+    bot.on('inject_allowed', function () {
+        setupRGBot(bot)
+    });
+}
 ```
 
 ### Additional Examples
