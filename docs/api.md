@@ -126,8 +126,12 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.matchInfo()](#RGBot+matchInfo) ⇒ <code>RGMatchInfo</code> \| <code>null</code>
     * [.username()](#RGBot+username) ⇒ <code>string</code>
     * [.teamForPlayer(username)](#RGBot+teamForPlayer) ⇒ <code>string</code> \| <code>null</code>
+    * [.getMyTeam()](#RGBot+getMyTeam) ⇒ <code>string</code> \| <code>null</code>
+    * [.getTeammateUsernames(includeSelf)](#RGBot+getTeammateUsernames) ⇒ <code>Array.&lt;string&gt;</code>
+    * [.getOpponentUsernames()](#RGBot+getOpponentUsernames) ⇒ <code>Array.&lt;string&gt;</code>
     * [.position()](#RGBot+position) ⇒ <code>Vec3</code>
     * [.wait(ticks)](#RGBot+wait) ⇒ <code>Promise.&lt;void&gt;</code>
+    * [.waitForMilliseconds(milliseconds)](#RGBot+waitForMilliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.vecToString(position)](#RGBot+vecToString) ⇒ <code>string</code>
     * [.vecFromString(positionString)](#RGBot+vecFromString) ⇒ <code>Vec3</code> \| <code>null</code>
     * [.getEntityName(entity)](#RGBot+getEntityName) ⇒ <code>string</code> \| <code>null</code>
@@ -147,6 +151,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.findBlock(blockType, [options])](#RGBot+findBlock) ⇒ <code>Block</code> \| <code>null</code>
     * [.findBlocks([options])](#RGBot+findBlocks) ⇒ <code>Array.&lt;FindResult.&lt;Block&gt;&gt;</code>
     * [.approachBlock(block, [options])](#RGBot+approachBlock) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.approachPosition(position, [options])](#RGBot+approachPosition) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.placeBlock(blockName, targetBlock, [options])](#RGBot+placeBlock) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.equipBestHarvestTool(block)](#RGBot+equipBestHarvestTool) ⇒ <code>Promise.&lt;(Item\|null)&gt;</code>
     * [.bestHarvestTool(block)](#RGBot+bestHarvestTool) ⇒ [<code>BestHarvestTool</code>](#BestHarvestTool)
@@ -402,6 +407,32 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 | username | <code>string</code> | Username of the player/bot |
 
 
+<br><a name="RGBot+getMyTeam"></a>
+
+### rgBot.getMyTeam() ⇒ <code>string</code> \| <code>null</code>
+> Gets the team name for this bot
+
+**Returns**: <code>string</code> \| <code>null</code> - Name of the team that this bot is on  
+
+<br><a name="RGBot+getTeammateUsernames"></a>
+
+### rgBot.getTeammateUsernames(includeSelf) ⇒ <code>Array.&lt;string&gt;</code>
+> Returns a list of all players on the same team as this bot.
+
+**Returns**: <code>Array.&lt;string&gt;</code> - A list of all player usernames on the same team as this bot.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| includeSelf | <code>boolean</code> | if true, includes this bot in the list |
+
+
+<br><a name="RGBot+getOpponentUsernames"></a>
+
+### rgBot.getOpponentUsernames() ⇒ <code>Array.&lt;string&gt;</code>
+> Returns a list of all players on the enemy teams (relative to this bot).
+
+**Returns**: <code>Array.&lt;string&gt;</code> - A list of all player usernames on the enemy team.  
+
 <br><a name="RGBot+position"></a>
 
 ### rgBot.position() ⇒ <code>Vec3</code>
@@ -415,11 +446,27 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 > Minecraft normally runs at 20 ticks per second, with an in-game day lasting 24,0000 ticks (20 minutes).
 > This is similar to the standard JavaScript setTimeout function but runs on the physics timer of the Bot specifically.
 > This is useful for waiting on the server to update a Block or spawn drops when you break a Block.
+> To wait for a specific amount of time, see the `waitForMilliseconds` function.
 
+**See**: waitForMilliseconds  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | ticks | <code>number</code> | The number of in-game ticks to wait |
+
+
+<br><a name="RGBot+waitForMilliseconds"></a>
+
+### rgBot.waitForMilliseconds(milliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
+> Pauses the bot to wait for the desired number of milliseconds. Use this
+> function to make the bot wait for a certain amount of time, instead
+> of a certain number of ticks (see `wait(ticks: number)`).
+
+**See**: wait  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| milliseconds | <code>number</code> | The number of milliseconds to wait |
 
 
 <br><a name="RGBot+vecToString"></a>
@@ -774,6 +821,19 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 | block | <code>Block</code> |  | The Block instance to approach |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.reach] | <code>number</code> | <code>5</code> | How close to get to the block |
+
+
+<br><a name="RGBot+approachPosition"></a>
+
+### rgBot.approachPosition(position, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+> The Bot will approach and stand within reach of the given position.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| position | <code>Vec3</code> |  | The position to navigate to |
+| [options] | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.reach] | <code>number</code> | <code>1</code> | How close to get to the position |
 
 
 <br><a name="RGBot+placeBlock"></a>
