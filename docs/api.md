@@ -126,11 +126,12 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.matchInfo()](#RGBot+matchInfo) ⇒ <code>RGMatchInfo</code> \| <code>null</code>
     * [.username()](#RGBot+username) ⇒ <code>string</code>
     * [.teamForPlayer(username)](#RGBot+teamForPlayer) ⇒ <code>string</code> \| <code>null</code>
-    * [.myTeam()](#RGBot+myTeam) ⇒ <code>string</code> \| <code>null</code>
+    * [.getMyTeam()](#RGBot+getMyTeam) ⇒ <code>string</code> \| <code>null</code>
     * [.getTeammateUsernames(includeSelf)](#RGBot+getTeammateUsernames) ⇒ <code>Array.&lt;string&gt;</code>
     * [.getOpponentUsernames()](#RGBot+getOpponentUsernames) ⇒ <code>Array.&lt;string&gt;</code>
     * [.position()](#RGBot+position) ⇒ <code>Vec3</code>
     * [.wait(ticks)](#RGBot+wait) ⇒ <code>Promise.&lt;void&gt;</code>
+    * [.waitForMilliseconds(milliseconds)](#RGBot+waitForMilliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.vecToString(position)](#RGBot+vecToString) ⇒ <code>string</code>
     * [.vecFromString(positionString)](#RGBot+vecFromString) ⇒ <code>Vec3</code> \| <code>null</code>
     * [.getEntityName(entity)](#RGBot+getEntityName) ⇒ <code>string</code> \| <code>null</code>
@@ -178,7 +179,6 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.depositItemsToContainer(containerWindow, [options])](#RGBot+depositItemsToContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.openContainer(containerBlock)](#RGBot+openContainer) ⇒ <code>Promise.&lt;(Window\|null)&gt;</code>
     * [.closeContainer(containerWindow)](#RGBot+closeContainer) ⇒ <code>Promise.&lt;boolean&gt;</code>
-    * [.waitForMilliseconds(milliseconds)](#RGBot+waitForMilliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
 
 
 <br><a name="new_RGBot_new"></a>
@@ -407,9 +407,9 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 | username | <code>string</code> | Username of the player/bot |
 
 
-<br><a name="RGBot+myTeam"></a>
+<br><a name="RGBot+getMyTeam"></a>
 
-### rgBot.myTeam() ⇒ <code>string</code> \| <code>null</code>
+### rgBot.getMyTeam() ⇒ <code>string</code> \| <code>null</code>
 > Gets the team name for this bot
 
 **Returns**: <code>string</code> \| <code>null</code> - Name of the team that this bot is on  
@@ -446,13 +446,27 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 > Minecraft normally runs at 20 ticks per second, with an in-game day lasting 24,0000 ticks (20 minutes).
 > This is similar to the standard JavaScript setTimeout function but runs on the physics timer of the Bot specifically.
 > This is useful for waiting on the server to update a Block or spawn drops when you break a Block.
-> If you'd like to wait for a specific amount of time, see the `waitForMilliseconds` function.
+> To wait for a specific amount of time, see the `waitForMilliseconds` function.
 
 **See**: waitForMilliseconds  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | ticks | <code>number</code> | The number of in-game ticks to wait |
+
+
+<br><a name="RGBot+waitForMilliseconds"></a>
+
+### rgBot.waitForMilliseconds(milliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
+> Pauses the bot to wait for the desired number of milliseconds. Use this
+> function to make the bot wait for a certain amount of time, instead
+> of a certain number of ticks (see `wait(ticks: number)`).
+
+**See**: wait  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| milliseconds | <code>number</code> | The number of milliseconds to wait |
 
 
 <br><a name="RGBot+vecToString"></a>
@@ -1190,20 +1204,6 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | Param | Type | Description |
 | --- | --- | --- |
 | containerWindow | <code>Window</code> | The window for the open container |
-
-
-<br><a name="RGBot+waitForMilliseconds"></a>
-
-### rgBot.waitForMilliseconds(milliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
-> Pauses the bot to wait for the desired number of milliseconds. Use this
-> function when you want the bot to wait for a certain amount of time, instead
-> of a certain number of ticks (see `wait(ticks: number)`).
-
-**See**: wait  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| milliseconds | <code>number</code> | The number of milliseconds to wait |
 
 
 <br><a name="BestHarvestTool"></a>
