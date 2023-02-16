@@ -1,4 +1,6 @@
 # Regression Games Bot
+[![NPM](https://img.shields.io/npm/v/rg-bot.svg)](https://www.npmjs.com/package/rg-bot)
+
 [View API Documentation](https://github.com/Regression-Games/RegressionBot/blob/main/docs/api.md)
 
 A stable and user-friendly JavaScript library for creating Bots in a variety of games. 
