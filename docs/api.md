@@ -270,7 +270,8 @@ rgBot.mineflayer().username
 
 ### rgBot.on(event, func) ⇒ <code>this</code>
 > Listen for an event and invoke a function when it fires.
-> This automatically handles passing through listeners to mineflayer for events that are not RGBot/RGMatchInfo specific.
+> This automatically handles passing through listeners to mineflayer for events that are not RG-specific (i.e. from
+> this library or an RG plugin)
 
 
 | Param | Type | Description |
@@ -288,7 +289,8 @@ rgBot.on('spawn', listenerFunc )
 
 ### rgBot.off(event, func) ⇒ <code>this</code>
 > Unregister a listener for an event.
-> This automatically handles passing through listeners to mineflayer for events that are not RGBot/RGMatchInfo specific.
+> This automatically handles passing through listeners to mineflayer for events that are not RG-specific (i.e. from
+> this library or an RG plugin)
 
 
 | Param | Type | Description |
@@ -306,7 +308,8 @@ rgBot.off('spawn', listenerFunc)
 
 ### rgBot.once(event, func) ⇒ <code>this</code>
 > Adds a one-time listener function for the event named event. The next time event is triggered, this listener is removed and then invoked.
-> This automatically handles passing through listeners to mineflayer for events that are not RGBot/RGMatchInfo specific.
+> This automatically handles passing through listeners to mineflayer for events that are not RG-specific (i.e. from
+> this library or an RG plugin)
 
 
 | Param | Type | Description |
