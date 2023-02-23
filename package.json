@@ -18,16 +18,16 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.0.6",
-    "minecraft-data": "^3.17.0",
-    "mineflayer": "^4.5.1",
-    "mineflayer-pathfinder": "^2.4.0",
+    "minecraft-data": "3.17.0",
+    "mineflayer": "4.5.1",
+    "mineflayer-pathfinder": "2.4.0",
     "node-fetch": "^3.2.6",
-    "prismarine-entity": "^2.1.1",
-    "prismarine-item": "^1.11.5",
-    "prismarine-nbt": "^2.2.1",
-    "prismarine-viewer": "^1.23.0",
-    "rg-match-info": "^1.0.0",
-    "vec3": "^0.1.7"
+    "prismarine-entity": "2.1.1",
+    "prismarine-item": "1.11.5",
+    "prismarine-nbt": "2.2.1",
+    "prismarine-viewer": "1.23.0",
+    "rg-match-info": "1.0.0",
+    "vec3": "0.1.7"
   },
   "devDependencies": {
     "dmd-readable": "^1.2.4",
