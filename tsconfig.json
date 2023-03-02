@@ -5,6 +5,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "types",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "target": "ES2019",
+    "moduleResolution": "node"
   }
 }
