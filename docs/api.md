@@ -639,6 +639,7 @@ const success = await rgBot.handlePath(async () => {
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.targetName] | <code>string</code> |  | Target a specific type of Entity. If not specified, then may return an Entity of any type |
 | [options.attackable] | <code>boolean</code> | <code>false</code> | Only return entities that can be attacked |
+| [options.originPoint] | <code>Vec3</code> |  | Origin point to search from, default is the bot current position |
 
 **Example** *(Locate the nearest chicken)*  
 ```js
@@ -660,6 +661,7 @@ rgBot.findEntity({targetName: "chicken"})
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Consider entities whose username or name partially match one of the targetNames |
 | [options.maxDistance] | <code>number</code> |  | Max range to consider |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching entities to consider |
+| [options.originPoint] | <code>Vec3</code> |  | Origin point to search from, default is the bot current position |
 | [options.entityValueFunction] | [<code>FindEntitiesEntityValueFunction</code>](#FindEntitiesEntityValueFunction) |  | Function to call to get the value of an entity based on its name (entityName). A good example function is { return scoreValueOf[entityUsername || entityName] }, where scoreValueOf is the point value or intrinsic value of the entity in the game mode being played.  If you don't want an entity considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
 | [options.sortValueFunction] | [<code>FindEntitiesSortValueFunction</code>](#FindEntitiesSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ENTITIES_SORT_VALUE_FUNCTION |
 
@@ -789,6 +791,7 @@ while (target.isValid) {
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Will not return any blocks that are beneath another block |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Blocks matching the search criteria up to and including this distance from the Bot |
 | [options.skipClosest] | <code>boolean</code> | <code>false</code> | Deprecated since 1.2.0 - If you want to skip a block from the result set, please use the findBlocks(options) function and process the results.  This method makes the best effort to still interpret this parameter, but is no longer skipping the closest block, but rather the best matching block. |
+| [options.originPoint] | <code>Vec3</code> |  | Origin point to search from, default is the bot current position |
 
 
 <br><a name="RGBot+findBlocks"></a>
@@ -808,6 +811,7 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 | [options.onlyFindTopBlocks] | <code>boolean</code> | <code>false</code> | Only find blocks that don't have a block above them. |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Max range to consider.  Be careful as large values have performance implications.  30 means up to 60x60x60 (216000) blocks could be evaluated.  50 means up to 100x100x100 (1000000) blocks could be evaluated |
 | [options.maxCount] | <code>number</code> | <code>1</code> | Max count of matching blocks |
+| [options.originPoint] | <code>Vec3</code> |  | Origin point to search from, default is the bot current position |
 | [options.blockValueFunction] | [<code>FindBlocksBlockValueFunction</code>](#FindBlocksBlockValueFunction) |  | Function to call to get the value of a block based on its name (blockName). A good example function is { return scoreValueOf[blockName] }, where scoreValueOf is the point value or intrinsic value of the block in the game mode being played.  If you don't want a block considered, return a value < 0 for its value. Default value is 0 if no function is provided. |
 | [options.sortValueFunction] | [<code>FindBlocksSortValueFunction</code>](#FindBlocksSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best entity with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_BLOCKS_SORT_VALUE_FUNCTION |
 
@@ -950,6 +954,7 @@ To get only the 'best' block result, call findBlocks(...).shift().  Note that th
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | Locate any items whose name contains itemName. (Ex. 'wooden_axe', 'stone_axe', 'diamond_axe', etc. will all satisfy itemName 'axe') |
 | [options.maxDistance] | <code>number</code> | <code>30</code> | Find any Items matching the search criteria up to and including this distance from the Bot |
+| [options.originPoint] | <code>Vec3</code> |  | Origin point to search from, default is the bot current position |
 
 
 <br><a name="RGBot+findItemsOnGround"></a>
@@ -968,6 +973,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contains any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.) |
 | [options.maxDistance] | <code>number</code> |  | find any Items matching the search criteria up to and including this distance from the Bot |
 | [options.maxCount] | <code>number</code> | <code>1</code> | limit the number of items to find |
+| [options.originPoint] | <code>Vec3</code> |  | Origin point to search from, default is the bot current position |
 | [options.itemValueFunction] | [<code>FindItemsOnGroundItemValueFunction</code>](#FindItemsOnGroundItemValueFunction) |  | Function to call to get the value of an item based on its name (itemName). A good example function is { return scoreValueOf[itemName] }, where scoreValueOf is the point value or intrinsic value of the item in the game mode being played.  If you don't want an item considered, return a value < 0 for its value.  Default value is 0. |
 | [options.sortValueFunction] | [<code>FindItemsOnGroundSortValueFunction</code>](#FindItemsOnGroundSortValueFunction) |  | Function to call to help sort the evaluation of results. Should return the best item with the lowest sorting value.  Default is RGAlgorithms.DEFAULT_FIND_ITEMS_ON_GROUND_SORT_VALUE_FUNCTION |
 
