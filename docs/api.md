@@ -692,6 +692,7 @@ rgBot.findEntity({targetName: "chicken"})
 | --- | --- | --- | --- |
 | entity | <code>Entity</code> |  | The Entity to follow |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.dynamic] | <code>boolean</code> | <code>true</code> | Whether this is a dynamic action. If dynamic, this will NOT block/await and will keep following the target in the background until a new pathfinding goal is set. If NOT dynamic, this will block/await until the target is reached and then stop pathing. |
 | [options.reach] | <code>number</code> | <code>2</code> | The Bot will follow and remain within this reach of the Entity |
 
 
@@ -707,6 +708,7 @@ rgBot.findEntity({targetName: "chicken"})
 | --- | --- | --- | --- |
 | entity | <code>Entity</code> |  | The Entity to avoid |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.dynamic] | <code>boolean</code> | <code>true</code> | Whether this is a dynamic action. If dynamic, this will NOT block/await and will keep avoiding the target in the background until a new pathfinding goal is set. If NOT dynamic, this will block/await until the desired reach from the target is achieved and then stop pathing. |
 | [options.reach] | <code>number</code> | <code>5</code> | The Bot will not move within this reach of the Entity |
 
 
