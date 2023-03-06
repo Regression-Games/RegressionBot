@@ -116,6 +116,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.lastAttackItem](#RGBot+lastAttackItem) : <code>Item</code>
     * [.setDebug(debug)](#RGBot+setDebug) ⇒ <code>void</code>
     * [.mineflayer()](#RGBot+mineflayer) ⇒ <code>Bot</code>
+    * [.pathfinder()](#RGBot+pathfinder) ⇒ <code>Pathfinder</code>
     * [.on(event, func)](#RGBot+on) ⇒ <code>this</code>
     * [.off(event, func)](#RGBot+off) ⇒ <code>this</code>
     * [.once(event, func)](#RGBot+once) ⇒ <code>this</code>
@@ -264,6 +265,20 @@ bot.lastAttackItem = attackItem
 ```js
 // returns the bot username from mineflayer
 rgBot.mineflayer().username
+```
+
+<br><a name="RGBot+pathfinder"></a>
+
+### rgBot.pathfinder() ⇒ <code>Pathfinder</code>
+> Returns the pathfinder instance used by RGBot to navigate. Use this to interact with the pathfinder API directly,
+> which can be used to complete complex navigation tasks.
+
+**Returns**: <code>Pathfinder</code> - The mineflayer-pathfinder instance used by the RGBot  
+**See**: [https://github.com/PrismarineJS/mineflayer-pathfinder](https://github.com/PrismarineJS/mineflayer-pathfinder)  
+**Example** *(Accessing pathfinder API)*  
+```js
+// returns the pathfinder instance
+rgBot.pathfinder().setGoal(...)
 ```
 
 <br><a name="RGBot+on"></a>
