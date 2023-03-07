@@ -110,7 +110,7 @@ of point return vs time to reach further blocks, which often involves digging ot
 
 
 * [RGBot](#RGBot)
-    * [new RGBot([bot], [isPython])](#new_RGBot_new)
+    * [new RGBot(bot, [isPython])](#new_RGBot_new)
     * [.isCrafting](#RGBot+isCrafting) : <code>boolean</code>
     * [.lastAttackTime](#RGBot+lastAttackTime) : <code>number</code>
     * [.lastAttackItem](#RGBot+lastAttackItem) : <code>Item</code>
@@ -133,8 +133,8 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.position()](#RGBot+position) ⇒ <code>Vec3</code>
     * [.wait(ticks)](#RGBot+wait) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.waitForMilliseconds(milliseconds)](#RGBot+waitForMilliseconds) ⇒ <code>Promise.&lt;void&gt;</code>
-    * [.setTimeout([action], time)](#RGBot+setTimeout) ⇒ <code>function</code> \| <code>number</code>
-    * [.setInterval([action], time)](#RGBot+setInterval) ⇒ <code>function</code> \| <code>number</code>
+    * [.setTimeout(action, time)](#RGBot+setTimeout) ⇒ <code>function</code> \| <code>number</code>
+    * [.setInterval(action, time)](#RGBot+setInterval) ⇒ <code>function</code> \| <code>number</code>
     * [.clearTimeout(timerRef)](#RGBot+clearTimeout)
     * [.clearInterval(intervalRef)](#RGBot+clearInterval)
     * [.vecToString(position)](#RGBot+vecToString) ⇒ <code>string</code>
@@ -143,7 +143,7 @@ of point return vs time to reach further blocks, which often involves digging ot
     * [.getItemDefinitionByName(itemName)](#RGBot+getItemDefinitionByName) ⇒ <code>Item</code> \| <code>null</code>
     * [.getItemDefinitionById(itemId)](#RGBot+getItemDefinitionById) ⇒ <code>Item</code> \| <code>null</code>
     * [.entityNamesMatch(targetName, entity, [options])](#RGBot+entityNamesMatch) ⇒ <code>boolean</code>
-    * [.handlePath([pathFunc], [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
+    * [.handlePath(pathFunc, [options])](#RGBot+handlePath) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.findEntity([options])](#RGBot+findEntity) ⇒ <code>Entity</code> \| <code>null</code>
     * [.findEntities([options])](#RGBot+findEntities) ⇒ <code>Array.&lt;FindResult.&lt;Entity&gt;&gt;</code>
     * [.approachEntity(entity, [options])](#RGBot+approachEntity) ⇒ <code>Promise.&lt;boolean&gt;</code>
@@ -188,11 +188,11 @@ of point return vs time to reach further blocks, which often involves digging ot
 
 <br><a name="new_RGBot_new"></a>
 
-### new RGBot([bot], [isPython])
+### new RGBot(bot, [isPython])
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [bot] | <code>Bot</code> |  | Mineflayer bot instance |
+| bot | <code>Bot</code> |  | Mineflayer bot instance |
 | [isPython] | <code>boolean</code> | <code>false</code> | Whether this bot is loaded from python runtime.  Python runtime does not support js timer functions. |
 
 
@@ -483,7 +483,7 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 > function to make the bot wait for a certain amount of time, instead
 > of a certain number of ticks (see `wait(ticks: number)`).
 > If calling from python this will wait the number of ticks at least as long as the desired
-> number of milliseconds. (50ms = 1 tick, 55ms = 2 ticks, 99ms = 2 ticks, 100ms = 2 ticks, 101ms = 3ticks)
+> number of milliseconds. (1ms = 1 tick, 50ms = 1 tick, 51ms = 2 ticks, 99ms = 2 ticks, 100ms = 2 ticks, 101ms = 3ticks)
 > This behavior is because the python/js bridge can't support timers/intervals.
 
 **See**: wait  
@@ -495,11 +495,11 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 
 <br><a name="RGBot+setTimeout"></a>
 
-### rgBot.setTimeout([action], time) ⇒ <code>function</code> \| <code>number</code>
+### rgBot.setTimeout(action, time) ⇒ <code>function</code> \| <code>number</code>
 > Do the specified action after the specified number of milliseconds.
 > This is a wrapper for JS setTimeout.
 > If calling from python this will wait the number of ticks at least as long as the desired
-> number of milliseconds. (50ms = 1 tick, 55ms = 2 ticks, 99ms = 2 ticks, 100ms = 2 ticks, 101ms = 3ticks)
+> number of milliseconds. (1ms = 1 tick, 50ms = 1 tick, 51ms = 2 ticks, 99ms = 2 ticks, 100ms = 2 ticks, 101ms = 3ticks)
 > This behavior is because the python/js bridge can't support timers/intervals.
 > Python will always wait at least 1 tick.
 
@@ -507,17 +507,17 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [action] | <code>function</code> | Action to perform |
+| action | <code>function</code> | Action to perform |
 | time | <code>number</code> | Time in milliseconds |
 
 
 <br><a name="RGBot+setInterval"></a>
 
-### rgBot.setInterval([action], time) ⇒ <code>function</code> \| <code>number</code>
+### rgBot.setInterval(action, time) ⇒ <code>function</code> \| <code>number</code>
 > Do the specified action every N milliseconds.
 > This is a wrapper for JS setInterval.
 > If calling from python this will wait the number of ticks at least as long as the desired
-> number of milliseconds. (50ms = 1 tick, 55ms = 2 ticks, 99ms = 2 ticks, 100ms = 2 ticks, 101ms = 3ticks)
+> number of milliseconds. (1ms = 1 tick, 50ms = 1 tick, 51ms = 2 ticks, 99ms = 2 ticks, 100ms = 2 ticks, 101ms = 3ticks)
 > This behavior is because the python/js bridge can't support timers/intervals.
 > Python will always wait at least 1 tick.
 
@@ -525,7 +525,7 @@ matchInfoEmitter.on('player_joined', (matchInfo, playerName, team) => {
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [action] | <code>function</code> | Action to perform |
+| action | <code>function</code> | Action to perform |
 | time | <code>number</code> | Time in milliseconds |
 
 
@@ -688,16 +688,15 @@ rgBot.entityNamesMatch('_axe', entity, {partialMatch: true}) // returns true
 
 <br><a name="RGBot+handlePath"></a>
 
-### rgBot.handlePath([pathFunc], [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
+### rgBot.handlePath(pathFunc, [options]) ⇒ <code>Promise.&lt;boolean&gt;</code>
 > Attempt pathfinding. If the Bot becomes 'stuck' then cancel pathfinding.
 > The Bot is considered 'stuck' if it fails to move or perform mining/crafting/chest-interaction actions during a specified interval.
-> If calling from python this function will not do stuck handling as the python/js bridge cannot handle timers/intervals.
 
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - true if pathing completes, or false if pathing is cancelled or otherwise interrupted  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [pathFunc] | <code>function</code> |  | a function utilizing pathfinder to move the Bot |
+| pathFunc | <code>function</code> |  | a function utilizing pathfinder to move the Bot |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
 | [options.interval] | <code>number</code> | <code>5000</code> | how long in ms a Bot must be inactive to be considered 'stuck' |
 
