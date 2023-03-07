@@ -1017,7 +1017,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemNames] | <code>string</code> | <code>&quot;[]&quot;</code> | Find and collect only Items with this name |
+| [options.itemNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | Find and collect only Items with this name |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contain any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.). |
 | [options.maxDistance] | <code>number</code> | <code>50</code> | Find and collect any Items matching the search criteria up to and including this distance from the Bot |
 
