@@ -110,7 +110,7 @@ of point return vs time to reach further blocks, which often involves digging ot
 
 
 * [RGBot](#RGBot)
-    * [new RGBot(bot, [isPython])](#new_RGBot_new)
+    * [new RGBot(bot, [options])](#new_RGBot_new)
     * [.isCrafting](#RGBot+isCrafting) : <code>boolean</code>
     * [.lastAttackTime](#RGBot+lastAttackTime) : <code>number</code>
     * [.lastAttackItem](#RGBot+lastAttackItem) : <code>Item</code>
@@ -188,12 +188,13 @@ of point return vs time to reach further blocks, which often involves digging ot
 
 <br><a name="new_RGBot_new"></a>
 
-### new RGBot(bot, [isPython])
+### new RGBot(bot, [options])
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | bot | <code>Bot</code> |  | Mineflayer bot instance |
-| [isPython] | <code>boolean</code> | <code>false</code> | Whether this bot is loaded from python runtime.  Python runtime does not support js timer functions. |
+| [options] | <code>object</code> | <code>{}</code> | Optional parameters |
+| [options.isPython] | <code>boolean</code> | <code>false</code> | Whether this bot is loaded from python runtime.  Python runtime does not support js timer functions. |
 
 
 <br><a name="RGBot+isCrafting"></a>
@@ -1083,7 +1084,7 @@ To get only the 'best' item to collect, call findItems(...).shift().  Note that 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | [options] | <code>object</code> | <code>{}</code> | Optional parameters |
-| [options.itemNames] | <code>string</code> | <code>&quot;[]&quot;</code> | Find and collect only Items with this name |
+| [options.itemNames] | <code>Array.&lt;string&gt;</code> | <code>[]</code> | Find and collect only Items with this name |
 | [options.partialMatch] | <code>boolean</code> | <code>false</code> | If itemNames is defined, find Items whose name contain any of the itemNames. (Ex. '_boots' may find any of 'iron_boots', 'golden_boots', etc.). |
 | [options.maxDistance] | <code>number</code> | <code>50</code> | Find and collect any Items matching the search criteria up to and including this distance from the Bot |
 

@@ -17,11 +17,11 @@
   "author": "Regression Games, Inc",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^18.0.6",
+    "@types/node": "18.0.6",
     "minecraft-data": "3.17.0",
     "mineflayer": "4.5.1",
     "mineflayer-pathfinder": "2.4.0",
-    "node-fetch": "^3.2.6",
+    "node-fetch": "3.3.0",
     "prismarine-block": "1.16.3",
     "prismarine-entity": "2.1.1",
     "prismarine-item": "1.11.5",
@@ -32,10 +32,10 @@
     "vec3": "0.1.7"
   },
   "devDependencies": {
-    "dmd-readable": "^1.2.4",
-    "husky": "^8.0.2",
-    "jsdoc-to-markdown": "^8.0.0",
-    "typescript": "^4.9.4"
+    "dmd-readable": "1.2.4",
+    "husky": "8.0.2",
+    "jsdoc-to-markdown": "8.0.0",
+    "typescript": "4.9.4"
   },
   "files": [
     "index.js",
